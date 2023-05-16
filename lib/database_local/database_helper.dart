@@ -22,7 +22,8 @@ class DatabaseHelper {
   Future<Database> initDb() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'db_traceability.db';
-    var todoDatabase = openDatabase(path, version: 1, onCreate: _createDb);
+    var todoDatabase = openDatabase(path,
+        version: 1, onCreate: _createDb, onUpgrade: _upgradeDb);
     return todoDatabase;
   }
 
@@ -174,6 +175,15 @@ class DatabaseHelper {
         $ALIAS_COMPANY TEXT,
         $CODE_COMPANY TEXT)
     ''');
+    await db.execute('''
+      CREATE TABLE $TABLE_FARMER_TRANSACTION (
+        $FARMER_ASCEND_CODE TEXT NOT NULL,
+        $ASCENDFARMERNAME TEXT,
+        $TRYEAR INT,
+        $GROUPINGMONTHINYEAR DOUBLE,
+        $MAXTONNAGEYEAR DOUBLE,
+        $TRMONTH TEXT)
+    ''');
   }
 
   Future<Database> get database async {
@@ -182,4 +192,6 @@ class DatabaseHelper {
     }
     return _database;
   }
+
+  FutureOr<void> _upgradeDb(Database db, int oldVersion, int newVersion) {}
 }

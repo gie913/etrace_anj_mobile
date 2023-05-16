@@ -1,13 +1,17 @@
 import 'package:e_trace_app/base/ui/palette.dart';
 import 'package:e_trace_app/base/ui/style.dart';
 import 'package:e_trace_app/database_local/database_entity.dart';
+import 'package:e_trace_app/database_local/database_farmer.dart';
+import 'package:e_trace_app/database_local/database_farmer_transaction.dart';
 import 'package:e_trace_app/database_local/database_helper.dart';
+import 'package:e_trace_app/model/farmer_transaction.dart';
 import 'package:e_trace_app/model/log_out_response.dart';
 import 'package:e_trace_app/screen/login/login_screen.dart';
 import 'package:e_trace_app/screen/main/main_screen.dart';
 import 'package:e_trace_app/screen/profile/logout_repository.dart';
 import 'package:e_trace_app/screen/sync/agent_repository.dart';
 import 'package:e_trace_app/screen/sync/farmer_repository.dart';
+import 'package:e_trace_app/screen/sync/farmer_transaction_repository.dart';
 import 'package:e_trace_app/screen/sync/supplier_repository.dart';
 import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/model/agents.dart';
@@ -96,11 +100,28 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
     for (int i = 0; i < suppliers.length; i++) {
       insertSupplier(suppliers[i]);
     }
+    getDataFarmerTransaction();
+  }
+
+  getDataFarmerTransaction() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userToken = prefs.getString('token');
+    final String userBaseUrl = prefs.getString('baseUrl');
+    FarmerTransactionRepository(userBaseUrl).doSyncFarmerTransaction(
+        userToken, onSuccessFarmerTransaction, onErrorFarmerTransaction);
+  }
+
+  onSuccessFarmerTransaction(FarmerTransactions farmerTransactions) {
+    DatabaseFarmerTransaction().insertFarmerTransaction(farmerTransactions);
+    DatabaseFarmer().deleteFarmerBlacklist(farmerTransactions.data.blacklistedFarmer);
     setSession();
-    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
-    setLastSync(formattedDate);
+    setLastSync();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => MainScreen()));
+  }
+
+  onErrorFarmerTransaction(response){
+    _openWarningDialog(response.toString());
   }
 
   setSession() async {
@@ -108,9 +129,10 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
     prefs.setString('session', 'true');
   }
 
-  setLastSync(String lastSync) async {
+  setLastSync() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('lastSync', lastSync);
+    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
+    prefs.setString('lastSync', formattedDate);
   }
 
   Future<int> insertSupplier(Suppliers object) async {

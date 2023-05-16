@@ -2,6 +2,9 @@ class APIEndpoint {
   static const BASE_URL =
       "https://etrace-dev.anj-group.co.id/backend/public/index.php/";
 
+  // static const BASE_URL =
+  //     "https://etrace.anj-group.co.id/backend/public/index.php/";
+
   static const LOGIN_ENDPOINT = "api/v1/signin";
   static const LOGOUT_ENDPOINT = "api/v1/signout";
   static const CHANGE_PHOTO_ENDPOINT = "api/v1/profile-pic/update";
@@ -28,4 +31,6 @@ class APIEndpoint {
 
   static const CHANGE_PROFILE = "api/v1/profile-contact/update";
   static const SET_VERSION = "api/v1/app-version";
+
+  static const FARMER_TRANSACTION = "api/v1/farmer-transactions";
 }

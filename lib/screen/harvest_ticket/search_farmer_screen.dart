@@ -130,7 +130,15 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
                                                       .address),
                                                   Text(_searchFarmerResult[index]
                                                       .yop == null ? "" : _searchFarmerResult[index]
-                                                      .yop)
+                                                      .yop),
+                                                  Row(
+                                                    children: [
+                                                      Text(_searchFarmerResult[index]
+                                                          .largeAreaHa == null ? "" : _searchFarmerResult[index]
+                                                          .largeAreaHa),
+                                                      Text(" Ha")
+                                                    ],
+                                                  )
                                                 ],
                                               ),
                                               trailing: OutlinedButton(
@@ -179,7 +187,7 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
                                                     style: text14Bold,
                                                   ),
                                                   Text(_farmersDetails[index]
-                                                      .fullname),
+                                                      .fullname ?? ""),
                                                 ],
                                               ),
                                               subtitle: Column(
@@ -193,7 +201,15 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
                                                       .address),
                                                   Text(_farmersDetails[index]
                                                       .yop == null ? "" : _farmersDetails[index]
-                                                      .yop)
+                                                      .yop),
+                                                  Row(
+                                                    children: [
+                                                      Text(_farmersDetails[index]
+                                                          .largeAreaHa == null ? "" : _farmersDetails[index]
+                                                          .largeAreaHa),
+                                                      Text(" Ha")
+                                                    ],
+                                                  )
                                                 ],
                                               ),
                                               trailing: OutlinedButton(

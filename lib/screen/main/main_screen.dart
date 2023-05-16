@@ -20,6 +20,7 @@ import 'package:e_trace_app/screen/main/set_version_repository.dart';
 import 'package:e_trace_app/screen/profile/logout_repository.dart';
 import 'package:e_trace_app/screen/sync/tonnage_farmer_repository.dart';
 import 'package:e_trace_app/widget/dialog_exit.dart';
+import 'package:e_trace_app/widget/loading_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +69,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   checkConnection() async {
-    initConnectivity();
     _connectivitySubscription =
         connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
@@ -133,6 +133,32 @@ class _MainScreenState extends State<MainScreen> {
             ],
             content: SelectableText(
                 "Harap update aplikasi terbaru. Klik Tombol Update"),
+          );
+        });
+  }
+
+  void showDialogUpdateMaster() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            title: Text("Update master Data"),
+            actions: <Widget>[
+              TextButton(
+                  child: Text(
+                    "Update",
+                    style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    getDataFarmer();
+                  })
+            ],
+            content: SelectableText("Klik OK untuk mengupdate master data"),
           );
         });
   }
@@ -216,11 +242,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    checkConnection();
     doGetVersion(context);
     doSetVersion();
     checkForUpdate();
     checkNotification();
+    checkConnection();
     super.initState();
     firebaseConfig();
     cronStart();
@@ -277,6 +303,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   getDataFarmer() async {
+    loadingDialog(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String lastSync = prefs.getString('lastSync');
     final String userToken = prefs.getString('token');
@@ -289,6 +316,7 @@ class _MainScreenState extends State<MainScreen> {
     for (int i = 0; i < farmers.length; i++) {
       updateFarmer(farmers[i]);
     }
+    Navigator.pop(context);
   }
 
   Future<int> updateFarmer(Farmers object) async {
@@ -298,7 +326,9 @@ class _MainScreenState extends State<MainScreen> {
     return count;
   }
 
-  onErrorSyncFarmer(response) {}
+  onErrorSyncFarmer(response) {
+    Navigator.pop(context);
+  }
 
   setNotificationArrived(
       String title, String text, String action, String url) async {

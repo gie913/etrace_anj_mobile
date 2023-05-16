@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -8,12 +9,14 @@ import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:e_trace_app/base/ui/palette.dart';
 import 'package:e_trace_app/base/ui/style.dart';
 import 'package:e_trace_app/database_local/database_collection_point.dart';
+import 'package:e_trace_app/database_local/database_farmer_transaction.dart';
 import 'package:e_trace_app/database_local/database_harvest_ticket.dart';
 import 'package:e_trace_app/model/delivery_order.dart';
+import 'package:e_trace_app/model/farmer_transaction.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/utils/separator_thousand.dart';
+import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:e_trace_app/widget/loading_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -288,9 +291,11 @@ class _QRScreenDeliveryState extends State<QRScreenDelivery> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                            "Kode Areal: ${widget.listHarvestingTicket[index].ascendFarmerCode}", style: text16BoldBlack),
+                                            "Kode Areal: ${widget.listHarvestingTicket[index].ascendFarmerCode}",
+                                            style: text16BoldBlack),
                                         Text(
-                                            "Janjang/Berat(Kg): ${widget.listHarvestingTicket[index].quantity}/${formatThousandSeparator(widget.listHarvestingTicket[index].weight.round())}", style: text16Black),
+                                            "Janjang/Berat(Kg): ${widget.listHarvestingTicket[index].quantity}/${formatThousandSeparator(widget.listHarvestingTicket[index].weight.round())}",
+                                            style: text16Black),
                                       ],
                                     )
                                   ],
@@ -335,6 +340,36 @@ class _QRScreenDeliveryState extends State<QRScreenDelivery> {
     );
   }
 
+  updateTonnagePerYearFarmer() async {
+    for (int i = 0; i < widget.listHarvestingTicket.length; i++) {
+      DatabaseFarmerTransaction()
+          .selectFarmerTransactionByFarmer(
+              widget.listHarvestingTicket[i].ascendFarmerCode)
+          .then((value) => {
+                if (value != null)
+                  {
+                    setSumKgPerYear(
+                        widget.listHarvestingTicket[i].quantity, value)
+                  }
+              });
+    }
+  }
+
+  setSumKgPerYear(int janjang, Farmer farmer) async {
+    double abw = await StorageManager.readData("abw");
+    int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
+    if (useMaxTonnage == 1) {
+      if (abw != null) {
+        int month = DateTime.now().month;
+        double estimationKg = (abw * janjang);
+        List<dynamic> list = jsonDecode(farmer.trMonth);
+        list[month - 1] = list[month - 1] + estimationKg.toInt();
+        farmer.trMonth = list.toString();
+        DatabaseFarmerTransaction().updateFarmerTransaction(farmer);
+      }
+    }
+  }
+
   doneQRDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -356,6 +391,9 @@ class _QRScreenDeliveryState extends State<QRScreenDelivery> {
             child: GestureDetector(
               onTap: () {
                 setState(() {
+                  if (this.widget.deliveryOrder.transferred != "true") {
+                    updateTonnagePerYearFarmer();
+                  }
                   this.widget.deliveryOrder.transferred = "true";
                   DatabaseHarvestTicket().updateHarvestTicketDeliveryTransfer(
                       this.widget.deliveryOrder.idDelivery);

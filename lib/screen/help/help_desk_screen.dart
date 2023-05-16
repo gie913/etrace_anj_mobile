@@ -1,12 +1,10 @@
 import 'package:e_trace_app/base/api/api_endpoint.dart';
 import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:e_trace_app/base/ui/style.dart';
-import 'package:e_trace_app/screen/help/help_desk_repository.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:e_trace_app/model/send_help_desk.dart';
-import 'package:flutter/services.dart';
+import 'package:e_trace_app/screen/help/help_desk_repository.dart';
 import 'package:e_trace_app/widget/loading_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
 class HelpDeskScreen extends StatefulWidget {
@@ -45,7 +43,9 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
                         padding: const EdgeInsets.only(),
                         child: TextField(
                           onChanged: (value) {
-                            value != null ? _validateSubject = false : _validateSubject = true;
+                            value != null
+                                ? _validateSubject = false
+                                : _validateSubject = true;
                           },
                           controller: subjectController,
                           textAlign: TextAlign.start,
@@ -54,7 +54,8 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
                             errorText: _validateSubject ? 'Belum Terisi' : null,
                             counterText: "",
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
                               borderSide: BorderSide(width: 1),
                             ),
                           ),
@@ -78,7 +79,9 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
                       child: Container(
                         child: TextField(
                           onChanged: (value) {
-                            value != null ? _validateMessage = false : _validateMessage = true;
+                            value != null
+                                ? _validateMessage = false
+                                : _validateMessage = true;
                           },
                           controller: messageController,
                           textAlign: TextAlign.start,
@@ -87,7 +90,8 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
                           decoration: InputDecoration(
                             errorText: _validateMessage ? 'Belum Terisi' : null,
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
                               borderSide: BorderSide(width: 1),
                             ),
                           ),
@@ -110,9 +114,9 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
                         _validateMessage = true;
                       });
                     } else {
-                      doSendHelpDesk(subjectController.text, messageController.text);
+                      doSendHelpDesk(
+                          subjectController.text, messageController.text);
                     }
-
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -154,7 +158,8 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 YES,
-                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               ),
             ),
           ),

@@ -45,6 +45,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
   List<HarvestingTicket> listHarvestTicket = [];
   TextEditingController userTargetController = TextEditingController();
   String menuTransfer;
+
   // List<RecordEditor> _records = [];
   // bool _hasClosedWriteDialog = false;
 

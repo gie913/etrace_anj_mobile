@@ -159,6 +159,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     await db.delete(TABLE_SUPPLIER);
     await db.delete(TABLE_AGENT);
     await db.delete(TABLE_PRICE);
+    await db.delete(TABLE_FARMER_TRANSACTION);
     String stringTopics = prefs.getString("topics");
     String replacedString = stringTopics.replaceAll("[", "");
     String replacedString2 = replacedString.replaceAll("]", "");

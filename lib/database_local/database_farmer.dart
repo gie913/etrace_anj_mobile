@@ -24,6 +24,20 @@ class DatabaseFarmer {
     return mapList;
   }
 
+  Future<int> insertFarmer(Farmers object) async {
+    Database db = await DatabaseHelper().database;
+    int count;
+    var mapList = await db.query(TABLE_FARMER,
+        where: '$FARMER_ID_OBJECT=?', whereArgs: [object.idFarmer]);
+    if (mapList.isNotEmpty) {
+      await db.update(TABLE_FARMER, object.toJson(),
+          where: '$FARMER_ID_OBJECT=?', whereArgs: [object.idFarmer]);
+    } else {
+      count = await db.insert(TABLE_FARMER, object.toJson());
+    }
+    return count;
+  }
+
   Future<int> updateFarmer(Farmers object) async {
     Database db = await DatabaseHelper().database;
     int count = await db.update(TABLE_FARMER, object.toJson(),
@@ -40,6 +54,17 @@ class DatabaseFarmer {
       farmers = Farmers.fromJson(mapList[i]);
     }
     return farmers;
+  }
+
+  Future<int> deleteFarmerBlacklist(List<String> farmerCode) async {
+    int result = 0;
+    Database db = await DatabaseHelper().database;
+    for (int i = 0; i < farmerCode.length; i++) {
+      var deleted = await db.delete(TABLE_FARMER,
+          where: "$FARMER_ASCEND_CODE = ?", whereArgs: [farmerCode[i]]);
+      result = result + deleted;
+    }
+    return result;
   }
 
   Future<Farmers> selectFarmerByIDString(String object) async {
@@ -78,6 +103,4 @@ class DatabaseFarmer {
     }
     return sumTonnage;
   }
-
-  Future<int> updateFarmerByTonnage() {}
 }

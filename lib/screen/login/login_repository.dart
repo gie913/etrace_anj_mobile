@@ -37,6 +37,7 @@ class LoginRepository {
           LoginResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         StorageManager.saveData("useMaxTonnage", apiResponse.data.useMaxTonnage);
+        StorageManager.saveData("tokenExpired", json.decode(response.body)['data']['token_expired_at']);
         onSuccess(context, apiResponse.data);
       } else {
         onError(context, apiResponse.message);

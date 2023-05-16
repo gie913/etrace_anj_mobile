@@ -8,6 +8,7 @@ const String TABLE_SUPPLIER = "TableSupplier";
 const String TABLE_PRICE = "TablePrice";
 const String TABLE_USER = "TableUser";
 const String TABLE_COMPANY = "TableCompany";
+const String TABLE_FARMER_TRANSACTION = "TableFarmerTransaction";
 
 /*COLUMN TABLE HARVEST TICKET*/
 const String ID_TICKET = "mobile_tr_ht_number";
@@ -148,3 +149,10 @@ const String COMPANY_NAME = "company_name";
 const String COMPANY_ID_USER = "m_company_id";
 const String SEQUENCE_NUMBER = "sequence_number";
 const String PHONE_NUMBER = "phone_number";
+
+/* COLUMN TABLE FARMER TRANSACTIONS */
+const String TRYEAR = 'tr_year';
+const String TRMONTH = 'tr_month';
+const String ASCENDFARMERNAME = "ascend_farmer_name";
+const String MAXTONNAGEYEAR = 'max_tonnage_year';
+const String GROUPINGMONTHINYEAR = 'grouping_month_in_year';

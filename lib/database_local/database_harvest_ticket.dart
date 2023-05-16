@@ -16,7 +16,6 @@ class DatabaseHarvestTicket {
     return mapList;
   }
 
-
   Future<bool> checkHarvestTicketNoTransaction(String user) async {
     Database db = await DatabaseHelper().database;
     bool noTransactionExist;
@@ -184,7 +183,9 @@ class DatabaseHarvestTicket {
 
   Future<int> deleteHarvestTicketOneMonthAgo(String dateTicket) async {
     Database db = await DatabaseHelper().database;
-    int count = await db.rawDelete('DELETE FROM $TABLE_HARVEST_TIKET WHERE $DATE_TICKET <= ? AND $TP_UPLOADED = ?', ['$dateTicket%', 'true']);
+    int count = await db.rawDelete(
+        'DELETE FROM $TABLE_HARVEST_TIKET WHERE $DATE_TICKET <= ? AND $TP_UPLOADED = ?',
+        ['$dateTicket%', 'true']);
     return count;
   }
 

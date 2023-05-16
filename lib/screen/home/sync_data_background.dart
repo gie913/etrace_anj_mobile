@@ -1,11 +1,16 @@
 import 'package:e_trace_app/base/api/api_endpoint.dart';
 import 'package:e_trace_app/database_local/database_entity.dart';
+import 'package:e_trace_app/database_local/database_farmer.dart';
+import 'package:e_trace_app/database_local/database_farmer_transaction.dart';
 import 'package:e_trace_app/database_local/database_helper.dart';
+import 'package:e_trace_app/database_local/database_supplier.dart';
 import 'package:e_trace_app/model/agents.dart';
+import 'package:e_trace_app/model/farmer_transaction.dart';
 import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/model/suppliers.dart';
 import 'package:e_trace_app/screen/sync/agent_repository.dart';
 import 'package:e_trace_app/screen/sync/farmer_repository.dart';
+import 'package:e_trace_app/screen/sync/farmer_transaction_repository.dart';
 import 'package:e_trace_app/screen/sync/supplier_repository.dart';
 import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SyncDataBackground {
-
   getDataFarmer() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String lastSync = prefs.getString('lastSync');
@@ -25,21 +29,9 @@ class SyncDataBackground {
 
   onSuccessSyncFarmer(List<Farmers> farmers) {
     for (int i = 0; i < farmers.length; i++) {
-      insertFarmer(farmers[i]);
+      DatabaseFarmer().insertFarmer(farmers[i]);
     }
     getDataAgent();
-  }
-
-  Future<int> insertFarmer(Farmers object) async {
-    Database db = await DatabaseHelper().database;
-    int count;
-    var mapList = await db.query(TABLE_FARMER, where: '$FARMER_ID_OBJECT=?', whereArgs: [object.idFarmer]);
-    if (mapList.isNotEmpty) {
-      await db.update(TABLE_FARMER, object.toJson(), where: '$FARMER_ID_OBJECT=?', whereArgs: [object.idFarmer]);
-    } else {
-      count = await db.insert(TABLE_FARMER, object.toJson());
-    }
-    return count;
   }
 
   onErrorSyncFarmer(response) {}
@@ -77,39 +69,46 @@ class SyncDataBackground {
 
   onSuccessSyncSupplier(List<Suppliers> suppliers) {
     for (int i = 0; i < suppliers.length; i++) {
-      insertSupplier(suppliers[i]);
+      DatabaseSupplier().insertSupplier(suppliers[i]);
     }
     setSession();
-    String formattedDate =
-        DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
-    setLastSync(formattedDate);
+    setLastSync();
     setNotificationClicked();
+    getDataFarmerTransaction();
   }
+
+  getDataFarmerTransaction() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userToken = prefs.getString('token');
+    final String userBaseUrl = prefs.getString('baseUrl');
+    FarmerTransactionRepository(userBaseUrl).doSyncFarmerTransaction(
+        userToken, onSuccessFarmerTransaction, onErrorFarmerTransaction);
+  }
+
+  onSuccessFarmerTransaction(FarmerTransactions farmerTransactions) {
+    DatabaseFarmerTransaction()
+        .deleteInsertFarmerTransaction(farmerTransactions);
+    DatabaseFarmer()
+        .deleteFarmerBlacklist(farmerTransactions.data.blacklistedFarmer);
+    setSession();
+    setLastSync();
+  }
+
+  onErrorFarmerTransaction(response) {}
 
   setSession() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('session', 'true');
   }
 
-  setLastSync(String lastSync) async {
+  setLastSync() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('lastSync', lastSync);
-  }
-
-  Future<int> insertSupplier(Suppliers object) async {
-    Database db = await DatabaseHelper().database;
-    int count;
-    var mapList = await db.query(TABLE_SUPPLIER, where: '$SUPPLIER_ID=?', whereArgs: [object.idSupplier]);
-    if (mapList.isNotEmpty) {
-      await db.update(TABLE_SUPPLIER, object.toJson(), where: '$SUPPLIER_ID=?', whereArgs: [object.idSupplier]);
-    } else {
-      count = await db.insert(TABLE_SUPPLIER, object.toJson());
-    }
-    return count;
+    String formattedDate =
+        DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
+    prefs.setString('lastSync', formattedDate);
   }
 
   onErrorSyncSupplier(response) {}
-
 
   setNotificationClicked() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

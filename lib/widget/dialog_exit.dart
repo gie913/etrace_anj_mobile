@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:e_trace_app/base/strings/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Future<bool> onWillPop(BuildContext context) {

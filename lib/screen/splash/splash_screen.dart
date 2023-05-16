@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:e_trace_app/base/path/image_path.dart';
 import 'package:e_trace_app/base/strings/constants.dart';
-import 'package:e_trace_app/base/ui/style.dart';
 import 'package:e_trace_app/screen/login/login_screen.dart';
 import 'package:e_trace_app/screen/main/database_local_update.dart';
 import 'package:e_trace_app/screen/main/main_screen.dart';
@@ -26,11 +25,26 @@ class _SplashScreenState extends State<SplashScreen> {
   void autoLogIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String session = prefs.getString('session');
+    final String tokenExpired = prefs.getString('tokenExpired');
     var duration = const Duration(seconds: 3);
     Timer(duration, () {
       if (session != null) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+        if(tokenExpired != null) {
+          DateTime expiredDate = DateTime.parse(tokenExpired);
+          DateTime expiredDate14 = new DateTime(expiredDate.year, expiredDate.month, expiredDate.day - 14);
+          DateTime now = DateTime.now();
+          bool valDate = now.isAfter(expiredDate14);
+          if(!valDate) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MainScreen()));
+          } else {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginScreen()));
+          }
+        } else {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MainScreen()));
+        }
       } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => LoginScreen()));

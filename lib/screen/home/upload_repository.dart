@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:e_trace_app/base/api/api_configuration.dart';
 import 'package:e_trace_app/base/api/api_endpoint.dart';
@@ -11,7 +12,6 @@ import 'package:e_trace_app/model/upload_harvest_ticket.dart';
 
 class UploadRepository extends APIConfiguration{
   UploadRepository(String baseUrl) : super(baseUrl);
-
 
   void doUploadHarvestTicket(String token,
       UploadHarvestTicket uploadBodyHarvestTicket, onSuccess, onError) async {
@@ -36,6 +36,12 @@ class UploadRepository extends APIConfiguration{
       } else {
         onError(apiResponse);
       }
+    } on SocketException {
+      onError('Koneksi terputus');
+    } on HttpException {
+      onError('Tidak ada layanan');
+    } on FormatException {
+      onError('Invalid Response format');
     } catch (exception) {
       onError(exception);
     }
@@ -64,6 +70,12 @@ class UploadRepository extends APIConfiguration{
       } else {
         onError();
       }
+    } on SocketException {
+      onError('Koneksi terputus');
+    } on HttpException {
+      onError('Tidak ada layanan');
+    } on FormatException {
+      onError('Invalid Response format');
     } catch (exception) {
       onError(exception);
     }
@@ -91,6 +103,12 @@ class UploadRepository extends APIConfiguration{
       } else {
         onError();
       }
+    } on SocketException {
+      onError('Koneksi terputus');
+    } on HttpException {
+      onError('Tidak ada layanan');
+    } on FormatException {
+      onError('Invalid Response format');
     } catch (exception) {
       onError(exception);
     }

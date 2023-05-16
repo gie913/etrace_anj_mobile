@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:e_trace_app/base/ui/style.dart';
 import 'package:e_trace_app/database_local/database_farmer.dart';
+import 'package:e_trace_app/database_local/database_farmer_transaction.dart';
+import 'package:e_trace_app/model/farmer_transaction.dart';
 import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/screen/harvest_ticket/search_farmer_screen.dart';
@@ -467,15 +470,51 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
   }
 
   Future<bool> checkMaxTonnage(String janjang) async {
-    double maxTonnageYear = farmerObject.maxTonnageYear ?? 0;
-    double sumKgYear = farmerObject.sumKgYear ?? 0;
+    double totalTonnage = 0;
     double abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
-    int totalJanjang = int.parse(janjang);
-    if(useMaxTonnage == 1) {
-      if (abw != null) {
-        double estimationTonnage = (abw * totalJanjang) / 1000;
-        if (estimationTonnage + (sumKgYear / 1000) > maxTonnageYear) {
+    var result =
+    await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
+    if (result.isNotEmpty) {
+      int month = DateTime.now().month;
+      List<int> listIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+      var newMe = jsonEncode(result[0]);
+      Farmer farmer = Farmer.fromJson(jsonDecode(newMe));
+      var list = jsonDecode(farmer.trMonth);
+
+      var chunks = [];
+      var chunksIndex = [];
+      var chunkSize = farmer.groupingMonth.toInt();
+
+      for (var i = 0; i < listIndex.length; i += chunkSize) {
+        chunksIndex.add(listIndex.sublist(
+            i,
+            i + chunkSize > listIndex.length
+                ? listIndex.length
+                : i + chunkSize));
+      }
+
+      print(chunksIndex);
+      for (var i = 0; i < list.length; i += chunkSize) {
+        chunks.add(list.sublist(
+            i, i + chunkSize > list.length ? list.length : i + chunkSize));
+      }
+      print(chunks);
+
+      for (int i = 0; i < chunksIndex.length; i++) {
+        if (chunksIndex[i].contains(month)) {
+          totalTonnage =
+              double.parse(chunks[i].reduce((a, b) => a + b).toString());
+          print(totalTonnage);
+        }
+      }
+
+      if (useMaxTonnage == 1) {
+        var totalTonnageSum =
+        ((totalTonnage + (abw * int.parse(janjang)) / 1000));
+        var maxYear = farmer.maxTonnageYear / chunkSize;
+        if (totalTonnageSum > maxYear) {
           return true;
         } else {
           return false;
@@ -499,14 +538,14 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
             _validate = true;
           });
         } else {
-          checkMaxTonnage(totalJanjangController.text).then((value) {
-            if (!value) {
+          // checkMaxTonnage(totalJanjangController.text).then((value) {
+          //   if (!value) {
               addDataToDatabase(context);
-            } else {
-              openWarningDialog(context,
-                  "Tonase Petani melebihi batas kuota tahunan \n Total tonase petani ${farmerObject.maxTonnageYear}");
-            }
-          });
+          //   } else {
+          //     openWarningDialog(context,
+          //         "Tonase Petani melebihi batas kuota tahunan \n Total tonase petani ${farmerObject.maxTonnageYear}");
+          //   }
+          // });
         }
       },
       child: Container(

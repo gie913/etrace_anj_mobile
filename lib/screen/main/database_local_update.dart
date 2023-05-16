@@ -45,6 +45,19 @@ class DatabaseLocalUpdate {
       } catch (e) {
         print("Column is exist");
       }
+      try {
+        await db.execute('''
+      CREATE TABLE $TABLE_FARMER_TRANSACTION (
+        $FARMER_ASCEND_CODE TEXT NOT NULL,
+        $ASCENDFARMERNAME TEXT,
+        $TRYEAR INT,
+        $GROUPINGMONTHINYEAR DOUBLE,
+        $MAXTONNAGEYEAR DOUBLE,
+        $TRMONTH TEXT)
+    ''');
+      } catch (e) {
+        print (e);
+      }
     }
   }
 }

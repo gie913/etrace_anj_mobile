@@ -1,7 +1,6 @@
 import 'package:e_trace_app/base/path/image_path.dart';
 import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:e_trace_app/base/ui/style.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:e_trace_app/database_local/database_helper.dart';
@@ -37,16 +36,15 @@ class _ServerScreenState extends State<ServerScreen> {
 
   void resetData() async {
     Database db = await DatabaseHelper().database;
-    int deletedHarvestTicket = await db.delete(TABLE_HARVEST_TIKET);
-    int deleteCollectionPoint = await db.delete(TABLE_COLLECTION_POINT);
-    int deleteDeliveryOrder = await db.delete(TABLE_DELIVERY_ORDER);
-    int count =
-        deletedHarvestTicket + deleteCollectionPoint + deleteDeliveryOrder;
-    if (count > 0 || count <= 3) {
-      Navigator.pop(context);
+    try {
+      await db.delete(TABLE_HARVEST_TIKET);
+      await db.delete(TABLE_COLLECTION_POINT);
+      await db.delete(TABLE_DELIVERY_ORDER);
+      await db.delete(TABLE_FARMER_TRANSACTION);
       Toast.show("Reset Data Berhasil", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-    } else {
+      Navigator.pop(context);
+    } catch (e) {
       Toast.show("Tidak Berhasil Reset Data", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
