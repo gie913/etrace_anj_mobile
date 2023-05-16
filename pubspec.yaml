@@ -1,0 +1,163 @@
+name: e_trace_app
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.1.0+29
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.0
+  intl: ^0.17.0
+
+  #state management
+  provider: ^4.3.3
+  ota_update: ^2.4.1
+  firebase_analytics: ^8.0.2
+  firebase_core: ^1.1.0
+  firebase_messaging: ^10.0.0
+  connectivity_plus: ^2.3.0
+
+  #local database
+  sqflite: ^2.0.0+3
+
+  #nfc read and write
+#  nfc_in_flutter: ^2.0.5
+
+  #path and file picker
+  webview_flutter: ^1.0.7
+  path_provider: ^2.0.2
+  path: ^1.6.4
+  screen: ^0.0.5
+  in_app_update: ^1.1.15
+  mime: ^0.9.6+3
+  cron: ^0.3.2
+
+  #repository
+  http: ^0.13.3
+  url_launcher: ^6.0.9
+
+  #local storage
+  shared_preferences: ^2.0.6
+  advance_pdf_viewer_fork: ^2.0.0
+
+  #interface
+  toast: ^0.1.5
+  fluttericon: ^1.0.7
+  tabbar: ^0.1.1
+  expandable: ^4.1.4
+  image_picker: ^0.8.1+3
+  image_gallery_saver: ^1.6.8
+  flutter_share: ^1.0.5
+  screenshot: ^0.3.0
+  share: 0.6.5+4
+
+  #location
+  geolocator: ^7.2.0+1
+
+  #compress and encrypt
+  lzstring: ^1.0.2+1
+  encrypt: ^5.0.0
+
+  #qr code
+  qr_flutter: ^3.2.0
+  qrscan: ^0.2.22
+
+  #permission
+  permission_handler: ^8.1.2
+  flutter_windowmanager: ^0.1.0
+  flutter_launcher_icons: ^0.9.0
+  flutter_html: ^0.8.2
+
+dev_dependencies:
+#  flutter_test:
+#    sdk: flutter
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/icon-launcher.png"
+  image_path_android: "assets/icon-launcher.png"
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/anj-qr.png
+    - assets/tap-nfc.jpg
+    - assets/icon-launcher.png
+    - assets/man.png
+    - assets/areal-select.png
+    - assets/collect-add.png
+    - assets/collect-dialog.png
+    - assets/collect-form.png
+    - assets/collect-button.png
+    - assets/harvest-button.png
+    - assets/harvest-form.png
+    - assets/harvest-list.png
+    - assets/harvest-add.png
+    - assets/order-button.png
+    - assets/order-dialog.png
+    - assets/order-form.png
+    - assets/order-ticket.png
+    - assets/supplier-select.png
+    - assets/order-add.png
+
+
+  fonts:
+    - family: DINPro
+      fonts:
+        - asset: fonts/DINPro.otf
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
