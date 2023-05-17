@@ -12,7 +12,6 @@ import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/screen/home/counter_notifier.dart';
 import 'package:e_trace_app/database_local/database_farmer.dart';
 import 'package:e_trace_app/utils/separator_thousand.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:e_trace_app/widget/loading_widget.dart';
 import 'package:fluttericon/linecons_icons.dart';
@@ -56,9 +55,9 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
               } else {
                 bool result = await Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                      return HarvestTicketTransferBatch();
-                    }));
-                if(result) {
+                  return HarvestTicketTransferBatch();
+                }));
+                if (result) {
                   updateListView();
                 }
               }
@@ -105,26 +104,29 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
           ),
           Text("Jumlah Tiket Panen: ${harvestTicketList.length}"),
           Divider(),
-          isLoading ? loadingWidget() : harvestTicketList.length != 0
-              ? Flexible(
-                  child: harvestTicketListSearch.length != 0 ||
-                          typeTicketController.text.isNotEmpty
-                      ? createListViewSearch()
-                      : createListView())
-              : Flexible(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Linecons.note, size: 60, color: Colors.orange),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text("Belum ada tiket panen", style: text16),
+          isLoading
+              ? loadingWidget()
+              : harvestTicketList.length != 0
+                  ? Flexible(
+                      child: harvestTicketListSearch.length != 0 ||
+                              typeTicketController.text.isNotEmpty
+                          ? createListViewSearch()
+                          : createListView())
+                  : Flexible(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Linecons.note, size: 60, color: Colors.orange),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child:
+                                  Text("Belum ada tiket panen", style: text16),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
         ],
       ),
     );
@@ -264,10 +266,10 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
   String getFarmerName(HarvestingTicket harvestingTicket) {
     String farmerName;
     getFarmerByID(harvestingTicket).then((value) => {
-      setState(() {
-        farmerName = value;
-      })
-    });
+          setState(() {
+            farmerName = value;
+          })
+        });
     return farmerName;
   }
 
@@ -289,10 +291,12 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
                   trailing: Column(
                     children: [
                       harvestTicketListSearch[index].transferred == "true" ||
-                          harvestTicketListSearch[index].idCollectionTicket !=
-                              null ||
-                          harvestTicketListSearch[index].idDeliveryOrderTicket !=
-                              null
+                              harvestTicketListSearch[index]
+                                      .idCollectionTicket !=
+                                  null ||
+                              harvestTicketListSearch[index]
+                                      .idDeliveryOrderTicket !=
+                                  null
                           ? Container(width: 0)
                           : GestureDetector(
                               onTap: () {
@@ -380,7 +384,10 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
       },
     );
     AlertDialog alert = AlertDialog(
-      content: Text("Anda ingin menghapus data?", style: text14,),
+      content: Text(
+        "Anda ingin menghapus data?",
+        style: text14,
+      ),
       actions: [
         continueButton,
         cancelButton,

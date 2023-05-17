@@ -7,7 +7,6 @@ import 'package:e_trace_app/database_local/database_helper.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/screen/harvest_ticket/harvest_ticket_form.dart';
 import 'package:e_trace_app/utils/separator_thousand.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,19 +59,18 @@ class SearchHarvestTicketDeliveryState
                 onPressed: () async {
                   var result = await Navigator.push(context,
                       MaterialPageRoute(builder: (BuildContext context) {
-                        return HarvestTicketForm();
-                      }));
+                    return HarvestTicketForm();
+                  }));
                   if (result != null) {
                     addHarvestTicket(result);
                   }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child:
-                      Text(
-                        "Buat Tiket Panen Baru",
-                        style:
-                        TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  child: Text(
+                    "Buat Tiket Panen Baru",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -191,5 +189,4 @@ class SearchHarvestTicketDeliveryState
       updateListView();
     }
   }
-
 }

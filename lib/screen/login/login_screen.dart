@@ -9,7 +9,6 @@ import 'package:e_trace_app/screen/login/forgot_password_response.dart';
 import 'package:e_trace_app/screen/login/login_notifier.dart';
 import 'package:e_trace_app/screen/server/server_screen.dart';
 import 'package:e_trace_app/widget/loading_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/elusive_icons.dart';
 import 'package:e_trace_app/screen/profile/privacy_screen.dart';
@@ -89,7 +88,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
-                        Text("Electronic Traceability \nInformation System", style: titleTextApp, textAlign: TextAlign.center,),
+                        Text(
+                          "Electronic Traceability \nInformation System",
+                          style: titleTextApp,
+                          textAlign: TextAlign.center,
+                        ),
                         SizedBox(height: 30),
                         Form(
                           key: _formKey,
@@ -433,7 +436,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Text(
-                      "Untuk dapat mengakses aplikasi anda harus menyetujui Kebijakan Privasi dan Ketentuan Aplikasi yang telah kami buat. Klik untuk melihat:", style: TextStyle(fontSize: 13)),
+                      "Untuk dapat mengakses aplikasi anda harus menyetujui Kebijakan Privasi dan Ketentuan Aplikasi yang telah kami buat. Klik untuk melihat:",
+                      style: TextStyle(fontSize: 13)),
                 ),
                 InkWell(
                     onTap: () {
@@ -443,7 +447,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               builder: (context) => PrivacyScreen()));
                     },
                     child: Text("Kebijakan Privasi",
-                        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold))),
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold))),
                 SizedBox(height: 6),
                 InkWell(
                     onTap: () {
@@ -453,7 +458,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               builder: (context) => TermConditionScreen()));
                     },
                     child: Text("Syarat dan Ketentuan",
-                        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold))),
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold))),
               ],
             ),
           ),

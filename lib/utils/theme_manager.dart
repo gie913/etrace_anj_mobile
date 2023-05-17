@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 
 class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
-    primarySwatch: Colors.orange,
     primaryColor: Color(0xFF212121),
     brightness: Brightness.dark,
     dividerTheme: DividerThemeData(color: Colors.grey),
     backgroundColor: Colors.black,
-    accentColor: Colors.white,
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(primaryColor),
@@ -22,12 +20,13 @@ class ThemeNotifier with ChangeNotifier {
       ),
     ),
     scaffoldBackgroundColor: Colors.black,
-    accentIconTheme: IconThemeData(color: Colors.white),
     dividerColor: Colors.black,
+    colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.orange, brightness: Brightness.dark)
+        .copyWith(secondary: Colors.white),
   );
 
   final lightTheme = ThemeData(
-    primarySwatch: Colors.orange,
     primaryColor: primaryColor,
     primaryColorDark: primaryColorDark,
     primaryColorLight: primaryColorLight,
@@ -52,7 +51,8 @@ class ThemeNotifier with ChangeNotifier {
       ),
     ),
     backgroundColor: primaryColorLight,
-    accentColor: primaryColorLight,
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
+        .copyWith(secondary: primaryColorLight),
   );
 
   ThemeData _themeData;

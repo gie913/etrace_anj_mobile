@@ -9,7 +9,6 @@ import 'package:e_trace_app/model/collection_point.dart';
 import 'package:e_trace_app/screen/collection_point/collection_point_detail.dart';
 import 'package:e_trace_app/screen/collection_point/collection_point_form.dart';
 import 'package:e_trace_app/screen/home/counter_notifier.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
@@ -80,26 +79,28 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
         ),
         Text("Jumlah Titik Kumpul: ${collectionPointList.length}"),
         Divider(),
-        isLoading ? loadingWidget() : collectionPointList.length != 0
-            ? Flexible(
-                child: collectionPointSearchResult.length != 0 ||
-                        typeCollectionController.text.isNotEmpty
-                    ? createListViewSearch()
-                    : createListView())
-            : Flexible(
-                child: Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Linecons.inbox, color: Colors.green, size: 70),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child:
-                              Text("Belum ada Titik Kumpul TBS", style: text14),
-                        ),
-                      ]),
-                ),
-              ),
+        isLoading
+            ? loadingWidget()
+            : collectionPointList.length != 0
+                ? Flexible(
+                    child: collectionPointSearchResult.length != 0 ||
+                            typeCollectionController.text.isNotEmpty
+                        ? createListViewSearch()
+                        : createListView())
+                : Flexible(
+                    child: Center(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Linecons.inbox, color: Colors.green, size: 70),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child: Text("Belum ada Titik Kumpul TBS",
+                                  style: text14),
+                            ),
+                          ]),
+                    ),
+                  ),
       ]),
     );
   }
@@ -162,26 +163,28 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
                   ),
                   trailing: Column(
                     children: [
-                      collectionPointSearchResult[index].transferred == "true" ||
-                          collectionPointSearchResult[index]
-                              .deliveryCollection !=
-                              null ? Container(width: 0)
+                      collectionPointSearchResult[index].transferred ==
+                                  "true" ||
+                              collectionPointSearchResult[index]
+                                      .deliveryCollection !=
+                                  null
+                          ? Container(width: 0)
                           : GestureDetector(
-                        onTap: () {
-                          showDeleteDialog(
-                              context, collectionPointSearchResult[index]);
-                        },
-                        child: Column(children: [
-                          Icon(Linecons.trash),
-                        ]),
-                      ),
+                              onTap: () {
+                                showDeleteDialog(context,
+                                    collectionPointSearchResult[index]);
+                              },
+                              child: Column(children: [
+                                Icon(Linecons.trash),
+                              ]),
+                            ),
                       (collectionPointSearchResult[index].transferred != "true")
                           ? Container(width: 0)
                           : Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Text("transfer ✓",
-                            style: TextStyle(color: Colors.green)),
-                      )
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text("transfer ✓",
+                                  style: TextStyle(color: Colors.green)),
+                            )
                     ],
                   ),
                   title: Text(
@@ -236,25 +239,25 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
                   trailing: Column(
                     children: [
                       collectionPointList[index].transferred == "true" ||
-                          collectionPointList[index]
-                              .deliveryCollection !=
-                              null ? Container(width: 0)
+                              collectionPointList[index].deliveryCollection !=
+                                  null
+                          ? Container(width: 0)
                           : GestureDetector(
-                        onTap: () {
-                          showDeleteDialog(
-                              context, collectionPointList[index]);
-                        },
-                        child: Column(children: [
-                          Icon(Linecons.trash),
-                        ]),
-                      ),
+                              onTap: () {
+                                showDeleteDialog(
+                                    context, collectionPointList[index]);
+                              },
+                              child: Column(children: [
+                                Icon(Linecons.trash),
+                              ]),
+                            ),
                       (collectionPointList[index].transferred != "true")
                           ? Container(width: 0)
                           : Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Text("transfer ✓",
-                            style: TextStyle(color: Colors.green)),
-                      )
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text("transfer ✓",
+                                  style: TextStyle(color: Colors.green)),
+                            )
                     ],
                   ),
                   title: Text(

@@ -6,17 +6,18 @@ import 'package:e_trace_app/database_local/database_harvest_ticket.dart';
 import 'package:e_trace_app/database_local/database_helper.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/utils/separator_thousand.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SearchHarvestTicketCollection extends StatefulWidget {
   @override
-  SearchHarvestTicketCollectionState createState() => SearchHarvestTicketCollectionState();
+  SearchHarvestTicketCollectionState createState() =>
+      SearchHarvestTicketCollectionState();
 }
 
-class SearchHarvestTicketCollectionState extends State<SearchHarvestTicketCollection> {
+class SearchHarvestTicketCollectionState
+    extends State<SearchHarvestTicketCollection> {
   DatabaseHelper dbHelper = DatabaseHelper();
   DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
   List<HarvestingTicket> harvestTicketList = [];
@@ -95,7 +96,8 @@ class SearchHarvestTicketCollectionState extends State<SearchHarvestTicketCollec
                   },
                   secondary:
                       Icon(Linecons.note, size: 35, color: Colors.orange),
-                  title: Text(harvestTicketList[index].idTicket, style: text16Bold),
+                  title: Text(harvestTicketList[index].idTicket,
+                      style: text16Bold),
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Column(

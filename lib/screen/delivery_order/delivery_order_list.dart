@@ -10,7 +10,6 @@ import 'package:e_trace_app/model/delivery_order.dart';
 import 'package:e_trace_app/screen/home/counter_notifier.dart';
 import 'package:e_trace_app/widget/loading_widget.dart';
 import 'package:e_trace_app/widget/qr_code_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
@@ -246,20 +245,20 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
                         (deliveryOrderListSearch[index].transferred == "true")
                             ? Container(width: 10)
                             : GestureDetector(
-                          child: Icon(Linecons.trash),
-                          onTap: () {
-                            showDeleteDialog(
-                                context, deliveryOrderListSearch[index]);
-                          },
-                        ),
+                                child: Icon(Linecons.trash),
+                                onTap: () {
+                                  showDeleteDialog(
+                                      context, deliveryOrderListSearch[index]);
+                                },
+                              ),
                         (deliveryOrderListSearch[index].transferred == "true")
                             ? Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Text(
-                            "transfer ✓",
-                            style: TextStyle(color: Colors.green),
-                          ),
-                        )
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Text(
+                                  "transfer ✓",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              )
                             : Container(width: 0)
                       ],
                     ),
@@ -401,7 +400,8 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
     deliveryOrderListSearch.remove(object);
     int result = await dbDelivery.deleteDeliveryOrder(object);
     if (result > 0) {
-      DatabaseHarvestTicket().updateHarvestTicketDeliveryDelete(object.idDelivery);
+      DatabaseHarvestTicket()
+          .updateHarvestTicketDeliveryDelete(object.idDelivery);
       DatabaseCollectionPoint()
           .updateCollectionPointDeliveryDelete(object.idDelivery);
       updateListView();

@@ -22,7 +22,6 @@ import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:e_trace_app/utils/time_utils.dart';
 import 'package:e_trace_app/widget/back_from_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -42,7 +41,8 @@ class CollectionPointForm extends StatefulWidget {
       CollectionPointFormState(this.collectionPoint);
 }
 
-class CollectionPointFormState extends State<CollectionPointForm> with SingleTickerProviderStateMixin {
+class CollectionPointFormState extends State<CollectionPointForm>
+    with SingleTickerProviderStateMixin {
   CollectionPointFormState(this.collectionPoint);
 
   final controller = PageController();
@@ -1033,8 +1033,11 @@ class CollectionPointFormState extends State<CollectionPointForm> with SingleTic
     }
     transferBody.harvestingTicket = listHarvest;
     String userToken = await StorageManager.readData('token');
-    SaveTransferRepository(APIEndpoint.BASE_URL).doSaveTransferTicket(transferBody,
-        userToken, onSuccessTransferCallback, onErrorTransferCallback);
+    SaveTransferRepository(APIEndpoint.BASE_URL).doSaveTransferTicket(
+        transferBody,
+        userToken,
+        onSuccessTransferCallback,
+        onErrorTransferCallback);
   }
 
   onSuccessTransferCallback(TransferResponse transferResponse) {

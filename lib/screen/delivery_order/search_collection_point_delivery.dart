@@ -7,7 +7,6 @@ import 'package:e_trace_app/database_local/database_helper.dart';
 import 'package:e_trace_app/model/collection_point.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/utils/separator_thousand.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linecons_icons.dart';
 import 'package:sqflite/sqflite.dart';
