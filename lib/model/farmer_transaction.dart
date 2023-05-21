@@ -1,7 +1,7 @@
 class FarmerTransactions {
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   FarmerTransactions({this.success, this.message, this.data});
 
@@ -15,17 +15,15 @@ class FarmerTransactions {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }
 
 class Data {
-  int activeYear;
-  List<Farmer> farmer;
-  List<String> blacklistedFarmer;
+  int? activeYear;
+  List<Farmer>? farmer;
+  List<String>? blacklistedFarmer;
 
   Data({this.activeYear, this.farmer});
 
@@ -34,7 +32,7 @@ class Data {
     if (json['farmer'] != null) {
       farmer = <Farmer>[];
       json['farmer'].forEach((v) {
-        farmer.add(new Farmer.fromJson(v));
+        farmer!.add(new Farmer.fromJson(v));
       });
     }
     blacklistedFarmer = json['blacklisted_farmer'].cast<String>();
@@ -43,29 +41,28 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['active_year'] = this.activeYear;
-    if (this.farmer != null) {
-      data['farmer'] = this.farmer.map((v) => v.toJson()).toList();
-    }
+    data['farmer'] = this.farmer!.map((v) => v.toJson()).toList();
     data['blacklisted_farmer'] = this.blacklistedFarmer;
     return data;
   }
 }
 
 class Farmer {
-  String ascendFarmerCode;
-  String ascendFarmerName;
+  String? ascendFarmerCode;
+  String? ascendFarmerName;
   dynamic trYear;
   dynamic maxTonnageYear;
   dynamic groupingMonth;
-  String trMonth;
+  String? trMonth;
 
-  Farmer(
-      {this.ascendFarmerCode,
-      this.ascendFarmerName,
-      this.trYear,
-        this.maxTonnageYear,
-        this.groupingMonth,
-      this.trMonth});
+  Farmer({
+    this.ascendFarmerCode,
+    this.ascendFarmerName,
+    this.trYear,
+    this.maxTonnageYear,
+    this.groupingMonth,
+    this.trMonth,
+  });
 
   Farmer.fromJson(Map<String, dynamic> json) {
     ascendFarmerCode = json['ascend_farmer_code'];
@@ -83,9 +80,7 @@ class Farmer {
     data['max_tonnage_year'] = this.maxTonnageYear;
     data['tr_year'] = this.trYear;
     data['grouping_month_in_year'] = this.groupingMonth;
-    if (this.trMonth != null) {
-      data['tr_month'] = this.trMonth.toString();
-    }
+    data['tr_month'] = this.trMonth.toString();
     return data;
   }
 }

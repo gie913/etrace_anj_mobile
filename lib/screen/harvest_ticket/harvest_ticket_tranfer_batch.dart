@@ -18,19 +18,19 @@ import 'package:toast/toast.dart';
 
 class HarvestTicketTransferBatch extends StatefulWidget {
   @override
-  _HarvestTicketTransferBatchState createState() => _HarvestTicketTransferBatchState();
+  _HarvestTicketTransferBatchState createState() =>
+      _HarvestTicketTransferBatchState();
 }
 
-class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch> {
-
-
+class _HarvestTicketTransferBatchState
+    extends State<HarvestTicketTransferBatch> {
   DatabaseHelper dbHelper = DatabaseHelper();
   DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
   List<HarvestingTicket> harvestTicketList = [];
   List<HarvestingTicket> harvestTicketListChecked = [];
-  String farmerName, farmerAddress, farmerNumber;
-  List<bool> _isChecked;
-  User userTarget;
+  String? farmerName, farmerAddress, farmerNumber;
+  List<bool>? _isChecked;
+  User? userTarget;
 
   @override
   void initState() {
@@ -66,17 +66,17 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
         body: harvestTicketList.length != 0
             ? createListView()
             : Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Linecons.note, size: 60, color: Colors.orange),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text("Belum ada tiket panen"),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Linecons.note, size: 60, color: Colors.orange),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Text("Belum ada tiket panen"),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -91,12 +91,12 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
             child: Column(
               children: [
                 CheckboxListTile(
-                  value: _isChecked[index],
+                  value: _isChecked![index],
                   onChanged: (val) {
                     setState(
-                          () {
-                        _isChecked[index] = val;
-                        if (_isChecked[index]) {
+                      () {
+                        _isChecked![index] = val!;
+                        if (_isChecked![index]) {
                           harvestTicketListChecked
                               .add(harvestTicketList[index]);
                           print(harvestTicketListChecked.length);
@@ -108,8 +108,9 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
                     );
                   },
                   secondary:
-                  Icon(Linecons.note, size: 35, color: Colors.orange),
-                  title: Text(harvestTicketList[index].idTicket, style: text16Bold),
+                      Icon(Linecons.note, size: 35, color: Colors.orange),
+                  title: Text(harvestTicketList[index].idTicket!,
+                      style: text16Bold),
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Column(
@@ -117,7 +118,7 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(DATE_TICKET_TILE +
-                            harvestTicketList[index].dateTicket),
+                            harvestTicketList[index].dateTicket!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
@@ -147,14 +148,15 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
         return AlertDialog(
           title: Center(
               child: Text(
-                "Masukkan Tujuan Transfer",
-                style: text16,
-              )),
+            "Masukkan Tujuan Transfer",
+            style: text16,
+          )),
           content: Container(
             height: 140,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Row(
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Card(
@@ -164,7 +166,7 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
                           padding: const EdgeInsets.all(8.0),
                           child: Text(userTarget == null
                               ? "Tujuan Pengiriman"
-                              : "${userTarget.name}"),
+                              : "${userTarget!.name}"),
                         ),
                       ),
                     ),
@@ -176,14 +178,11 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
                             User userTargetTemp = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        SendHarvestTicket()));
+                                    builder: (context) => SendHarvestTicket()));
                             Navigator.pop(context);
                             setState(() {
                               userTarget = userTargetTemp;
-                              if (userTargetTemp != null) {
-                                transferDialog();
-                              }
+                              transferDialog();
                             });
                           },
                           child: Container(
@@ -193,8 +192,7 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
                       ),
                     ),
                   ],
-                )
-                ,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: OutlinedButton(
@@ -204,8 +202,7 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
                     child: Container(
                       child: Padding(
                           padding: const EdgeInsets.all(12),
-                          child: Text("Kirim", style: buttonStyle16)
-                      ),
+                          child: Text("Kirim", style: buttonStyle16)),
                     ),
                   ),
                 ),
@@ -217,34 +214,32 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
     );
   }
 
-
   void doTransferTicket() async {
     if (userTarget != null) {
       loadingDialog(context);
       List<HarvestingTicket> listHarvest = [];
       TransferHarvestingTicketBody transferBody =
-      TransferHarvestingTicketBody();
+          TransferHarvestingTicketBody();
       if (harvestTicketListChecked.isNotEmpty) {
         for (int i = 0; i < harvestTicketListChecked.length; i++) {
           HarvestingTicket harvestingTicket = HarvestingTicket();
           harvestingTicket = harvestTicketListChecked[i];
-          harvestingTicket.quantity = harvestTicketListChecked[i].quantity.toInt();
-          harvestingTicket.userTargetId = userTarget.id;
+          harvestingTicket.quantity =
+              harvestTicketListChecked[i].quantity!.toInt();
+          harvestingTicket.userTargetId = userTarget!.id;
           listHarvest.add(harvestingTicket);
         }
         transferBody.harvestingTicket = listHarvest;
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final String userToken = prefs.getString('token');
-        final String userBaseUrl = prefs.getString('baseUrl');
-        TransferRepository(userBaseUrl).doTransferTicket(transferBody, userToken,
-            onSuccessTransferCallback, onErrorTransferCallback);
+        final String? userToken = prefs.getString('token');
+        final String? userBaseUrl = prefs.getString('baseUrl');
+        TransferRepository(userBaseUrl!).doTransferTicket(transferBody,
+            userToken!, onSuccessTransferCallback, onErrorTransferCallback);
       } else {
-        Toast.show("Tujuan Belum Tiket Dipilih", context,
-            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        Toast.show("Tujuan Belum Tiket Dipilih", duration: 3, gravity: 0);
       }
     } else {
-      Toast.show("Tujuan Belum Ada", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Toast.show("Tujuan Belum Ada", duration: 3, gravity: 0);
     }
   }
 
@@ -258,29 +253,27 @@ class _HarvestTicketTransferBatchState extends State<HarvestTicketTransferBatch>
     Navigator.pop(context);
     Navigator.pop(context);
     updateListView();
-    Toast.show("Berhasil terkirim", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Berhasil terkirim", duration: 3, gravity: 0);
   }
 
   void updateHarvestTicket(HarvestingTicket object) async {
     DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('username');
+    String? user = prefs.getString('username');
     object.createdBy = user;
     int result = await dbHarvest.updateHarvestTicket(object);
     print(result);
   }
 
   onErrorTransferCallback(response) {
-    Toast.show(response.toString(), context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show(response.toString(), duration: 3, gravity: 0);
   }
 
   void updateListView() {
     final Future<Database> dbFuture = dbHelper.initDb();
     dbFuture.then((database) {
       Future<List<HarvestingTicket>> harvestTicketListFuture =
-      dbHarvest.getHarvestTicketListForCollection();
+          dbHarvest.getHarvestTicketListForCollection();
       harvestTicketListFuture.then((harvestTicketList) {
         setState(() {
           this.harvestTicketList = harvestTicketList;

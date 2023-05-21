@@ -30,9 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode _passwordFocus = FocusNode();
   bool _obscureText = true;
   bool autoVal = false;
-  bool checkBoxValue;
+  bool? checkBoxValue;
   final _formKey = GlobalKey<FormState>();
-  DataCompanies dataCompanies;
+  DataCompanies? dataCompanies;
 
   @override
   initState() {
@@ -43,12 +43,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   setBaseUrl() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String baseUrl = preferences.getString('baseUrl');
+    String? baseUrl = preferences.getString('baseUrl');
     if (baseUrl == null) {
       preferences.setString('baseUrl', APIEndpoint.BASE_URL);
     }
-    String username = preferences.getString('username');
-    emailController.text = username;
+    String? username = preferences.getString('username');
+    emailController.text = username!;
   }
 
   @override
@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     filled: true,
                                   ),
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return ALERT_USERNAME;
                                     }
                                     return null;
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 textInputAction: TextInputAction.done,
                                 onEditingComplete: () {
                                   _passwordFocus.unfocus();
-                                  _uiInputValidation(company.myCompany);
+                                  _uiInputValidation(company.myCompany!);
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -173,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         OutlinedButton(
                           onPressed: () {
                             setState(() {
-                              _uiInputValidation(company.myCompany);
+                              _uiInputValidation(company.myCompany!);
                             });
                           },
                           child: Container(
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  String validator(dynamic value) {
+  String? validator(dynamic value) {
     if (value.isEmpty) {
       return PASSWORD_ALERT;
     }
@@ -272,9 +272,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _uiInputValidation(String companyId) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String agreement = prefs.getString('agreement');
+      String? agreement = prefs.getString('agreement');
       if (agreement == null) {
         showDialogAgreement(context);
       } else {
@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   doForgotPasswordEvent(BuildContext context, String username) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
+    String? userBaseUrl = prefs.getString('baseUrl');
     if (userBaseUrl != null) {
       loadingDialog(context);
       ForgotPasswordRepository(userBaseUrl).doPostForgotPassword(
@@ -303,8 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _onSuccessForgotPasswordCallback,
           _onErrorForgotPasswordCallback);
     } else {
-      Toast.show(SERVER_NOT_CONFIGURE, context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
+      Toast.show(SERVER_NOT_CONFIGURE, duration: 3, gravity: 2);
     }
   }
 
@@ -338,8 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _onErrorForgotPasswordCallback(BuildContext context,
       ForgotPasswordResponse forgotPasswordResponse) async {
-    Toast.show(forgotPasswordResponse.message, context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
+    Toast.show(forgotPasswordResponse.message!, duration: 3, gravity: 2);
     Navigator.pop(context);
   }
 
@@ -396,8 +394,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (emailForgotController.text.isNotEmpty) {
                     doForgotPasswordEvent(context, emailForgotController.text);
                   } else {
-                    Toast.show("Belum Mengisi Username", context,
-                        duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
+                    Toast.show("Belum Mengisi Username",
+                        duration: 3, gravity: 2);
                   }
                 },
               ),
@@ -415,7 +413,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   checkAgreement(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String agreement = prefs.getString('agreement');
+    String? agreement = prefs.getString('agreement');
     if (agreement == null) {
       showDialogAgreement(context);
     }

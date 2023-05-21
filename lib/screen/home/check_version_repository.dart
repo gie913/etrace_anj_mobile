@@ -11,21 +11,27 @@ import 'package:flutter/cupertino.dart';
 class CheckVersionRepository extends APIConfiguration {
   CheckVersionRepository(String baseUrl) : super(baseUrl);
 
-
   void doCheckVersion(BuildContext context, onSuccess, onError) async {
     String userToken = await StorageManager.readData('token');
     String platform;
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       platform = "android";
     } else {
       platform = "iOS";
     }
     try {
-      var url = baseUrl + APIEndpoint.CHECK_VERSION + APP_VERSION + "&platform=" + platform;
+      var url = baseUrl! +
+          APIEndpoint.CHECK_VERSION +
+          APP_VERSION +
+          "&platform=" +
+          platform;
       var uri = Uri.parse(url);
-      var response = await ioClient.post(uri, headers:getDefaultHeaderWithToken(userToken),);
+      var response = await ioClient!.post(
+        uri,
+        headers: getDefaultHeaderWithToken(userToken),
+      );
       CheckVersionResponse apiResponse =
-      CheckVersionResponse.fromJson(json.decode(response.body));
+          CheckVersionResponse.fromJson(json.decode(response.body));
       print(response.body);
       if (apiResponse.success == true) {
         onSuccess(apiResponse);

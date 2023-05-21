@@ -26,9 +26,9 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
   DatabaseCollectionPoint dbCollection = DatabaseCollectionPoint();
   List<CollectionPoint> collectionPointList = [];
   List<CollectionPoint> collectionPointSearchResult = [];
-  String farmerName, farmerAddress, farmerNumber;
+  String? farmerName, farmerAddress, farmerNumber;
   TextEditingController typeCollectionController = TextEditingController();
-  bool isLoading;
+  bool? isLoading;
 
   @override
   void initState() {
@@ -44,8 +44,9 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
         actions: [
           InkWell(
             onTap: () async {
-              var contact = await navigateToEntryForm(context, null);
-              if (contact != null) addCollectionPoint(contact);
+              var contact =
+                  await navigateToEntryForm(context, CollectionPoint());
+              addCollectionPoint(contact);
             },
             child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
@@ -79,7 +80,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
         ),
         Text("Jumlah Titik Kumpul: ${collectionPointList.length}"),
         Divider(),
-        isLoading
+        isLoading!
             ? loadingWidget()
             : collectionPointList.length != 0
                 ? Flexible(
@@ -130,7 +131,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
       return;
     }
     collectionPointList.forEach((collectionDetail) {
-      if (collectionDetail.dateCollection
+      if (collectionDetail.dateCollection!
               .toLowerCase()
               .contains(text.toLowerCase()) ||
           collectionDetail.ascendAgentCode
@@ -198,7 +199,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(DATE_TICKET_TILE +
-                            collectionPointSearchResult[index].dateCollection),
+                            collectionPointSearchResult[index].dateCollection!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text("Nama Agen: " +
@@ -210,7 +211,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
                   onTap: () async {
                     var contact = await navigateToDetail(
                         context, collectionPointSearchResult[index]);
-                    if (contact != null) editCollectionPoint(contact);
+                    editCollectionPoint(contact);
                   },
                 ),
               ],
@@ -271,7 +272,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(DATE_TICKET_TILE +
-                            collectionPointList[index].dateCollection),
+                            collectionPointList[index].dateCollection!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text("Nama Agen: " +
@@ -283,7 +284,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
                   onTap: () async {
                     var contact = await navigateToDetail(
                         context, collectionPointList[index]);
-                    if (contact != null) editCollectionPoint(contact);
+                    editCollectionPoint(contact);
                   },
                 ),
               ],
@@ -294,7 +295,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
     );
   }
 
-  String splitFarmer(String farmer) {
+  String? splitFarmer(String farmer) {
     final split = farmer.split(',');
     final Map<int, String> values = {
       for (int i = 0; i < split.length; i++) i: split[i]
@@ -351,7 +352,7 @@ class CollectionPointScreenState extends State<CollectionPointScreen> {
     collectionPointSearchResult.remove(object);
     if (result > 0) {
       DatabaseHarvestTicket()
-          .updateHarvestTicketCollection(object.idCollection);
+          .updateHarvestTicketCollection(object.idCollection!);
       updateListView();
     }
   }

@@ -5,16 +5,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CounterNotifier with ChangeNotifier {
-  int _countHarvestTicket, _countCollectionPoint, _countDeliveryOrder;
+  int? _countHarvestTicket, _countCollectionPoint, _countDeliveryOrder;
   DatabaseHarvestTicket databaseHarvestTicket = DatabaseHarvestTicket();
   DatabaseCollectionPoint databaseCollectionPoint = DatabaseCollectionPoint();
   DatabaseDeliveryOrder databaseDeliveryOrder = DatabaseDeliveryOrder();
 
-  int get countHarvestTicket => _countHarvestTicket;
+  int? get countHarvestTicket => _countHarvestTicket;
 
-  int get countCollectionPoint => _countCollectionPoint;
+  int? get countCollectionPoint => _countCollectionPoint;
 
-  int get countDeliveryOrder => _countDeliveryOrder;
+  int? get countDeliveryOrder => _countDeliveryOrder;
 
   getCountUnUploadedHarvestTicket() async {
     _countHarvestTicket = 0;

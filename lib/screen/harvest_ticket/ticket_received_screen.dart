@@ -13,12 +13,12 @@ class TicketReceivedScreen extends StatefulWidget {
 
 class _TicketReceivedScreenState extends State<TicketReceivedScreen> {
   TextEditingController typeFarmerController = TextEditingController();
-  String valFarmer;
-  ScrollController scrollController;
+  String? valFarmer;
+  ScrollController? scrollController;
   List<HarvestingTicket> harvestTicketListChecked = [];
   List<HarvestingTicket> _ticketReceived = [];
   List<bool> _isChecked = [false];
-  bool isLoading;
+  bool? isLoading;
 
   @override
   void initState() {
@@ -81,7 +81,7 @@ class _TicketReceivedScreenState extends State<TicketReceivedScreen> {
                                     onChanged: (val) {
                                       setState(
                                         () {
-                                          _isChecked[index] = val;
+                                          _isChecked[index] = val!;
                                           if (_isChecked[index]) {
                                             harvestTicketListChecked
                                                 .add(_ticketReceived[index]);
@@ -95,7 +95,7 @@ class _TicketReceivedScreenState extends State<TicketReceivedScreen> {
                                     secondary: Icon(Linecons.note,
                                         size: 35, color: Colors.orange),
                                     title: Text(
-                                      _ticketReceived[index].idTicket,
+                                      _ticketReceived[index].idTicket!,
                                       style: text16Bold,
                                     ),
                                     subtitle: Padding(
@@ -121,7 +121,7 @@ class _TicketReceivedScreenState extends State<TicketReceivedScreen> {
                                 ),
                               ),
                             ))
-                    : isLoading
+                    : isLoading!
                         ? Center(
                             child: SizedBox(
                               height: 30.0,

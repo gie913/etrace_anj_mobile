@@ -37,11 +37,11 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
 
   getDataFarmer() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String lastSync = prefs.getString('lastSync');
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    FarmerRepository(userBaseUrl).doSyncFarmer(
-        userToken, lastSync, onSuccessSyncFarmer, onErrorSyncFarmer);
+    String? lastSync = prefs.getString('lastSync');
+    String? userToken = prefs.getString('token');
+    String? userBaseUrl = prefs.getString('baseUrl');
+    FarmerRepository(userBaseUrl!).doSyncFarmer(
+        userToken!, lastSync, onSuccessSyncFarmer, onErrorSyncFarmer);
   }
 
   onSuccessSyncFarmer(List<Farmers> farmers) {
@@ -52,8 +52,8 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
   }
 
   Future<int> insertFarmer(Farmers object) async {
-    Database db = await DatabaseHelper().database;
-    int count = await db.insert(TABLE_FARMER, object.toJson());
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.insert(TABLE_FARMER, object.toJson());
     return count;
   }
 
@@ -63,11 +63,11 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
 
   getDataAgent() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String lastSync = prefs.getString('lastSync');
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    AgentRepository(userBaseUrl)
-        .doSyncAgent(userToken, lastSync, onSuccessSyncAgent, onErrorSyncAgent);
+    String? lastSync = prefs.getString('lastSync');
+    String? userToken = prefs.getString('token');
+    String? userBaseUrl = prefs.getString('baseUrl');
+    AgentRepository(userBaseUrl!).doSyncAgent(
+        userToken!, lastSync, onSuccessSyncAgent, onErrorSyncAgent);
   }
 
   onSuccessSyncAgent(List<Agents> agents) {
@@ -78,8 +78,8 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
   }
 
   Future<int> insertAgent(Agents object) async {
-    Database db = await DatabaseHelper().database;
-    int count = await db.insert(TABLE_AGENT, object.toJson());
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.insert(TABLE_AGENT, object.toJson());
     return count;
   }
 
@@ -89,11 +89,11 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
 
   getDataSupplier() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String lastSync = prefs.getString('lastSync');
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    SupplierRepository(userBaseUrl).doSyncSupplier(
-        userToken, lastSync, onSuccessSyncSupplier, onErrorSyncSupplier);
+    String? lastSync = prefs.getString('lastSync');
+    String? userToken = prefs.getString('token');
+    String? userBaseUrl = prefs.getString('baseUrl');
+    SupplierRepository(userBaseUrl!).doSyncSupplier(
+        userToken!, lastSync, onSuccessSyncSupplier, onErrorSyncSupplier);
   }
 
   onSuccessSyncSupplier(List<Suppliers> suppliers) {
@@ -105,22 +105,23 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
 
   getDataFarmerTransaction() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    FarmerTransactionRepository(userBaseUrl).doSyncFarmerTransaction(
-        userToken, onSuccessFarmerTransaction, onErrorFarmerTransaction);
+    String? userToken = prefs.getString('token');
+    String? userBaseUrl = prefs.getString('baseUrl');
+    FarmerTransactionRepository(userBaseUrl!).doSyncFarmerTransaction(
+        userToken!, onSuccessFarmerTransaction, onErrorFarmerTransaction);
   }
 
   onSuccessFarmerTransaction(FarmerTransactions farmerTransactions) {
     DatabaseFarmerTransaction().insertFarmerTransaction(farmerTransactions);
-    DatabaseFarmer().deleteFarmerBlacklist(farmerTransactions.data.blacklistedFarmer);
+    DatabaseFarmer()
+        .deleteFarmerBlacklist(farmerTransactions.data!.blacklistedFarmer!);
     setSession();
     setLastSync();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => MainScreen()));
   }
 
-  onErrorFarmerTransaction(response){
+  onErrorFarmerTransaction(response) {
     _openWarningDialog(response.toString());
   }
 
@@ -131,13 +132,14 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
 
   setLastSync() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
+    String formattedDate =
+        DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
     prefs.setString('lastSync', formattedDate);
   }
 
   Future<int> insertSupplier(Suppliers object) async {
-    Database db = await DatabaseHelper().database;
-    int count = await db.insert(TABLE_SUPPLIER, object.toJson());
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.insert(TABLE_SUPPLIER, object.toJson());
     return count;
   }
 
@@ -157,7 +159,9 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  "Ok", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  "Ok",
+                  style:
+                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   doLogoutUser();
@@ -202,13 +206,12 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
     );
   }
 
-
   void doLogoutUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    LogOutRepository(userBaseUrl)
-        .doGetLogOut(userToken, onSuccessLogOutCallback, onErrorLogOutCallback);
+    String? userToken = prefs.getString('token');
+    String? userBaseUrl = prefs.getString('baseUrl');
+    LogOutRepository(userBaseUrl!).doGetLogOut(
+        userToken!, onSuccessLogOutCallback, onErrorLogOutCallback);
   }
 
   onSuccessLogOutCallback(LogOutResponse logOutResponse) async {

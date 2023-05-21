@@ -69,15 +69,14 @@ class UploadData {
 
   onSuccessHarvestTicketUpload(UploadHarvestResponse uploadHarvestResponse) {
     for (int i = 0;
-        i < uploadHarvestResponse.data.harvestingTicket.length;
+        i < uploadHarvestResponse.data!.harvestingTicket!.length;
         i++) {
       dbHarvest.updateHarvestTicketUploaded(
-          uploadHarvestResponse.data.harvestingTicket[i]);
+          uploadHarvestResponse.data!.harvestingTicket![i]);
     }
     print("Upload Harvest Ticket Success");
     context.read<CounterNotifier>().getCountUnUploadedHarvestTicket();
-    Toast.show("Upload Tiket Panen Berhasil", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Upload Tiket Panen Berhasil", duration: 3, gravity: 0);
     uploadCollectionPoint();
   }
 
@@ -111,8 +110,7 @@ class UploadData {
   }
 
   onErrorHarvestTicketUpload(response) {
-    Toast.show(response.toString(), context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show(response.toString(), duration: 3, gravity: 0);
     Navigator.pop(context);
     print(response);
   }
@@ -120,10 +118,10 @@ class UploadData {
   doUploadCollectionPointToServer(
       UploadCollectionPoint uploadCollectionPoint) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
-    final String userToken = prefs.getString('token');
-    UploadRepository(userBaseUrl).doUploadCollectionPoint(
-        userToken,
+    String? userBaseUrl = prefs.getString('baseUrl');
+    String? userToken = prefs.getString('token');
+    UploadRepository(userBaseUrl!).doUploadCollectionPoint(
+        userToken!,
         uploadCollectionPoint,
         onSuccessCollectionPointUpload,
         onErrorCollectionPointUpload);
@@ -132,15 +130,14 @@ class UploadData {
   onSuccessCollectionPointUpload(
       UploadCollectionResponse uploadCollectionResponse) {
     for (int i = 0;
-        i < uploadCollectionResponse.data.collectionPoint.length;
+        i < uploadCollectionResponse.data!.collectionPoint!.length;
         i++) {
       dbCollection.updateCollectionPointUploaded(
-          uploadCollectionResponse.data.collectionPoint[i]);
+          uploadCollectionResponse.data!.collectionPoint![i]);
     }
     print("Upload Collection Point Success");
     context.read<CounterNotifier>().getCountUnUploadedCollectionPoint();
-    Toast.show("Upload Titik Kumpul Berhasil", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Upload Titik Kumpul Berhasil", duration: 3, gravity: 0);
     uploadDeliveryOrder();
   }
 
@@ -168,8 +165,8 @@ class UploadData {
         } else if (harvestTicketList.isEmpty &&
             collectionPointList.isEmpty &&
             deliveryOrderList.isEmpty) {
-          Toast.show("Tidak ada data yang harus diupload", context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          Toast.show("Tidak ada data yang harus diupload",
+              duration: 3, gravity: 0);
           Navigator.pop(context);
           Navigator.pop(context);
           SyncDataBackground().getDataFarmer();
@@ -186,11 +183,11 @@ class UploadData {
 
   getDataTonnageFarmer() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String lastSync = prefs.getString('lastSync');
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    TonnageFarmerRepository(userBaseUrl).doSyncFarmerTonnage(
-        userToken, lastSync, onSuccessSyncFarmer, onErrorSyncFarmer);
+    final String? lastSync = prefs.getString('lastSync');
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    TonnageFarmerRepository(userBaseUrl!).doSyncFarmerTonnage(
+        userToken!, lastSync!, onSuccessSyncFarmer, onErrorSyncFarmer);
   }
 
   onSuccessSyncFarmer(List<Farmers> farmers) {
@@ -200,8 +197,8 @@ class UploadData {
   }
 
   Future<int> updateFarmer(Farmers object) async {
-    Database db = await DatabaseHelper().database;
-    int count = await db.update(TABLE_FARMER, object.toJson(),
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.update(TABLE_FARMER, object.toJson(),
         where: '$FARMER_ID_OBJECT=?', whereArgs: [object.idFarmer]);
     return count;
   }
@@ -209,18 +206,17 @@ class UploadData {
   onErrorSyncFarmer(response) {}
 
   onErrorCollectionPointUpload(response) {
-    Toast.show(response.toString(), context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show(response.toString(), duration: 3, gravity: 0);
     Navigator.pop(context);
     print(response);
   }
 
   doUploadDeliveryOrderToServer(UploadDeliveryOrder uploadDeliveryOrder) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
-    final String userToken = prefs.getString('token');
-    UploadRepository(userBaseUrl).doUploadDeliveryOrder(
-        userToken,
+    String? userBaseUrl = prefs.getString('baseUrl');
+    String? userToken = prefs.getString('token');
+    UploadRepository(userBaseUrl!).doUploadDeliveryOrder(
+        userToken!,
         uploadDeliveryOrder,
         onSuccessDeliveryOrderUpload,
         onErrorDeliveryOrderUpload);
@@ -228,21 +224,21 @@ class UploadData {
 
   onSuccessDeliveryOrderUpload(UploadDeliveryResponse uploadDeliveryResponse) {
     print("Upload Delivery Success");
-    for (int i = 0; i < uploadDeliveryResponse.data.deliveryOrder.length; i++) {
+    for (int i = 0;
+        i < uploadDeliveryResponse.data!.deliveryOrder!.length;
+        i++) {
       dbDelivery.updateDeliveryOrderUploaded(
-          uploadDeliveryResponse.data.deliveryOrder[i]);
+          uploadDeliveryResponse.data!.deliveryOrder![i]);
     }
     context.read<CounterNotifier>().getCountUnUploadedDeliveryOrder();
     Navigator.pop(context);
     Navigator.pop(context);
-    Toast.show("Upload Surat Pengantar Berhasil", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Upload Surat Pengantar Berhasil", duration: 3, gravity: 0);
     SyncDataBackground().getDataFarmer();
   }
 
   onErrorDeliveryOrderUpload(response) {
-    Toast.show("Upload Delivery Gagal", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Upload Delivery Gagal", duration: 3, gravity: 0);
     Navigator.pop(context);
     print(response);
   }

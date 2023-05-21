@@ -7,28 +7,27 @@ import 'package:e_trace_app/model/point_response.dart';
 import 'package:http/io_client.dart';
 
 class PointRepository {
-
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   PointRepository(String baseUrl) {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 
   void doGetPrice(String token, onSuccess, onError) async {
     try {
-      var url = baseUrl + APIEndpoint.POINT_ENDPOINT;
+      var url = baseUrl! + APIEndpoint.POINT_ENDPOINT;
       var uri = Uri.parse(url);
-      var response = await ioClient.get(
+      var response = await ioClient!.get(
         uri,
-        headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
+        headers: APIConfiguration(baseUrl!).getDefaultHeaderWithToken(token),
       );
       PointResponse apiResponse =
-      PointResponse.fromJson(json.decode(response.body));
+          PointResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         onSuccess(apiResponse);
       } else {

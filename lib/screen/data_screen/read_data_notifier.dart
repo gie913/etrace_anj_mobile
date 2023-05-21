@@ -15,15 +15,15 @@ class ReadDataNotifier extends ChangeNotifier {
   List<HarvestingTicket> _listHarvestTicket = [];
   Uint8List _bytes = Uint8List(0);
   List<HarvestingTicket> _listHarvestTicketDO = [];
-  String _idCollection, _idDeliveryOrder, _record;
-  int _totalQuantity, _totalWeight;
-  Suppliers _suppliersObject;
+  String? _idCollection, _idDeliveryOrder, _record;
+  int? _totalQuantity, _totalWeight;
+  Suppliers? _suppliersObject;
 
-  Farmers _farmerObject;
+  Farmers? _farmerObject;
 
-  int get totalQuantity => _totalQuantity;
+  int? get totalQuantity => _totalQuantity;
 
-  int get totalWeight => _totalWeight;
+  int? get totalWeight => _totalWeight;
 
   // StreamSubscription<NDEFMessage> get streamSubscription => _streamSubscription;
 
@@ -33,15 +33,15 @@ class ReadDataNotifier extends ChangeNotifier {
 
   List<HarvestingTicket> get listHarvestTicketDO => _listHarvestTicketDO;
 
-  String get idCollection => _idCollection;
+  String? get idCollection => _idCollection;
 
-  Suppliers get suppliersObject => _suppliersObject;
+  Suppliers? get suppliersObject => _suppliersObject;
 
-  Farmers get farmerObject => _farmerObject;
+  Farmers? get farmerObject => _farmerObject;
 
-  String get idDeliveryOrder => _idDeliveryOrder;
+  String? get idDeliveryOrder => _idDeliveryOrder;
 
-  String get record => _record;
+  String? get record => _record;
 
   List<Farmers> _listFarmerObject = [];
 
@@ -64,11 +64,12 @@ class ReadDataNotifier extends ChangeNotifier {
       final valueDriver = splitDO[2];
       final valueNumber = splitDO[3];
       final valueTicket = splitDelivery[1];
-      final splitTicket =  valueTicket.split("#");
+      final splitTicket = valueTicket.split("#");
       for (int i = 0; i < splitTicket.length; i++) {
         final splitTicketHarvest = splitTicket[i].split(",");
         final Map<int, String> values = {
-          for (int i = 0; i < splitTicketHarvest.length; i++) i: splitTicketHarvest[i]
+          for (int i = 0; i < splitTicketHarvest.length; i++)
+            i: splitTicketHarvest[i]
         };
         final value1 = values[0];
         final value2 = values[1];
@@ -79,10 +80,11 @@ class ReadDataNotifier extends ChangeNotifier {
         harvestTicketNew.idDeliveryOrderTicket = valueDriver;
         harvestTicketNew.dateTicket = valueNumber;
         harvestTicketNew.ascendFarmerCode = value1;
-        harvestTicketNew.quantity = int.parse(value2);
-        harvestTicketNew.weight = double.parse(value3.substring(0, value3.length-1));
+        harvestTicketNew.quantity = int.parse(value2!);
+        harvestTicketNew.weight =
+            double.parse(value3!.substring(0, value3.length - 1));
         getSupplierByID(valueSupplier);
-        getFarmerByID(value1);
+        getFarmerByID(value1!);
         _listHarvestTicketDO.add(harvestTicketNew);
       }
     } else {
@@ -102,8 +104,8 @@ class ReadDataNotifier extends ChangeNotifier {
           HarvestingTicket harvestTicket = HarvestingTicket();
           harvestTicket.idTicket = value1;
           harvestTicket.ascendFarmerCode = value2;
-          harvestTicket.quantity = int.parse(value3);
-          harvestTicket.weight = double.parse(value4);
+          harvestTicket.quantity = int.parse(value3!);
+          harvestTicket.weight = double.parse(value4!);
           _listHarvestTicket.add(harvestTicket);
         } else if (splitTicket.length == 5) {
           final Map<int, String> values = {
@@ -116,8 +118,8 @@ class ReadDataNotifier extends ChangeNotifier {
           HarvestingTicket harvestTicket = HarvestingTicket();
           harvestTicket.idTicket = value1;
           harvestTicket.ascendFarmerCode = value2;
-          harvestTicket.quantity = int.parse(value3);
-          harvestTicket.weight = double.parse(value4);
+          harvestTicket.quantity = int.parse(value3!);
+          harvestTicket.weight = double.parse(value4!);
           _listHarvestTicket.add(harvestTicket);
         } else if (splitTicket.length == 6) {
           final Map<int, String> values = {
@@ -131,8 +133,8 @@ class ReadDataNotifier extends ChangeNotifier {
           HarvestingTicket harvestTicket = HarvestingTicket();
           harvestTicket.idTicket = value1;
           harvestTicket.ascendFarmerCode = value2;
-          harvestTicket.quantity = int.parse(value3);
-          harvestTicket.weight = double.parse(value4);
+          harvestTicket.quantity = int.parse(value3!);
+          harvestTicket.weight = double.parse(value4!);
           harvestTicket.idCollectionTicket = value5;
           _listHarvestTicket.add(harvestTicket);
         }
@@ -144,14 +146,13 @@ class ReadDataNotifier extends ChangeNotifier {
 
   void getSupplierByID(String supplierCode) async {
     Suppliers suppliers =
-    await DatabaseSupplier().selectSupplierByIDString(supplierCode);
+        await DatabaseSupplier().selectSupplierByIDString(supplierCode);
     _suppliersObject = suppliers;
     notifyListeners();
   }
 
   void getFarmerByID(String farmerCode) async {
-    Farmers farmers =
-    await DatabaseFarmer().selectFarmerByIDString(farmerCode);
+    Farmers farmers = await DatabaseFarmer().selectFarmerByIDString(farmerCode);
     _farmerObject = farmers;
     _listFarmerObject.add(farmers);
     notifyListeners();
@@ -248,7 +249,7 @@ class ReadDataNotifier extends ChangeNotifier {
 
   Future scan() async {
     await Permission.camera.request();
-    String barcode = await scanner.scan();
+    String? barcode = await scanner.scan();
     if (barcode == null) {
       print('nothing return.');
     } else {

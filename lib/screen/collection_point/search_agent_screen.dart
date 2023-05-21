@@ -11,7 +11,7 @@ class SearchAgentScreen extends StatefulWidget {
 
 class _SearchAgentScreenState extends State<SearchAgentScreen> {
   TextEditingController typeSupplierController = TextEditingController();
-  ScrollController scrollController;
+  ScrollController? scrollController;
   List<Agents> _searchAgentsResult = [];
   List<Agents> _listAgentDetails = [];
 
@@ -22,8 +22,8 @@ class _SearchAgentScreenState extends State<SearchAgentScreen> {
   }
 
   getAgentList() {
-   DatabaseAgent dbAgents = DatabaseAgent();
-   dbAgents.getAgentList().then((value) => _listAgentDetails = value);
+    DatabaseAgent dbAgents = DatabaseAgent();
+    dbAgents.getAgentList().then((value) => _listAgentDetails = value);
   }
 
   @override
@@ -84,7 +84,7 @@ class _SearchAgentScreenState extends State<SearchAgentScreen> {
                                         Text(_listAgentDetails[index]
                                             .ascendAgentCode
                                             .toString()),
-                                        Text(_listAgentDetails[index].name),
+                                        Text(_listAgentDetails[index].name!),
                                       ],
                                     ),
                                     subtitle: Column(
@@ -93,14 +93,13 @@ class _SearchAgentScreenState extends State<SearchAgentScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(_listAgentDetails[index]
-                                            .address),
+                                        Text(_listAgentDetails[index].address!),
                                       ],
                                     ),
                                     trailing: InkWell(
                                       onTap: () async {
-                                        Navigator.pop(context,
-                                            _listAgentDetails[index]);
+                                        Navigator.pop(
+                                            context, _listAgentDetails[index]);
                                       },
                                       child: Padding(
                                         padding:
@@ -119,8 +118,8 @@ class _SearchAgentScreenState extends State<SearchAgentScreen> {
                                   itemCount: _searchAgentsResult.length,
                                   itemBuilder: (context, index) => Card(
                                     child: Container(
-                                      padding:
-                                          EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                      padding: EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
                                       child: ListTile(
                                         leading: Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -138,7 +137,8 @@ class _SearchAgentScreenState extends State<SearchAgentScreen> {
                                             Text(_searchAgentsResult[index]
                                                 .ascendAgentCode
                                                 .toString()),
-                                            Text(_searchAgentsResult[index].name),
+                                            Text(_searchAgentsResult[index]
+                                                .name!),
                                           ],
                                         ),
                                         subtitle: Column(
@@ -147,13 +147,14 @@ class _SearchAgentScreenState extends State<SearchAgentScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(_searchAgentsResult[index].address),
+                                            Text(_searchAgentsResult[index]
+                                                .address!),
                                           ],
                                         ),
                                         trailing: InkWell(
                                             onTap: () async {
-                                              Navigator.pop(
-                                                  context, _searchAgentsResult[index]);
+                                              Navigator.pop(context,
+                                                  _searchAgentsResult[index]);
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
@@ -199,7 +200,7 @@ class _SearchAgentScreenState extends State<SearchAgentScreen> {
   onSearchTextChanged(String text) {
     _searchAgentsResult.clear();
     _listAgentDetails.forEach((supplierDetail) {
-      if (supplierDetail.name.toLowerCase().contains(text.toLowerCase()) ||
+      if (supplierDetail.name!.toLowerCase().contains(text.toLowerCase()) ||
           supplierDetail.ascendAgentCode
               .toString()
               .toLowerCase()

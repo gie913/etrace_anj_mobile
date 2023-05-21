@@ -24,8 +24,8 @@ class SearchHarvestTicketDeliveryState
   DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
   List<HarvestingTicket> harvestTicketList = [];
   List<HarvestingTicket> harvestTicketListChecked = [];
-  String farmerName, farmerAddress, farmerNumber;
-  List<bool> _isChecked;
+  String? farmerName, farmerAddress, farmerNumber;
+  List<bool>? _isChecked;
 
   @override
   void initState() {
@@ -112,12 +112,12 @@ class SearchHarvestTicketDeliveryState
             child: Column(
               children: [
                 CheckboxListTile(
-                  value: _isChecked[index],
+                  value: _isChecked![index],
                   onChanged: (val) {
                     setState(
                       () {
-                        _isChecked[index] = val;
-                        if (_isChecked[index]) {
+                        _isChecked![index] = val!;
+                        if (_isChecked![index]) {
                           harvestTicketListChecked
                               .add(harvestTicketList[index]);
                         } else {
@@ -133,7 +133,7 @@ class SearchHarvestTicketDeliveryState
                     color: Colors.orange,
                   ),
                   title: Text(
-                    harvestTicketList[index].idTicket,
+                    harvestTicketList[index].idTicket!,
                     style: text16Bold,
                   ),
                   subtitle: Padding(
@@ -143,7 +143,7 @@ class SearchHarvestTicketDeliveryState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(DATE_TICKET_TILE +
-                            harvestTicketList[index].dateTicket),
+                            harvestTicketList[index].dateTicket!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
@@ -182,7 +182,7 @@ class SearchHarvestTicketDeliveryState
 
   void addHarvestTicket(HarvestingTicket object) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('username');
+    String? user = prefs.getString('username');
     object.createdBy = user;
     int result = await dbHarvest.insertHarvestTicket(object);
     if (result > 0) {

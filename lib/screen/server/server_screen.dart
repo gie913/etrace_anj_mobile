@@ -15,7 +15,7 @@ class ServerScreen extends StatefulWidget {
 
 class _ServerScreenState extends State<ServerScreen> {
   final serverAddressController = new TextEditingController();
-  String userBaseUrl;
+  String? userBaseUrl;
 
   @override
   void initState() {
@@ -26,27 +26,22 @@ class _ServerScreenState extends State<ServerScreen> {
   void checkBaseUrl() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     userBaseUrl = prefs.getString('baseUrl');
-    if (userBaseUrl != null) {
-      setState(() {
-        serverAddressController.text = userBaseUrl;
-      });
-    }
+    setState(() {
+      serverAddressController.text = userBaseUrl!;
+    });
   }
 
-
   void resetData() async {
-    Database db = await DatabaseHelper().database;
+    Database? db = await DatabaseHelper().database;
     try {
-      await db.delete(TABLE_HARVEST_TIKET);
+      await db!.delete(TABLE_HARVEST_TIKET);
       await db.delete(TABLE_COLLECTION_POINT);
       await db.delete(TABLE_DELIVERY_ORDER);
       await db.delete(TABLE_FARMER_TRANSACTION);
-      Toast.show("Reset Data Berhasil", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Toast.show("Reset Data Berhasil", duration: 3, gravity: 0);
       Navigator.pop(context);
     } catch (e) {
-      Toast.show("Tidak Berhasil Reset Data", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Toast.show("Tidak Berhasil Reset Data", duration: 3, gravity: 0);
     }
   }
 
@@ -61,7 +56,7 @@ class _ServerScreenState extends State<ServerScreen> {
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(NO,
                 style:
-                TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
           ),
           TextButton(
             onPressed: () => resetData(),
@@ -78,69 +73,67 @@ class _ServerScreenState extends State<ServerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Konfigurasi Aplikasi"),
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              alignment: Alignment.center,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 30, top: 40),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(IMAGE_ICON,
-                              width:
-                              MediaQuery.of(context).size.width * 0.1),
-                          Text(
-                            "e-Trace",
+      appBar: AppBar(
+        title: Text("Konfigurasi Aplikasi"),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            alignment: Alignment.center,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 30, top: 40),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(IMAGE_ICON,
+                            width: MediaQuery.of(context).size.width * 0.1),
+                        Text(
+                          "e-Trace",
+                          style: TextStyle(
+                              fontFamily: "DIN Pro",
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.1),
+                        )
+                      ],
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      onResetData(context);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Reset Data",
                             style: TextStyle(
-                                fontFamily: "DIN Pro",
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize:
-                                MediaQuery.of(context).size.width *
-                                    0.1),
-                          )
-                        ],
+                                fontSize: 16)),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Reset Data akan menghapus seluruh data",
+                        textAlign: TextAlign.center,
+                        style: text16,
                       ),
                     ),
-                    OutlinedButton(
-                      onPressed: () {
-                        onResetData(context);
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Reset Data",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16)),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Reset Data akan menghapus seluruh data",
-                          textAlign: TextAlign.center,
-                          style: text16,
-                        ),
-                      ),
-                    ),
-                  ]),
-            ),
+                  ),
+                ]),
           ),
         ),
+      ),
     );
   }
 }

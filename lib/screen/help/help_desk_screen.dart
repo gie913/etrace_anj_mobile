@@ -43,7 +43,7 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
                         padding: const EdgeInsets.only(),
                         child: TextField(
                           onChanged: (value) {
-                            value != null
+                            value.isNotEmpty
                                 ? _validateSubject = false
                                 : _validateSubject = true;
                           },
@@ -79,7 +79,7 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
                       child: Container(
                         child: TextField(
                           onChanged: (value) {
-                            value != null
+                            value.isNotEmpty
                                 ? _validateMessage = false
                                 : _validateMessage = true;
                           },
@@ -169,7 +169,6 @@ class _HelpDeskScreenState extends State<HelpDeskScreen> {
   }
 
   onError() {
-    Toast.show("Gagal Mengirimkan", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Gagal Mengirimkan", duration: 1, gravity: 0);
   }
 }

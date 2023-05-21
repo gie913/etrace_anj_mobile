@@ -13,11 +13,11 @@ class SearchSupplierScreen extends StatefulWidget {
 
 class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
   TextEditingController typeSupplierController = TextEditingController();
-  String valSupplier;
-  ScrollController scrollController;
+  String? valSupplier;
+  ScrollController? scrollController;
   List<Suppliers> _searchSupplierResult = [];
   List<Suppliers> _supplierDetails = [];
-  bool isLoading;
+  bool? isLoading;
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
                 ),
               ),
             ),
-            isLoading
+            isLoading!
                 ? loadingWidget()
                 : _supplierDetails.isNotEmpty
                     ? Flexible(
@@ -107,7 +107,8 @@ class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
                                               style: text14Bold,
                                             ),
                                             Text(
-                                              _searchSupplierResult[index].name,
+                                              _searchSupplierResult[index]
+                                                  .name!,
                                               style: text14,
                                             ),
                                           ],
@@ -119,7 +120,7 @@ class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(_searchSupplierResult[index]
-                                                .address),
+                                                .address!),
                                           ],
                                         ),
                                         trailing: OutlinedButton(
@@ -167,7 +168,7 @@ class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
                                                   style: text14Bold,
                                                 ),
                                                 Text(
-                                                  _supplierDetails[index].name,
+                                                  _supplierDetails[index].name!,
                                                   style: text14,
                                                 ),
                                               ],
@@ -179,7 +180,7 @@ class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(_supplierDetails[index]
-                                                    .address),
+                                                    .address!),
                                               ],
                                             ),
                                             trailing: OutlinedButton(
@@ -187,7 +188,10 @@ class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
                                                 Navigator.pop(context,
                                                     _supplierDetails[index]);
                                               },
-                                              child: Icon(Icons.add, color: Colors.white,),
+                                              child: Icon(
+                                                Icons.add,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -236,8 +240,8 @@ class _SearchSupplierScreenState extends State<SearchSupplierScreen> {
       return;
     }
     _supplierDetails.forEach((supplierDetail) {
-      if (supplierDetail.name.toLowerCase().contains(text.toLowerCase()) ||
-          supplierDetail.ascendSupplierCode
+      if (supplierDetail.name!.toLowerCase().contains(text.toLowerCase()) ||
+          supplierDetail.ascendSupplierCode!
               .toLowerCase()
               .contains(text.toLowerCase()))
         _searchSupplierResult.add(supplierDetail);

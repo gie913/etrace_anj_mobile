@@ -11,8 +11,8 @@ class SendHarvestTicket extends StatefulWidget {
 
 class _SendHarvestTicketState extends State<SendHarvestTicket> {
   TextEditingController typeFarmerController = TextEditingController();
-  String valFarmer;
-  ScrollController scrollController;
+  String? valFarmer;
+  ScrollController? scrollController;
 
   List<User> _searchTargetUserResult = [];
 
@@ -92,10 +92,10 @@ class _SendHarvestTicketState extends State<SendHarvestTicket> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(_searchTargetUserResult[index].name),
+                                    Text(_searchTargetUserResult[index].name!),
                                     Text(
                                         _searchTargetUserResult[index]
-                                            .companyName,
+                                            .companyName!,
                                         overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
@@ -103,8 +103,8 @@ class _SendHarvestTicketState extends State<SendHarvestTicket> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                        _searchTargetUserResult[index].address),
+                                    Text(_searchTargetUserResult[index]
+                                        .address!),
                                     Text(_searchTargetUserResult[index]
                                         .gender
                                         .toString())
@@ -202,8 +202,8 @@ class _SendHarvestTicketState extends State<SendHarvestTicket> {
       return;
     }
     _targetUserList.forEach((userDetail) {
-      if (userDetail.name.toLowerCase().contains(text.toLowerCase()) ||
-          userDetail.username.contains(text.toLowerCase()))
+      if (userDetail.name!.toLowerCase().contains(text.toLowerCase()) ||
+          userDetail.username!.contains(text.toLowerCase()))
         _searchTargetUserResult.add(userDetail);
     });
     setState(() {});

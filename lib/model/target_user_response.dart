@@ -1,9 +1,9 @@
 import 'user.dart';
 
 class TargetUserResponse {
-  bool success;
-  String message;
-  List<User> data;
+  bool? success;
+  String? message;
+  List<User>? data;
 
   TargetUserResponse({this.success, this.message, this.data});
 
@@ -13,7 +13,7 @@ class TargetUserResponse {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data.add(new User.fromJson(v));
+        data!.add(new User.fromJson(v));
       });
     }
   }
@@ -22,9 +22,7 @@ class TargetUserResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
+    data['data'] = this.data!.map((v) => v.toJson()).toList();
     return data;
   }
 }

@@ -30,9 +30,9 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
   List<DeliveryOrder> deliveryOrderList = [];
   List<DeliveryOrder> deliveryOrderListSearch = [];
   TextEditingController deliveryController = TextEditingController();
-  String farmerName, farmerAddress, farmerNumber;
-  String message;
-  bool loading;
+  String? farmerName, farmerAddress, farmerNumber;
+  String? message;
+  bool? loading;
 
   @override
   void initState() {
@@ -48,8 +48,9 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
           actions: [
             InkWell(
               onTap: () async {
-                var deliveryOrder = await navigateToEntryForm(context, null);
-                if (deliveryOrder != null) addDeliveryOrder(deliveryOrder);
+                var deliveryOrder =
+                    await navigateToEntryForm(context, DeliveryOrder());
+                addDeliveryOrder(deliveryOrder);
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
@@ -85,7 +86,7 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
             ),
             Text("Jumlah Surat Pengantar: ${deliveryOrderList.length}"),
             Divider(),
-            loading
+            loading!
                 ? loadingWidget()
                 : deliveryOrderList.length != 0
                     ? Flexible(
@@ -175,7 +176,7 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
                       ],
                     ),
                     title: Text(
-                      deliveryOrderList[index].idDelivery,
+                      deliveryOrderList[index].idDelivery!,
                       style: text16Bold,
                     ),
                     subtitle: Padding(
@@ -212,7 +213,7 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
                     onTap: () async {
                       var contact = await navigateToDetail(
                           context, deliveryOrderList[index]);
-                      if (contact != null) editDeliveryOrder(contact);
+                      editDeliveryOrder(contact);
                     },
                   ),
                 ],
@@ -263,7 +264,7 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
                       ],
                     ),
                     title: Text(
-                      deliveryOrderListSearch[index].idDelivery,
+                      deliveryOrderListSearch[index].idDelivery!,
                       style: text16Bold,
                     ),
                     subtitle: Padding(
@@ -300,7 +301,7 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
                     onTap: () async {
                       var contact = await navigateToDetail(
                           context, deliveryOrderListSearch[index]);
-                      if (contact != null) editDeliveryOrder(contact);
+                      editDeliveryOrder(contact);
                     },
                   ),
                 ],
@@ -401,9 +402,9 @@ class DeliveryOrderScreenState extends State<DeliveryOrderScreen> {
     int result = await dbDelivery.deleteDeliveryOrder(object);
     if (result > 0) {
       DatabaseHarvestTicket()
-          .updateHarvestTicketDeliveryDelete(object.idDelivery);
+          .updateHarvestTicketDeliveryDelete(object.idDelivery!);
       DatabaseCollectionPoint()
-          .updateCollectionPointDeliveryDelete(object.idDelivery);
+          .updateCollectionPointDeliveryDelete(object.idDelivery!);
       updateListView();
     }
   }

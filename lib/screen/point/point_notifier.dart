@@ -5,19 +5,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class PointNotifier extends ChangeNotifier {
-  List<Data> _listData;
-  PointResponse _pointResponse;
+  List<Data>? _listData;
+  PointResponse? _pointResponse;
 
-  List<Data> get listData => _listData;
+  List<Data>? get listData => _listData;
 
-  PointResponse get pointResponse => _pointResponse;
+  PointResponse? get pointResponse => _pointResponse;
 
   void doGetPoint() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    PointRepository(userBaseUrl)
-        .doGetPrice(userToken, onSuccessPointCallback, onErrorPointCallback);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    PointRepository(userBaseUrl!)
+        .doGetPrice(userToken!, onSuccessPointCallback, onErrorPointCallback);
   }
 
   onSuccessPointCallback(PointResponse pointResponse) {
@@ -26,7 +26,6 @@ class PointNotifier extends ChangeNotifier {
   }
 
   onErrorPointCallback(response, BuildContext context) {
-    Toast.show(response.toString(), context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show(response.toString(), duration: 1, gravity: 0);
   }
 }

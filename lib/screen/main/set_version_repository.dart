@@ -7,15 +7,14 @@ import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:http/io_client.dart';
 
 class SetVersionRepository {
-
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   SetVersionRepository(String baseUrl) {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 
@@ -27,15 +26,15 @@ class SetVersionRepository {
       platform = "ios";
     }
     try {
-      var url = baseUrl + APIEndpoint.SET_VERSION;
+      var url = baseUrl! + APIEndpoint.SET_VERSION;
       var uri = Uri.parse(url);
       var map = new Map<String, dynamic>();
       map["user_app_version"] = APP_VERSION;
       map["platform"] = platform;
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: json.encode(map),
-        headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
+        headers: APIConfiguration(baseUrl!).getDefaultHeaderWithToken(token),
       );
       print(response);
     } catch (exception) {

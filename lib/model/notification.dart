@@ -1,8 +1,8 @@
 class NotificationModel {
-  String referenceId;
-  String toPage;
-  String action;
-  String text;
+  String? referenceId;
+  String? toPage;
+  String? action;
+  String? text;
 
   NotificationModel({this.referenceId, this.toPage, this.action, this.text});
 

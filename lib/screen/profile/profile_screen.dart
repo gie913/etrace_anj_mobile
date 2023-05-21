@@ -24,9 +24,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-  User profile = User();
+  User? profile;
   bool loading = false, loadingPhoto = false;
-  PickedFile image, imageTemp;
+  XFile? image, imageTemp;
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                                                 BorderRadius.circular(8.0),
                                             child: loadingPhoto
                                                 ? Container(
-                                                    height:80,
+                                                    height: 80,
                                                     width: 80,
                                                     child: Center(
                                                       child: SizedBox(
@@ -90,24 +90,19 @@ class ProfileScreenState extends State<ProfileScreen> {
                                                       ),
                                                     ),
                                                   )
-                                                : profile.photoProfile == null
+                                                : profile!.photoProfile == null
                                                     ? Image.asset(
                                                         "assets/man.png",
                                                         height: 80,
                                                         width: 80,
                                                         fit: BoxFit.cover)
                                                     : Image.network(
-                                                        profile.photoProfile,
+                                                        profile!.photoProfile!,
                                                         height: 80,
                                                         width: 80,
                                                         fit: BoxFit.cover,
-                                                        errorBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                Object
-                                                                    exception,
-                                                                StackTrace
-                                                                    stackTrace) {
+                                                        errorBuilder: (context,
+                                                            error, stackTrace) {
                                                           return Image.asset(
                                                               "assets/man.png",
                                                               height: 80,
@@ -137,14 +132,14 @@ class ProfileScreenState extends State<ProfileScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${profile.name.toUpperCase()}",
+                                          "${profile!.name!.toUpperCase()}",
                                           style: text16Bold,
                                         ),
                                         Card(
                                           child: InkWell(
                                             child: Icon(Icons.edit),
                                             onTap: () async {
-                                              bool changed =
+                                              bool? changed =
                                                   await Navigator.push(context,
                                                       MaterialPageRoute(builder:
                                                           (BuildContext
@@ -168,7 +163,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                                               size: 20,
                                               color: primaryColorLight),
                                           SizedBox(width: 8),
-                                          Text("${profile.email ?? "-"}",
+                                          Text("${profile!.email ?? "-"}",
                                               overflow: TextOverflow.ellipsis),
                                         ],
                                       ),
@@ -181,7 +176,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                                               size: 20,
                                               color: primaryColorLight),
                                           SizedBox(width: 8),
-                                          Text("${profile.companyName}",
+                                          Text("${profile!.companyName}",
                                               overflow: TextOverflow.ellipsis),
                                         ],
                                       ),
@@ -194,7 +189,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                                               size: 20,
                                               color: primaryColorLight),
                                           SizedBox(width: 8),
-                                          Text("${profile.phoneNumber ?? "-"}"),
+                                          Text(
+                                              "${profile!.phoneNumber ?? "-"}"),
                                         ],
                                       ),
                                     ),
@@ -209,7 +205,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                                           Container(
                                               width: 200,
                                               child:
-                                                  Text("${profile.address}")),
+                                                  Text("${profile!.address}")),
                                         ],
                                       ),
                                     )
@@ -423,10 +419,10 @@ class ProfileScreenState extends State<ProfileScreen> {
   void doGetUserProfile() async {
     loading = true;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    ProfileRepository(userBaseUrl).doGetProfile(
-        userToken, onSuccessProfileCallback, onErrorProfileCallback);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    ProfileRepository(userBaseUrl!).doGetProfile(
+        userToken!, onSuccessProfileCallback, onErrorProfileCallback);
   }
 
   onSuccessProfileCallback(User profile) {
@@ -497,24 +493,24 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   Future getImage() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
     var imagePick = await ImagePicker()
-        .getImage(source: ImageSource.gallery, imageQuality: 25);
+        .pickImage(source: ImageSource.gallery, imageQuality: 25);
     imageTemp = imagePick;
-    ChangeProfileRepository(userBaseUrl).doChangePhotoProfile(
-        userToken, imagePick, onSuccessPhoto, onErrorPhoto);
+    ChangeProfileRepository(userBaseUrl!).doChangePhotoProfile(
+        userToken!, imagePick!, onSuccessPhoto, onErrorPhoto);
   }
 
   Future getCamera() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
     var imagePick = await ImagePicker()
-        .getImage(source: ImageSource.camera, imageQuality: 25);
+        .pickImage(source: ImageSource.camera, imageQuality: 25);
     imageTemp = imagePick;
-    ChangeProfileRepository(userBaseUrl).doChangePhotoProfile(
-        userToken, imagePick, onSuccessPhoto, onErrorPhoto);
+    ChangeProfileRepository(userBaseUrl!).doChangePhotoProfile(
+        userToken!, imagePick!, onSuccessPhoto, onErrorPhoto);
   }
 
   onSuccessPhoto(response) {
@@ -523,8 +519,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       loadingPhoto = false;
     });
-    Toast.show("Upload Foto Berhasil", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Upload Foto Berhasil", duration: 3, gravity: 0);
   }
 
   onErrorPhoto(response) {
@@ -533,8 +528,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       image = null;
       loadingPhoto = false;
     });
-    Toast.show("Gagal Upload Foto, Maksimal 2MB", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Gagal Upload Foto, Maksimal 2MB", duration: 3, gravity: 0);
   }
 
   onSuccess(User response) {
@@ -542,8 +536,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       loading = false;
       profile = response;
     });
-    Toast.show("Tidak Ada Koneksi Internet", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Tidak Ada Koneksi Internet", duration: 3, gravity: 0);
   }
 
   onError() {}

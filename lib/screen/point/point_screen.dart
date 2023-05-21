@@ -31,7 +31,9 @@ class _PointScreenState extends State<PointScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, bottom: 20),
                   child: Text(
-                    "Saat ini fitur belum tersedia", style: text16, textAlign: TextAlign.center,
+                    "Saat ini fitur belum tersedia",
+                    style: text16,
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 Row(
@@ -39,20 +41,27 @@ class _PointScreenState extends State<PointScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Icon(Linecons.wallet, size: 40, color: Colors.cyan,),
+                      child: Icon(
+                        Linecons.wallet,
+                        size: 40,
+                        color: Colors.cyan,
+                      ),
                     ),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                             pointNotifier.pointResponse != null
-                                ? "${formatDecimal(pointNotifier.pointResponse.data.currentPoint)}"
-                                : "0", style: TextStyle(fontSize: 30))),
+                                ? "${formatDecimal(pointNotifier.pointResponse!.data!.currentPoint!)}"
+                                : "0",
+                            style: TextStyle(fontSize: 30))),
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    POINT_SUBTITLE, style: text16, textAlign: TextAlign.center,
+                    POINT_SUBTITLE,
+                    style: text16,
+                    textAlign: TextAlign.center,
                   ),
                 )
               ],
@@ -63,18 +72,15 @@ class _PointScreenState extends State<PointScreen> {
 
   String formatDecimal(int number) {
     int num = number;
-    if (num > -1000 && num < 1000)
-      return number.toString();
+    if (num > -1000 && num < 1000) return number.toString();
 
     final String digits = num.abs().toString();
     final StringBuffer result = StringBuffer(num < 0 ? '-' : '');
     final int maxDigitIndex = digits.length - 1;
     for (int i = 0; i <= maxDigitIndex; i += 1) {
       result.write(digits[i]);
-      if (i < maxDigitIndex && (maxDigitIndex - i) % 3 == 0)
-        result.write(',');
+      if (i < maxDigitIndex && (maxDigitIndex - i) % 3 == 0) result.write(',');
     }
     return result.toString();
   }
-
 }

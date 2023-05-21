@@ -9,7 +9,7 @@ import 'package:toast/toast.dart';
 import 'edit_profile_repository.dart';
 
 class ProfileEditScreen extends StatefulWidget {
-  final User user;
+  final User? user;
 
   ProfileEditScreen({this.user});
 
@@ -25,133 +25,130 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   @override
   void initState() {
-    emailController.text = widget.user.email;
-    numberController.text = widget.user.phoneNumber;
+    emailController.text = widget.user!.email!;
+    numberController.text = widget.user!.phoneNumber!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => onWillPopForm(context),
+      onWillPop: () async => await onWillPopForm(context),
       child: Scaffold(
         appBar: AppBar(
           title: Center(child: Text("Edit Profil")),
         ),
         body: Container(
-          padding: EdgeInsets.all(10),
-          child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${widget.user.name.toUpperCase()}",
-                      style: text16Bold,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Email"),
-                          ),
-                          Flexible(
-                            child: Container(
-                              width: 220,
-                              child: Padding(
-                                padding: const EdgeInsets.only(),
-                                child: TextField(
-                                  onChanged: (value) {
-                                    value != null
-                                        ? _validate = false
-                                        : _validate = true;
-                                  },
-                                  controller: emailController,
-                                  textAlign: TextAlign.center,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    errorText:
-                                    _validate ? 'Belum Terisi' : null,
-                                    counterText: "",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10)),
-                                      borderSide: BorderSide(width: 1),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Telepon"),
-                          ),
-                          Flexible(
-                            child: Container(
-                              width: 220,
-                              child: Padding(
-                                padding: const EdgeInsets.only(),
-                                child: TextField(
-                                  maxLength: 12,
-                                  onChanged: (value) {
-                                    value != null
-                                        ? _validate = false
-                                        : _validate = true;
-                                  },
-                                  controller: numberController,
-                                  textAlign: TextAlign.center,
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    errorText:
-                                    _validate ? 'Belum Terisi' : null,
-                                    counterText: "",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10)),
-                                      borderSide: BorderSide(width: 1),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    OutlinedButton(
-                      onPressed: () {
-                        doChangeProfile();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(14),
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          "Simpan",
-                          textAlign: TextAlign.center,
-                          style: buttonStyle18,
+            padding: EdgeInsets.all(10),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${widget.user!.name!.toUpperCase()}",
+                    style: text16Bold,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Email"),
                         ),
+                        Flexible(
+                          child: Container(
+                            width: 220,
+                            child: Padding(
+                              padding: const EdgeInsets.only(),
+                              child: TextField(
+                                onChanged: (value) {
+                                  value.isNotEmpty
+                                      ? _validate = false
+                                      : _validate = true;
+                                },
+                                controller: emailController,
+                                textAlign: TextAlign.center,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  errorText: _validate ? 'Belum Terisi' : null,
+                                  counterText: "",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(width: 1),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Telepon"),
+                        ),
+                        Flexible(
+                          child: Container(
+                            width: 220,
+                            child: Padding(
+                              padding: const EdgeInsets.only(),
+                              child: TextField(
+                                maxLength: 12,
+                                onChanged: (value) {
+                                  value.isNotEmpty
+                                      ? _validate = false
+                                      : _validate = true;
+                                },
+                                controller: numberController,
+                                textAlign: TextAlign.center,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  errorText: _validate ? 'Belum Terisi' : null,
+                                  counterText: "",
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(width: 1),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  OutlinedButton(
+                    onPressed: () {
+                      doChangeProfile();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(14),
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "Simpan",
+                        textAlign: TextAlign.center,
+                        style: buttonStyle18,
                       ),
                     ),
-                  ],
-                ),
-              )
-        ),
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }
@@ -159,24 +156,28 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   void doChangeProfile() async {
     loadingDialog(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    EditProfileRepository(userBaseUrl).doEditProfile(
-        userToken,  numberController.text, emailController.text, onSuccessProfileCallback, onErrorProfileCallback);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    EditProfileRepository(userBaseUrl!).doEditProfile(
+        userToken!,
+        numberController.text,
+        emailController.text,
+        onSuccessProfileCallback,
+        onErrorProfileCallback);
   }
 
   onSuccessProfileCallback(String response) {
-    Toast.show(response, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+    Toast.show(response, duration: 1, gravity: 1);
     Navigator.pop(context);
     changed = true;
   }
 
   onErrorProfileCallback(String response) {
-    Toast.show(response, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+    Toast.show(response, duration: 1, gravity: 1);
     Navigator.pop(context);
   }
 
-  Future<bool> onWillPopForm(BuildContext context) {
+  Future onWillPopForm(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -187,14 +188,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             padding: const EdgeInsets.all(14),
             child: GestureDetector(
               onTap: () => Navigator.of(context).pop(false),
-              child: Text(NO, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+              child: Text(NO,
+                  style: TextStyle(
+                      color: Colors.blue, fontWeight: FontWeight.bold)),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(14),
             child: GestureDetector(
               onTap: () => Navigator.of(context).pop(true),
-              child: Text(YES, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+              child: Text(YES,
+                  style: TextStyle(
+                      color: Colors.red, fontWeight: FontWeight.bold)),
             ),
           ),
         ],

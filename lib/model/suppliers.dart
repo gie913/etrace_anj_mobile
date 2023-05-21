@@ -1,19 +1,19 @@
-
 class Suppliers {
-  String idSupplier;
-  String name;
+  String? idSupplier;
+  String? name;
   dynamic ascendSupplierId;
-  String ascendSupplierCode;
-  String address;
-  String phoneNumber;
+  String? ascendSupplierCode;
+  String? address;
+  String? phoneNumber;
 
-  Suppliers(
-      { this.idSupplier,
-        this.name,
-        this.ascendSupplierId,
-        this.ascendSupplierCode,
-        this.address,
-        this.phoneNumber});
+  Suppliers({
+    this.idSupplier,
+    this.name,
+    this.ascendSupplierId,
+    this.ascendSupplierCode,
+    this.address,
+    this.phoneNumber,
+  });
 
   Suppliers.fromJson(Map<String, dynamic> json) {
     idSupplier = json['id'];

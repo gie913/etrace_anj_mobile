@@ -13,7 +13,7 @@ class UpdateAppScreen extends StatefulWidget {
 }
 
 class _UpdateAppScreenState extends State<UpdateAppScreen> {
-  OtaEvent currentEvent;
+  OtaEvent? currentEvent;
 
   @override
   void initState() {
@@ -55,15 +55,23 @@ class _UpdateAppScreenState extends State<UpdateAppScreen> {
             children: [
               Image.asset(IMAGE_LOGO,
                   width: MediaQuery.of(context).size.width * 0.5),
-              Text('${currentEvent.value} %', style: text16Bold,),
+              Text(
+                '${currentEvent!.value} %',
+                style: text16Bold,
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Update status: ${currentEvent.status}'),
+                child: Text('Update status: ${currentEvent!.status}'),
               ),
-              (currentEvent.status.toString() == "OtaStatus.INSTALLING") ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Jika tidak dapat terinstall, lakukan secara manual di folder download', textAlign: TextAlign.center,),
-              ) : Container(),
+              (currentEvent!.status.toString() == "OtaStatus.INSTALLING")
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Jika tidak dapat terinstall, lakukan secara manual di folder download',
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),

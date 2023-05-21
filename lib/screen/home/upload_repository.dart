@@ -10,18 +10,18 @@ import 'package:e_trace_app/model/upload_delivery_response.dart';
 import 'package:e_trace_app/model/upload_harvest_response.dart';
 import 'package:e_trace_app/model/upload_harvest_ticket.dart';
 
-class UploadRepository extends APIConfiguration{
+class UploadRepository extends APIConfiguration {
   UploadRepository(String baseUrl) : super(baseUrl);
 
   void doUploadHarvestTicket(String token,
       UploadHarvestTicket uploadBodyHarvestTicket, onSuccess, onError) async {
-    var url = baseUrl + APIEndpoint.UPLOAD_HARVEST_TICKET;
+    var url = baseUrl! + APIEndpoint.UPLOAD_HARVEST_TICKET;
     var uri = Uri.parse(url);
     final map = jsonEncode(
         {"harvesting_ticket": uploadBodyHarvestTicket.harvestingTicket});
 
     try {
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: map,
         headers: getDefaultHeaderWithToken(token),
@@ -49,13 +49,13 @@ class UploadRepository extends APIConfiguration{
 
   void doUploadCollectionPoint(String token,
       UploadCollectionPoint uploadCollectionPoint, onSuccess, onError) async {
-    var url = baseUrl + APIEndpoint.UPLOAD_COLLECTION_POINT;
+    var url = baseUrl! + APIEndpoint.UPLOAD_COLLECTION_POINT;
     var uri = Uri.parse(url);
     final map =
         jsonEncode({"collection_point": uploadCollectionPoint.collectionPoint});
 
     try {
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: map,
         headers: getDefaultHeaderWithToken(token),
@@ -83,12 +83,12 @@ class UploadRepository extends APIConfiguration{
 
   void doUploadDeliveryOrder(String token,
       UploadDeliveryOrder uploadDeliveryOrder, onSuccess, onError) async {
-    var url = baseUrl + APIEndpoint.UPLOAD_DELIVERY_ORDER;
+    var url = baseUrl! + APIEndpoint.UPLOAD_DELIVERY_ORDER;
     var uri = Uri.parse(url);
     final map =
         jsonEncode({"delivery_order": uploadDeliveryOrder.deliveryOrder});
     try {
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: map,
         headers: getDefaultHeaderWithToken(token),

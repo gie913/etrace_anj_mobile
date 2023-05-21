@@ -1,9 +1,9 @@
 import 'agents.dart';
 
 class SyncAgentResponse {
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   SyncAgentResponse({this.success, this.message, this.data});
 
@@ -17,16 +17,14 @@ class SyncAgentResponse {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }
 
 class Data {
-  List<Agents> agents;
-  int totalRows;
+  List<Agents>? agents;
+  int? totalRows;
 
   Data({this.agents, this.totalRows});
 
@@ -34,7 +32,7 @@ class Data {
     if (json['suppliers'] != null) {
       agents = [];
       json['suppliers'].forEach((v) {
-        agents.add(Agents.fromJson(v));
+        agents!.add(Agents.fromJson(v));
       });
     }
     totalRows = json['total_rows'];
@@ -42,9 +40,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    if (this.agents != null) {
-      data['suppliers'] = this.agents.map((v) => v.toJson()).toList();
-    }
+    data['suppliers'] = this.agents!.map((v) => v.toJson()).toList();
     data['total_rows'] = this.totalRows;
     return data;
   }

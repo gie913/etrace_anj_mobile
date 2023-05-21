@@ -1,6 +1,6 @@
 class ChangePassword {
-  bool success;
-  String message;
+  bool? success;
+  String? message;
 
   ChangePassword({this.success, this.message});
 

@@ -17,38 +17,38 @@ import 'package:toast/toast.dart';
 import 'login_repository.dart';
 
 class LoginVieModel extends ChangeNotifier {
-  String serverUrl;
+  String? serverUrl;
 
   doLoginEvent(BuildContext context, String email, String password,
       String companyId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
-    String token = prefs.getString('token');
+    String? userBaseUrl = prefs.getString('baseUrl');
+    String? token = prefs.getString('token');
     print(token);
     if (userBaseUrl != null) {
       loadingDialog(context);
-      LoginRepository(APIEndpoint.BASE_URL).doPostLogin(context, email, password,
-          _onSuccessLoginCallback, _onErrorLoginCallback);
+      LoginRepository(APIEndpoint.BASE_URL).doPostLogin(context, email,
+          password, _onSuccessLoginCallback, _onErrorLoginCallback);
     } else {
-      Toast.show(SERVER_NOT_CONFIGURE, context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
+      Toast.show(SERVER_NOT_CONFIGURE, duration: 3, gravity: 2);
     }
   }
 
   _onSuccessLoginCallback(BuildContext context, Data data) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', data.token);
-    prefs.setString('userSequence', data.user.sequenceNumber.toString());
-    prefs.setString('userPT', data.user.companyName);
-    prefs.setString('name', data.user.name);
-    prefs.setString('username', data.user.username);
-    prefs.setString('idUser', data.user.id);
+    prefs.setString('token', data.token!);
+    prefs.setString('userSequence', data.user!.sequenceNumber.toString());
+    prefs.setString('userPT', data.user!.companyName!);
+    prefs.setString('name', data.user!.name!);
+    prefs.setString('username', data.user!.username!);
+    prefs.setString('idUser', data.user!.id!);
     await Permission.camera.request();
     await Permission.location.request();
-    int result = await insertUser(data.user);
+    int result = await insertUser(data.user!);
     if (result > 0) {
-      for (int i = 0; i < data.access.length; i++) {
-        prefs.setString('${data.access[i].mModuleId}', data.access[i].canCreate.toString());
+      for (int i = 0; i < data.access!.length; i++) {
+        prefs.setString('${data.access![i].mModuleId}',
+            data.access![i].canCreate.toString());
       }
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => SyncDataScreen()));
@@ -56,7 +56,7 @@ class LoginVieModel extends ChangeNotifier {
   }
 
   Future<int> insertUser(User object) async {
-    Database db = await DatabaseHelper().database;
+    Database? db = await DatabaseHelper().database;
     User user = User();
     user.id = object.id;
     user.name = object.name;
@@ -68,7 +68,7 @@ class LoginVieModel extends ChangeNotifier {
     user.mCompanyId = object.mCompanyId;
     user.sequenceNumber = object.sequenceNumber;
     user.phoneNumber = object.phoneNumber;
-    int count = await db.insert(TABLE_USER, user.toJson());
+    int count = await db!.insert(TABLE_USER, user.toJson());
     return count;
   }
 
@@ -104,8 +104,8 @@ class LoginVieModel extends ChangeNotifier {
     dataPrice.priceLarge = object.priceLarge;
     dataPrice.mainCurrency = object.mainCurrency;
     dataPrice.mCompanyId = object.mCompanyId;
-    Database db = await DatabaseHelper().database;
-    int count = await db.insert(TABLE_PRICE, dataPrice.toJson());
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.insert(TABLE_PRICE, dataPrice.toJson());
     return count;
   }
 }

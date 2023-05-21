@@ -8,20 +8,19 @@ import 'package:e_trace_app/utils/storage_manager.dart';
 class ReceiveTicketRepository extends APIConfiguration {
   ReceiveTicketRepository(String baseUrl) : super(baseUrl);
 
-
   void doReceiveTicket(onSuccess, onError) async {
     String token = await StorageManager.readData('token');
     try {
-      var url = baseUrl + APIEndpoint.RECEIVE_HARVEST_TICKET;
+      var url = baseUrl! + APIEndpoint.RECEIVE_HARVEST_TICKET;
       var uri = Uri.parse(url);
-      var response = await ioClient.get(
+      var response = await ioClient!.get(
         uri,
         headers: getDefaultHeaderWithToken(token),
       );
       ReceiveResponse apiResponse =
-      ReceiveResponse.fromJson(json.decode(response.body));
+          ReceiveResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
-        onSuccess(apiResponse.data.harvestingTicket);
+        onSuccess(apiResponse.data!.harvestingTicket);
       } else {
         onError(apiResponse.message);
       }

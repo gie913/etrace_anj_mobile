@@ -1,54 +1,55 @@
 class HarvestingTicket {
-  String idTicket;
-  String dateTicket;
-  String idCollectionTicket;
-  String idCollectionTicketOld;
-  String idTicketOriginal;
-  String gpsLong;
-  String gpsLat;
-  String transferred;
-  String uploaded;
-  String receivedVia;
-  String mFarmerID;
-  String ascendFarmerID;
-  String ascendFarmerCode;
-  String farmerName;
-  int quantity;
+  String? idTicket;
+  String? dateTicket;
+  String? idCollectionTicket;
+  String? idCollectionTicketOld;
+  String? idTicketOriginal;
+  String? gpsLong;
+  String? gpsLat;
+  String? transferred;
+  String? uploaded;
+  String? receivedVia;
+  String? mFarmerID;
+  String? ascendFarmerID;
+  String? ascendFarmerCode;
+  String? farmerName;
+  int? quantity;
   dynamic weight;
-  String note;
-  String nfcNumber;
-  String image;
-  String companyID;
-  String idDeliveryOrderTicket;
-  String createdBy;
-  String userTargetId;
-  String sender;
+  String? note;
+  String? nfcNumber;
+  String? image;
+  String? companyID;
+  String? idDeliveryOrderTicket;
+  String? createdBy;
+  String? userTargetId;
+  String? sender;
 
-  HarvestingTicket(
-      {this.idTicket,
-      this.dateTicket,
-      this.idCollectionTicket,
-      this.idCollectionTicketOld,
-        this.idTicketOriginal,
-        this.receivedVia,
-      this.gpsLong,
-      this.gpsLat,
-      this.transferred,
-      this.uploaded,
-      this.mFarmerID,
-      this.ascendFarmerID,
-      this.ascendFarmerCode,
-        this.farmerName,
-      this.quantity,
-      this.weight,
-      this.note,
-      this.nfcNumber,
-      this.image,
-      this.companyID,
-      this.idDeliveryOrderTicket,
-      this.createdBy,
-      this.userTargetId,
-      this.sender});
+  HarvestingTicket({
+    this.idTicket,
+    this.dateTicket,
+    this.idCollectionTicket,
+    this.idCollectionTicketOld,
+    this.idTicketOriginal,
+    this.receivedVia,
+    this.gpsLong,
+    this.gpsLat,
+    this.transferred,
+    this.uploaded,
+    this.mFarmerID,
+    this.ascendFarmerID,
+    this.ascendFarmerCode,
+    this.farmerName,
+    this.quantity,
+    this.weight,
+    this.note,
+    this.nfcNumber,
+    this.image,
+    this.companyID,
+    this.idDeliveryOrderTicket,
+    this.createdBy,
+    this.userTargetId,
+    this.sender,
+  });
 
   HarvestingTicket.fromJson(Map<String, dynamic> map) {
     this.idTicket = map['mobile_tr_ht_number'];

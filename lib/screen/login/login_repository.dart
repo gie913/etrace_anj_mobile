@@ -9,8 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/io_client.dart';
 
 class LoginRepository {
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   LoginRepository(String baseUrl) {
     this.baseUrl = baseUrl;
@@ -23,21 +23,23 @@ class LoginRepository {
   void doPostLogin(BuildContext context, String username, String password,
       onSuccess, onError) async {
     try {
-      var url = baseUrl + APIEndpoint.LOGIN_ENDPOINT;
+      var url = baseUrl! + APIEndpoint.LOGIN_ENDPOINT;
       var uri = Uri.parse(url);
       var map = new Map<String, dynamic>();
       map["username"] = username;
       map["password"] = password;
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: json.encode(map),
-        headers: APIConfiguration(baseUrl).getDefaultHeader(),
+        headers: APIConfiguration(baseUrl!).getDefaultHeader(),
       );
       LoginResponse apiResponse =
           LoginResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
-        StorageManager.saveData("useMaxTonnage", apiResponse.data.useMaxTonnage);
-        StorageManager.saveData("tokenExpired", json.decode(response.body)['data']['token_expired_at']);
+        StorageManager.saveData(
+            "useMaxTonnage", apiResponse.data!.useMaxTonnage);
+        StorageManager.saveData("tokenExpired",
+            json.decode(response.body)['data']['token_expired_at']);
         onSuccess(context, apiResponse.data);
       } else {
         onError(context, apiResponse.message);

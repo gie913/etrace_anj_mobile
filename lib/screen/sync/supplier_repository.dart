@@ -7,19 +7,19 @@ import 'package:e_trace_app/model/sync_supplier_response.dart';
 import 'package:http/io_client.dart';
 
 class SupplierRepository {
-
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   SupplierRepository(String baseUrl) {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 
-  void doSyncSupplier(String token, String lastSync, onSuccess, onError) async {
+  void doSyncSupplier(
+      String token, String? lastSync, onSuccess, onError) async {
     String timeLastSync;
     if (lastSync == null) {
       timeLastSync = "";
@@ -27,16 +27,16 @@ class SupplierRepository {
       timeLastSync = "/?last_updated_at=$lastSync";
     }
     try {
-      var url = baseUrl + APIEndpoint.SYNC_DATA_SUPPLIER + timeLastSync;
+      var url = baseUrl! + APIEndpoint.SYNC_DATA_SUPPLIER + timeLastSync;
       var uri = Uri.parse(url);
-      var response = await ioClient.get(
+      var response = await ioClient!.get(
         uri,
-        headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
+        headers: APIConfiguration(baseUrl!).getDefaultHeaderWithToken(token),
       );
       SyncSupplierResponse apiResponse =
-      SyncSupplierResponse.fromJson(json.decode(response.body));
+          SyncSupplierResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
-        onSuccess(apiResponse.data.suppliers);
+        onSuccess(apiResponse.data!.suppliers);
       } else {
         onError(apiResponse.message);
       }

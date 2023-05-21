@@ -20,10 +20,10 @@ class SearchHarvestTicketCollectionState
     extends State<SearchHarvestTicketCollection> {
   DatabaseHelper dbHelper = DatabaseHelper();
   DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
-  List<HarvestingTicket> harvestTicketList = [];
+  List<HarvestingTicket>? harvestTicketList;
   List<HarvestingTicket> harvestTicketListChecked = [];
-  String farmerName, farmerAddress, farmerNumber;
-  List<bool> _isChecked;
+  String? farmerName, farmerAddress, farmerNumber;
+  List<bool>? _isChecked;
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class SearchHarvestTicketCollectionState
           )
         ],
       ),
-      body: harvestTicketList.length != 0
+      body: harvestTicketList!.length != 0
           ? createListView()
           : Center(
               child: Column(
@@ -71,7 +71,7 @@ class SearchHarvestTicketCollectionState
 
   ListView createListView() {
     return ListView.builder(
-      itemCount: harvestTicketList.length,
+      itemCount: harvestTicketList!.length,
       itemBuilder: (BuildContext context, int index) {
         return Card(
           child: Container(
@@ -79,24 +79,24 @@ class SearchHarvestTicketCollectionState
             child: Column(
               children: [
                 CheckboxListTile(
-                  value: _isChecked[index],
+                  value: _isChecked![index],
                   onChanged: (val) {
                     setState(
                       () {
-                        _isChecked[index] = val;
-                        if (_isChecked[index]) {
+                        _isChecked![index] = val!;
+                        if (_isChecked![index]) {
                           harvestTicketListChecked
-                              .add(harvestTicketList[index]);
+                              .add(harvestTicketList![index]);
                         } else {
                           harvestTicketListChecked
-                              .remove(harvestTicketList[index]);
+                              .remove(harvestTicketList![index]);
                         }
                       },
                     );
                   },
                   secondary:
                       Icon(Linecons.note, size: 35, color: Colors.orange),
-                  title: Text(harvestTicketList[index].idTicket,
+                  title: Text(harvestTicketList![index].idTicket!,
                       style: text16Bold),
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 8),
@@ -105,16 +105,16 @@ class SearchHarvestTicketCollectionState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(DATE_TICKET_TILE +
-                            harvestTicketList[index].dateTicket),
+                            harvestTicketList![index].dateTicket!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
-                              "Jumlah/Berat(KG): ${harvestTicketList[index].quantity}/${formatThousandSeparator(harvestTicketList[index].weight.round())}"),
+                              "Jumlah/Berat(KG): ${harvestTicketList![index].quantity}/${formatThousandSeparator(harvestTicketList![index].weight.round())}"),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
-                              "Kode Areal: ${harvestTicketList[index].ascendFarmerCode}"),
+                              "Kode Areal: ${harvestTicketList![index].ascendFarmerCode}"),
                         ),
                       ],
                     ),

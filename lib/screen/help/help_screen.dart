@@ -21,6 +21,7 @@ class _HelpScreenState extends State<HelpScreen> {
             children: [
               Card(
                 child: ExpandablePanel(
+                  collapsed: const SizedBox(),
                   header: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -31,13 +32,15 @@ class _HelpScreenState extends State<HelpScreen> {
                   expanded: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      HARVESTING_TICKET_DESC, textAlign: TextAlign.justify,
+                      HARVESTING_TICKET_DESC,
+                      textAlign: TextAlign.justify,
                     ),
                   ),
                 ),
               ),
               Card(
                 child: ExpandablePanel(
+                  collapsed: const SizedBox(),
                   header: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -48,13 +51,15 @@ class _HelpScreenState extends State<HelpScreen> {
                   expanded: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      COLLECTION_POINT_DESC, textAlign: TextAlign.justify,
+                      COLLECTION_POINT_DESC,
+                      textAlign: TextAlign.justify,
                     ),
                   ),
                 ),
               ),
               Card(
                 child: ExpandablePanel(
+                  collapsed: const SizedBox(),
                   header: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -65,13 +70,15 @@ class _HelpScreenState extends State<HelpScreen> {
                   expanded: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      DELIVERY_ORDER_DESC, textAlign: TextAlign.justify,
+                      DELIVERY_ORDER_DESC,
+                      textAlign: TextAlign.justify,
                     ),
                   ),
                 ),
               ),
               Card(
                 child: ExpandablePanel(
+                  collapsed: const SizedBox(),
                   header: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -117,6 +124,7 @@ class _HelpScreenState extends State<HelpScreen> {
               ),
               Card(
                 child: ExpandablePanel(
+                  collapsed: const SizedBox(),
                   header: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -165,6 +173,7 @@ class _HelpScreenState extends State<HelpScreen> {
               ),
               Card(
                 child: ExpandablePanel(
+                  collapsed: const SizedBox(),
                   header: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(

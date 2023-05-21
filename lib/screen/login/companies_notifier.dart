@@ -9,13 +9,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:toast/toast.dart';
 
 class CompanyViewModel extends ChangeNotifier {
-  String serverUrl;
+  String? serverUrl;
 
   List<DataCompanies> _myCompanies = [];
 
-  String _myCompany;
+  String? _myCompany;
 
-  String get myCompany => _myCompany;
+  String? get myCompany => _myCompany;
 
   List<DataCompanies> get myCompanies => _myCompanies;
 
@@ -26,13 +26,12 @@ class CompanyViewModel extends ChangeNotifier {
 
   doGetCompanyEvent(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
+    String? userBaseUrl = prefs.getString('baseUrl');
     if (userBaseUrl != null) {
       CompanyRepository(userBaseUrl).doGetCompanies(
           context, _onSuccessLoginCallback, _onErrorLoginCallback);
     } else {
-      Toast.show(SERVER_NOT_CONFIGURE, context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.TOP);
+      Toast.show(SERVER_NOT_CONFIGURE, duration: 3, gravity: 2);
     }
   }
 
@@ -45,8 +44,8 @@ class CompanyViewModel extends ChangeNotifier {
   }
 
   Future<int> insertCompanies(DataCompanies object) async {
-    Database db = await DatabaseHelper().database;
-    int count = await db.insert(TABLE_COMPANY, object.toJson());
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.insert(TABLE_COMPANY, object.toJson());
     return count;
   }
 

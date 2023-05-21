@@ -1,18 +1,19 @@
 class Agents {
-  String id;
-  String name;
+  String? id;
+  String? name;
   dynamic ascendAgentId;
-  String ascendAgentCode;
-  String address;
-  String phoneNumber;
-  String updatedAt;
+  String? ascendAgentCode;
+  String? address;
+  String? phoneNumber;
+  String? updatedAt;
 
-  Agents(
-      {this.name,
-      this.ascendAgentId,
-      this.ascendAgentCode,
-      this.address,
-      this.phoneNumber});
+  Agents({
+    this.name,
+    this.ascendAgentId,
+    this.ascendAgentCode,
+    this.address,
+    this.phoneNumber,
+  });
 
   Agents.fromJson(Map<String, dynamic> json) {
     name = json['name'];

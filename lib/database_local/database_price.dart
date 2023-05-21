@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import 'database_helper.dart';
 
 class DatabasePrice {
-
   void getPrice(onSuccess, onError) async {
     var priceList = await selectPrice();
     int count = priceList.length;
@@ -19,8 +18,8 @@ class DatabasePrice {
   }
 
   Future<List<Map<String, dynamic>>> selectPrice() async {
-    Database db = await DatabaseHelper().database;
-    var mapList = await db.query(TABLE_PRICE);
+    Database? db = await DatabaseHelper().database;
+    var mapList = await db!.query(TABLE_PRICE);
     return mapList;
   }
 }

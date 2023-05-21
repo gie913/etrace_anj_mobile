@@ -1,7 +1,7 @@
 class ChangePhotoResponse {
-  bool success;
-  String message;
-  List<Null> data;
+  bool? success;
+  String? message;
+  List<Null>? data;
 
   ChangePhotoResponse({this.success, this.message, this.data});
 
@@ -15,7 +15,6 @@ class ChangePhotoResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {}
     return data;
   }
 }

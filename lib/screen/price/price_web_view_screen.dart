@@ -19,9 +19,11 @@ class PriceWebViewScreen extends StatefulWidget {
 class _PriceWebViewScreenState extends State<PriceWebViewScreen> {
   String url = "";
 
-  PDFDocument document;
+  PDFDocument? document;
   String dataPriceLess = "", datePrice = "";
   bool _isLoading = true;
+
+  final controller = WebViewController();
 
   @override
   void initState() {
@@ -32,40 +34,46 @@ class _PriceWebViewScreenState extends State<PriceWebViewScreen> {
   void doGetPrice() async {
     setState(() => _isLoading = true);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    PriceRepository(userBaseUrl)
-        .doGetPrice(userToken, onSuccessPriceCallback, onErrorPriceCallback);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    PriceRepository(userBaseUrl!)
+        .doGetPrice(userToken!, onSuccessPriceCallback, onErrorPriceCallback);
   }
 
   onSuccessPriceCallback(PriceResponse priceResponse) async {
-    print(priceResponse.dataPrice.file);
-    if (priceResponse.dataPrice.infoType == "file") {
+    print(priceResponse.dataPrice!.file);
+    if (priceResponse.dataPrice!.infoType == "file") {
       setState(() {
         dataPriceLess = "file";
-        url = priceResponse.dataPrice.file;
-        datePrice = priceResponse.dataPrice.date;
+        url = priceResponse.dataPrice!.file!;
+        datePrice = priceResponse.dataPrice!.date!;
       });
-      document = await PDFDocument.fromURL(priceResponse.dataPrice.file);
-      print(priceResponse.dataPrice.file);
-    } else if (priceResponse.dataPrice.infoType == "website") {
+      document = await PDFDocument.fromURL(priceResponse.dataPrice!.file!);
+      print(priceResponse.dataPrice!.file!);
+    } else if (priceResponse.dataPrice!.infoType == "website") {
       setState(() {
         dataPriceLess = "website";
-        url = priceResponse.dataPrice.infoSource;
-        datePrice = priceResponse.dataPrice.date;
+        url = priceResponse.dataPrice!.infoSource!;
+        datePrice = priceResponse.dataPrice!.date!;
       });
     } else {
       setState(() {
-        url = priceResponse.dataPrice.infoSource;
-        datePrice = priceResponse.dataPrice.date;
+        url = priceResponse.dataPrice!.infoSource!;
+        datePrice = priceResponse.dataPrice!.date!;
       });
     }
     setState(() => _isLoading = false);
+    setState(() {
+      _isLoading = false;
+      controller
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(const Color(0x00000000))
+        ..loadRequest(Uri.parse(url));
+    });
   }
 
   onErrorPriceCallback(response) async {
-    Toast.show("Tidak Ada Koneksi Internet", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Tidak Ada Koneksi Internet", duration: 3, gravity: 0);
     setState(() => _isLoading = false);
   }
 
@@ -95,7 +103,7 @@ class _PriceWebViewScreenState extends State<PriceWebViewScreen> {
                           ),
                           Flexible(
                             child: PDFViewer(
-                              document: document,
+                              document: document!,
                               zoomSteps: 1,
                               showPicker: false,
                               showNavigation: true,
@@ -116,10 +124,7 @@ class _PriceWebViewScreenState extends State<PriceWebViewScreen> {
                                     )),
                               ),
                               Flexible(
-                                child: WebView(
-                                  initialUrl: url,
-                                  javascriptMode: JavascriptMode.unrestricted,
-                                ),
+                                child: WebViewWidget(controller: controller),
                               ),
                             ],
                           )
@@ -135,10 +140,10 @@ class _PriceWebViewScreenState extends State<PriceWebViewScreen> {
                                     )),
                               ),
                               Flexible(
-                                child: Html(
-                                  data: """$url""",
+                                child: Padding(
                                   padding:
                                       EdgeInsets.only(left: 20.0, right: 20.0),
+                                  child: Html(data: """$url"""),
                                 ),
                               ),
                             ],

@@ -8,30 +8,29 @@ import 'package:e_trace_app/screen/harvest_ticket/transfer_harvest_ticket.dart';
 import 'package:http/io_client.dart';
 
 class SaveTransferRepository {
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   SaveTransferRepository(String baseUrl) {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 
-  void doSaveTransferTicket(
-      TransferHarvestingTicketBody transferBody, String token, onSuccess, onError) async {
-    var url = this.baseUrl + APIEndpoint.SAVE_RECEIVE_ENDPOINT;
+  void doSaveTransferTicket(TransferHarvestingTicketBody transferBody,
+      String token, onSuccess, onError) async {
+    var url = this.baseUrl! + APIEndpoint.SAVE_RECEIVE_ENDPOINT;
     var uri = Uri.parse(url);
-    final map = jsonEncode({
-      "harvesting_ticket": transferBody.harvestingTicket
-    });
+    final map =
+        jsonEncode({"harvesting_ticket": transferBody.harvestingTicket});
 
     try {
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: map,
-        headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
+        headers: APIConfiguration(baseUrl!).getDefaultHeaderWithToken(token),
       );
 
       String responseBody = response.body;

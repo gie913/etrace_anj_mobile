@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_return_type_for_catch_error
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -44,8 +46,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   ConnectivityResult connectionStatus = ConnectivityResult.none;
   final Connectivity connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
-  AppUpdateInfo updateInfo;
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
+  AppUpdateInfo? updateInfo;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
   bool flexibleUpdateAvailable = false;
   final scaffoldState = GlobalKey();
@@ -59,7 +61,8 @@ class _MainScreenState extends State<MainScreen> {
       setState(() {
         updateInfo = info;
         print(updateInfo.toString());
-        if (updateInfo.updateAvailable == true) {
+        if (updateInfo!.updateAvailability ==
+            UpdateAvailability.updateAvailable) {
           showSnack(updateInfo.toString());
         }
       });
@@ -75,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
-    _connectivitySubscription.cancel();
+    _connectivitySubscription!.cancel();
     super.dispose();
   }
 
@@ -226,7 +229,7 @@ class _MainScreenState extends State<MainScreen> {
                     } else if (action == "redirect_page") {
                       Navigator.pop(context);
                       setNotificationClicked();
-                      _launchURL(url);
+                      _launchUrl(url);
                     } else {
                       setNotificationClicked();
                       Navigator.pop(context);
@@ -237,8 +240,12 @@ class _MainScreenState extends State<MainScreen> {
         });
   }
 
-  void _launchURL(String url) async =>
-      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  Future<void> _launchUrl(String url) async {
+    final Uri _url = Uri.parse(url);
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
 
   @override
   void initState() {
@@ -264,14 +271,14 @@ class _MainScreenState extends State<MainScreen> {
 
   checkNotification() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String action = prefs.getString('action');
-    bool clicked = prefs.getBool('clicked');
-    String titleNotification = prefs.getString('title_notification');
-    String messageNotification = prefs.getString('message_notification');
-    String urlNotification = prefs.getString('url_notification');
+    String? action = prefs.getString('action');
+    bool? clicked = prefs.getBool('clicked');
+    String? titleNotification = prefs.getString('title_notification');
+    String? messageNotification = prefs.getString('message_notification');
+    String? urlNotification = prefs.getString('url_notification');
     if (clicked == false) {
       showDialogNotification(
-          titleNotification, messageNotification, action, urlNotification);
+          titleNotification!, messageNotification!, action!, urlNotification!);
     }
   }
 
@@ -283,10 +290,10 @@ class _MainScreenState extends State<MainScreen> {
         NotificationModel notif =
             NotificationModel.fromJson(json.decode(json.encode(event.data)));
         print(notif.action);
-        showDialogNotification(event.notification.title,
-            event.notification.body, notif.action, notif.toPage);
-        setNotificationArrived(event.notification.title,
-            event.notification.body, notif.action, notif.toPage);
+        showDialogNotification(event.notification!.title!,
+            event.notification!.body!, notif.action!, notif.toPage!);
+        setNotificationArrived(event.notification!.title!,
+            event.notification!.body!, notif.action!, notif.toPage!);
       }
       i++;
     });
@@ -295,21 +302,21 @@ class _MainScreenState extends State<MainScreen> {
           NotificationModel.fromJson(json.decode(json.encode(message.data)));
       print(notif.action);
       print('Message clicked!');
-      showDialogNotification(message.notification.title,
-          message.notification.title, notif.action, notif.toPage);
-      setNotificationArrived(message.notification.title,
-          message.notification.title, notif.action, notif.toPage);
+      showDialogNotification(message.notification!.title!,
+          message.notification!.title!, notif.action!, notif.toPage!);
+      setNotificationArrived(message.notification!.title!,
+          message.notification!.title!, notif.action!, notif.toPage!);
     });
   }
 
   getDataFarmer() async {
     loadingDialog(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String lastSync = prefs.getString('lastSync');
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    TonnageFarmerRepository(userBaseUrl).doSyncFarmerTonnage(
-        userToken, lastSync, onSuccessSyncFarmer, onErrorSyncFarmer);
+    final String? lastSync = prefs.getString('lastSync');
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    TonnageFarmerRepository(userBaseUrl!).doSyncFarmerTonnage(
+        userToken!, lastSync!, onSuccessSyncFarmer, onErrorSyncFarmer);
   }
 
   onSuccessSyncFarmer(List<Farmers> farmers) {
@@ -320,8 +327,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<int> updateFarmer(Farmers object) async {
-    Database db = await DatabaseHelper().database;
-    int count = await db.update(TABLE_FARMER, object.toJson(),
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.update(TABLE_FARMER, object.toJson(),
         where: '$FARMER_ID_OBJECT=?', whereArgs: [object.idFarmer]);
     return count;
   }
@@ -361,18 +368,16 @@ class _MainScreenState extends State<MainScreen> {
 
   doGetVersion(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
-    if (userBaseUrl != null) {
-      CheckVersionRepository(userBaseUrl).doCheckVersion(
-          context, _onSuccessLoginCallback, _onErrorLoginCallback);
-    }
+    String? userBaseUrl = prefs.getString('baseUrl');
+    CheckVersionRepository(userBaseUrl!).doCheckVersion(
+        context, _onSuccessLoginCallback, _onErrorLoginCallback);
   }
 
   _onSuccessLoginCallback(CheckVersionResponse checkVersionResponse) async {
-    List<String> listString = checkVersionResponse.data.topics.toList();
+    List<String> listString = checkVersionResponse.data!.topics!.toList();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(
-        "topics", checkVersionResponse.data.topics.toString());
+        "topics", checkVersionResponse.data!.topics.toString());
     print(preferences.getString("topics"));
     print("this is list string $listString");
     for (int i = 0; i < listString.length; i++) {
@@ -389,7 +394,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => onWillPop(context),
+      onWillPop: () async => await onWillPop(context),
       child: Consumer<MainNotifier>(builder: (context, mainNotifier, child) {
         return Scaffold(
           key: scaffoldKey,
@@ -422,10 +427,10 @@ class _MainScreenState extends State<MainScreen> {
 
   void doSetVersion() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    SetVersionRepository(userBaseUrl).doSetVersion(
-        userToken, onSuccessProfileCallback, onErrorProfileCallback);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    SetVersionRepository(userBaseUrl!).doSetVersion(
+        userToken!, onSuccessProfileCallback, onErrorProfileCallback);
   }
 
   onSuccessProfileCallback(String response) {}
@@ -434,10 +439,10 @@ class _MainScreenState extends State<MainScreen> {
 
   void doLogoutUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    LogOutRepository(userBaseUrl)
-        .doGetLogOut(userToken, onSuccessLogOutCallback, onErrorLogOutCallback);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    LogOutRepository(userBaseUrl!).doGetLogOut(
+        userToken!, onSuccessLogOutCallback, onErrorLogOutCallback);
   }
 
   onSuccessLogOutCallback(LogOutResponse logOutResponse) async {
@@ -450,13 +455,13 @@ class _MainScreenState extends State<MainScreen> {
     prefs.remove('collection_point');
     prefs.remove('delivery_order');
     setNotificationClicked();
-    Database db = await DatabaseHelper().database;
-    await db.delete(TABLE_FARMER);
+    Database? db = await DatabaseHelper().database;
+    await db!.delete(TABLE_FARMER);
     await db.delete(TABLE_SUPPLIER);
     await db.delete(TABLE_AGENT);
     await db.delete(TABLE_PRICE);
-    String stringTopics = prefs.getString("topics");
-    String replacedString = stringTopics.replaceAll("[", "");
+    String? stringTopics = prefs.getString("topics");
+    String replacedString = stringTopics!.replaceAll("[", "");
     String replacedString2 = replacedString.replaceAll("]", "");
     print(replacedString);
     print("replaced 2 " + replacedString2);
@@ -507,9 +512,9 @@ Future<void> _messageHandler(RemoteMessage message) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   NotificationModel notif =
       NotificationModel.fromJson(json.decode(json.encode(message.data)));
-  prefs.setString('action', notif.action);
-  prefs.setString('title_notification', message.notification.title);
-  prefs.setString('message_notification', message.notification.body);
-  prefs.setString('url_notification', notif.toPage);
+  prefs.setString('action', notif.action!);
+  prefs.setString('title_notification', message.notification!.title!);
+  prefs.setString('message_notification', message.notification!.body!);
+  prefs.setString('url_notification', notif.toPage!);
   prefs.setBool('clicked', false);
 }

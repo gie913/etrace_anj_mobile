@@ -20,11 +20,11 @@ import 'package:sqflite/sqflite.dart';
 class SyncDataBackground {
   getDataFarmer() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String lastSync = prefs.getString('lastSync');
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    FarmerRepository(userBaseUrl).doSyncFarmer(
-        userToken, lastSync, onSuccessSyncFarmer, onErrorSyncFarmer);
+    final String? lastSync = prefs.getString('lastSync');
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    FarmerRepository(userBaseUrl!).doSyncFarmer(
+        userToken!, lastSync!, onSuccessSyncFarmer, onErrorSyncFarmer);
   }
 
   onSuccessSyncFarmer(List<Farmers> farmers) {
@@ -51,8 +51,8 @@ class SyncDataBackground {
   }
 
   Future<int> insertAgent(Agents object) async {
-    Database db = await DatabaseHelper().database;
-    int count = await db.insert(TABLE_AGENT, object.toJson());
+    Database? db = await DatabaseHelper().database;
+    int count = await db!.insert(TABLE_AGENT, object.toJson());
     return count;
   }
 
@@ -60,11 +60,11 @@ class SyncDataBackground {
 
   getDataSupplier() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String lastSync = prefs.getString('lastSync');
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    SupplierRepository(userBaseUrl).doSyncSupplier(
-        userToken, lastSync, onSuccessSyncSupplier, onErrorSyncSupplier);
+    final String? lastSync = prefs.getString('lastSync');
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    SupplierRepository(userBaseUrl!).doSyncSupplier(
+        userToken!, lastSync!, onSuccessSyncSupplier, onErrorSyncSupplier);
   }
 
   onSuccessSyncSupplier(List<Suppliers> suppliers) {
@@ -79,17 +79,17 @@ class SyncDataBackground {
 
   getDataFarmerTransaction() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    FarmerTransactionRepository(userBaseUrl).doSyncFarmerTransaction(
-        userToken, onSuccessFarmerTransaction, onErrorFarmerTransaction);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    FarmerTransactionRepository(userBaseUrl!).doSyncFarmerTransaction(
+        userToken!, onSuccessFarmerTransaction, onErrorFarmerTransaction);
   }
 
   onSuccessFarmerTransaction(FarmerTransactions farmerTransactions) {
     DatabaseFarmerTransaction()
         .deleteInsertFarmerTransaction(farmerTransactions);
     DatabaseFarmer()
-        .deleteFarmerBlacklist(farmerTransactions.data.blacklistedFarmer);
+        .deleteFarmerBlacklist(farmerTransactions.data!.blacklistedFarmer!);
     setSession();
     setLastSync();
   }

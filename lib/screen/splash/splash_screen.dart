@@ -14,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     autoLogIn();
@@ -24,22 +23,23 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void autoLogIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String session = prefs.getString('session');
-    final String tokenExpired = prefs.getString('tokenExpired');
+    String? session = prefs.getString('session');
+    String? tokenExpired = prefs.getString('tokenExpired');
     var duration = const Duration(seconds: 3);
     Timer(duration, () {
       if (session != null) {
-        if(tokenExpired != null) {
+        if (tokenExpired != null) {
           DateTime expiredDate = DateTime.parse(tokenExpired);
-          DateTime expiredDate14 = new DateTime(expiredDate.year, expiredDate.month, expiredDate.day - 14);
+          DateTime expiredDate14 = new DateTime(
+              expiredDate.year, expiredDate.month, expiredDate.day - 14);
           DateTime now = DateTime.now();
           bool valDate = now.isAfter(expiredDate14);
-          if(!valDate) {
+          if (!valDate) {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MainScreen()));
           } else {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => LoginScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginScreen()));
           }
         } else {
           Navigator.push(
@@ -78,8 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 fontFamily: "DIN Pro",
                                 fontWeight: FontWeight.bold,
                                 fontSize:
-                                MediaQuery.of(context).size.width *
-                                    0.12),
+                                    MediaQuery.of(context).size.width * 0.12),
                           )
                         ],
                       ),

@@ -1,46 +1,47 @@
 class User {
-  String id;
-  String name;
-  String email;
-  String emailVerifiedAt;
-  String mRoleId;
-  String username;
-  String address;
-  String gender;
-  String rememberToken;
-  String mCompanyId;
-  String phoneNumber;
-  String lastLogin;
-  int isActive;
-  String createdAt;
-  String createdBy;
-  String updatedAt;
-  String updatedBy;
-  String photoProfile;
-  int sequenceNumber;
-  String companyName;
+  String? id;
+  String? name;
+  String? email;
+  String? emailVerifiedAt;
+  String? mRoleId;
+  String? username;
+  String? address;
+  String? gender;
+  String? rememberToken;
+  String? mCompanyId;
+  String? phoneNumber;
+  String? lastLogin;
+  int? isActive;
+  String? createdAt;
+  String? createdBy;
+  String? updatedAt;
+  String? updatedBy;
+  String? photoProfile;
+  int? sequenceNumber;
+  String? companyName;
 
-  User(
-      {this.id,
-      this.name,
-      this.email,
-      this.emailVerifiedAt,
-      this.mRoleId,
-      this.username,
-      this.address,
-      this.gender,
-      this.rememberToken,
-      this.mCompanyId,
-      this.phoneNumber,
-      this.lastLogin,
-      this.isActive,
-      this.createdAt,
-      this.createdBy,
-        this.photoProfile,
-      this.updatedAt,
-      this.updatedBy,
-      this.sequenceNumber,
-      this.companyName});
+  User({
+    this.id,
+    this.name,
+    this.email,
+    this.emailVerifiedAt,
+    this.mRoleId,
+    this.username,
+    this.address,
+    this.gender,
+    this.rememberToken,
+    this.mCompanyId,
+    this.phoneNumber,
+    this.lastLogin,
+    this.isActive,
+    this.createdAt,
+    this.createdBy,
+    this.photoProfile,
+    this.updatedAt,
+    this.updatedBy,
+    this.sequenceNumber,
+    this.companyName,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];

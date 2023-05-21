@@ -1,30 +1,31 @@
 class Farmers {
-  String idFarmer;
-  String fullname;
+  String? idFarmer;
+  String? fullname;
   dynamic ascendFarmerId;
-  String ascendFarmerCode;
-  String address;
-  String gpsLong;
-  String gpsLat;
+  String? ascendFarmerCode;
+  String? address;
+  String? gpsLong;
+  String? gpsLat;
   dynamic largeAreaHa;
-  String yop;
+  String? yop;
   dynamic maxTonnageYear;
-  int maxBunchYear;
+  int? maxBunchYear;
   dynamic sumKgYear;
 
-  Farmers(
-      {this.idFarmer,
-      this.fullname,
-      this.ascendFarmerId,
-      this.ascendFarmerCode,
-      this.address,
-      this.gpsLong,
-      this.gpsLat,
-      this.largeAreaHa,
-      this.yop,
-      this.maxTonnageYear,
-      this.maxBunchYear,
-      this.sumKgYear});
+  Farmers({
+    this.idFarmer,
+    this.fullname,
+    this.ascendFarmerId,
+    this.ascendFarmerCode,
+    this.address,
+    this.gpsLong,
+    this.gpsLat,
+    this.largeAreaHa,
+    this.yop,
+    this.maxTonnageYear,
+    this.maxBunchYear,
+    this.sumKgYear,
+  });
 
   Farmers.fromJson(Map<String, dynamic> json) {
     idFarmer = json['id'];

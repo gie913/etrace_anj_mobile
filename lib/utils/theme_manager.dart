@@ -8,7 +8,6 @@ class ThemeNotifier with ChangeNotifier {
     primaryColor: Color(0xFF212121),
     brightness: Brightness.dark,
     dividerTheme: DividerThemeData(color: Colors.grey),
-    backgroundColor: Colors.black,
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(primaryColor),
@@ -23,7 +22,8 @@ class ThemeNotifier with ChangeNotifier {
     dividerColor: Colors.black,
     colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.orange, brightness: Brightness.dark)
-        .copyWith(secondary: Colors.white),
+        .copyWith(secondary: Colors.white)
+        .copyWith(background: Colors.black),
   );
 
   final lightTheme = ThemeData(
@@ -50,18 +50,18 @@ class ThemeNotifier with ChangeNotifier {
         backgroundColor: MaterialStateProperty.all(primaryColor),
       ),
     ),
-    backgroundColor: primaryColorLight,
     colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
-        .copyWith(secondary: primaryColorLight),
+        .copyWith(secondary: primaryColorLight)
+        .copyWith(background: primaryColorLight),
   );
 
-  ThemeData _themeData;
+  ThemeData? _themeData;
 
-  bool _status;
+  bool? _status;
 
-  bool get status => _status;
+  bool? get status => _status;
 
-  ThemeData getTheme() => _themeData;
+  ThemeData? getTheme() => _themeData;
 
   ThemeNotifier() {
     _status = false;

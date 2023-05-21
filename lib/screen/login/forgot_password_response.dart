@@ -1,7 +1,7 @@
 class ForgotPasswordResponse {
-  bool success;
-  String message;
-  List<Null> data;
+  bool? success;
+  String? message;
+  List<Null>? data;
 
   ForgotPasswordResponse({this.success, this.message, this.data});
 

@@ -10,13 +10,13 @@ class TransferRepository extends APIConfiguration {
 
   void doTransferTicket(TransferHarvestingTicketBody transferBody, String token,
       onSuccess, onError) async {
-    var url = this.baseUrl + APIEndpoint.SEND_HARVEST_TICKET;
+    var url = this.baseUrl! + APIEndpoint.SEND_HARVEST_TICKET;
     var uri = Uri.parse(url);
     final map =
         jsonEncode({"harvesting_ticket": transferBody.harvestingTicket});
 
     try {
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: map,
         headers: getDefaultHeaderWithToken(token),

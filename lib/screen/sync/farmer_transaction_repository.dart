@@ -7,8 +7,8 @@ import 'package:e_trace_app/model/farmer_transaction.dart';
 import 'package:http/io_client.dart';
 
 class FarmerTransactionRepository {
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   FarmerTransactionRepository(String baseUrl) {
     this.baseUrl = baseUrl;
@@ -20,11 +20,11 @@ class FarmerTransactionRepository {
 
   void doSyncFarmerTransaction(String token, onSuccess, onError) async {
     try {
-      var url = baseUrl + APIEndpoint.FARMER_TRANSACTION;
+      var url = baseUrl! + APIEndpoint.FARMER_TRANSACTION;
       var uri = Uri.parse(url);
-      var response = await ioClient.get(
+      var response = await ioClient!.get(
         uri,
-        headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
+        headers: APIConfiguration(baseUrl!).getDefaultHeaderWithToken(token),
       );
       FarmerTransactions apiResponse =
           FarmerTransactions.fromJson(json.decode(response.body));

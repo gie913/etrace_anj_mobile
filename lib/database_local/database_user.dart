@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import 'database_entity.dart';
 
 class DatabaseUser {
-
   void getUser(onSuccess, onError) async {
     var userList = await selectUser();
     var priceJson = json.decode(json.encode(userList.last));
@@ -16,8 +15,8 @@ class DatabaseUser {
   }
 
   Future<List<Map<String, dynamic>>> selectUser() async {
-    Database db = await DatabaseHelper().database;
-    var mapList = await db.query(TABLE_USER);
+    Database? db = await DatabaseHelper().database;
+    var mapList = await db!.query(TABLE_USER);
     return mapList;
   }
 }

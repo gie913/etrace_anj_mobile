@@ -1,7 +1,7 @@
 class Companies {
-  bool success;
-  String message;
-  List<DataCompanies> data;
+  bool? success;
+  String? message;
+  List<DataCompanies>? data;
 
   Companies({this.success, this.message, this.data});
 
@@ -11,7 +11,7 @@ class Companies {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data.add(DataCompanies.fromJson(v));
+        data!.add(DataCompanies.fromJson(v));
       });
     }
   }
@@ -20,18 +20,16 @@ class Companies {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
+    data['data'] = this.data!.map((v) => v.toJson()).toList();
     return data;
   }
 }
 
 class DataCompanies {
-  String id;
-  String alias;
-  String code;
-  String name;
+  String? id;
+  String? alias;
+  String? code;
+  String? name;
 
   DataCompanies({this.id, this.alias, this.code, this.name});
 

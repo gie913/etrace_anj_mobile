@@ -1,28 +1,29 @@
 class Access {
-  String id;
-  String mModuleId;
-  String mRoleId;
-  int canCreate;
-  int canUpdate;
-  int canDelete;
-  int isActive;
-  String createdAt;
-  String createdBy;
-  String updatedAt;
-  String updatedBy;
+  String? id;
+  String? mModuleId;
+  String? mRoleId;
+  int? canCreate;
+  int? canUpdate;
+  int? canDelete;
+  int? isActive;
+  String? createdAt;
+  String? createdBy;
+  String? updatedAt;
+  String? updatedBy;
 
-  Access(
-      {this.id,
-      this.mModuleId,
-      this.mRoleId,
-      this.canCreate,
-      this.canUpdate,
-      this.canDelete,
-      this.isActive,
-      this.createdAt,
-      this.createdBy,
-      this.updatedAt,
-      this.updatedBy});
+  Access({
+    this.id,
+    this.mModuleId,
+    this.mRoleId,
+    this.canCreate,
+    this.canUpdate,
+    this.canDelete,
+    this.isActive,
+    this.createdAt,
+    this.createdBy,
+    this.updatedAt,
+    this.updatedBy,
+  });
 
   Access.fromJson(Map<String, dynamic> json) {
     id = json['id'];

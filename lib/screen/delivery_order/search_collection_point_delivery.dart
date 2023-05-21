@@ -25,8 +25,8 @@ class SearchCollectionDeliveryState extends State<SearchCollectionDelivery> {
   List<CollectionPoint> collectionPointList = [];
   List<CollectionPoint> collectionPointListChecked = [];
   List<HarvestingTicket> harvestingTicketCollection = [];
-  String farmerName, farmerAddress, farmerNumber;
-  List<bool> _isChecked;
+  String? farmerName, farmerAddress, farmerNumber;
+  List<bool>? _isChecked;
 
   @override
   void initState() {
@@ -85,12 +85,12 @@ class SearchCollectionDeliveryState extends State<SearchCollectionDelivery> {
             child: Column(
               children: [
                 CheckboxListTile(
-                  value: _isChecked[index],
+                  value: _isChecked![index],
                   onChanged: (val) {
                     setState(
                       () {
-                        _isChecked[index] = val;
-                        if (_isChecked[index]) {
+                        _isChecked![index] = val!;
+                        if (_isChecked![index]) {
                           collectionPointListChecked
                               .add(collectionPointList[index]);
                         } else {
@@ -106,7 +106,7 @@ class SearchCollectionDeliveryState extends State<SearchCollectionDelivery> {
                     color: Colors.green,
                   ),
                   title: Text(
-                    collectionPointList[index].idCollection,
+                    collectionPointList[index].idCollection!,
                     style: text16Bold,
                   ),
                   subtitle: Padding(
@@ -116,11 +116,11 @@ class SearchCollectionDeliveryState extends State<SearchCollectionDelivery> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Tanggal: " +
-                            collectionPointList[index].dateCollection),
+                            collectionPointList[index].dateCollection!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
-                              "Janjang/Berat(Kg): ${collectionPointList[index].totalQuantity}/${formatThousandSeparator(collectionPointList[index].totalWeight.round())}"),
+                              "Janjang/Berat(Kg): ${collectionPointList[index].totalQuantity}/${formatThousandSeparator(collectionPointList[index].totalWeight!.round())}"),
                         ),
                       ],
                     ),

@@ -1,50 +1,51 @@
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 
 class DeliveryOrder {
-  String idDelivery;
-  String dateDelivery;
-  String gpsLong;
-  String gpsLat;
-  String transferred;
-  String uploaded;
-  int totalQuantity;
-  double totalWeight;
-  String supplierID;
-  String ascentSupplierID;
-  String ascentSupplierCode;
-  String supplierName;
-  String driverName;
-  String mDriverID;
-  String platNumber;
-  String cardNumber;
-  String note;
-  String image;
-  String companyID;
-  String createdBy;
-  List<HarvestingTicket> harvestingTicket;
+  String? idDelivery;
+  String? dateDelivery;
+  String? gpsLong;
+  String? gpsLat;
+  String? transferred;
+  String? uploaded;
+  int? totalQuantity;
+  double? totalWeight;
+  String? supplierID;
+  String? ascentSupplierID;
+  String? ascentSupplierCode;
+  String? supplierName;
+  String? driverName;
+  String? mDriverID;
+  String? platNumber;
+  String? cardNumber;
+  String? note;
+  String? image;
+  String? companyID;
+  String? createdBy;
+  List<HarvestingTicket>? harvestingTicket;
 
-  DeliveryOrder(
-      {this.idDelivery,
-      this.dateDelivery,
-      this.gpsLong,
-      this.gpsLat,
-      this.transferred,
-      this.uploaded,
-      this.totalQuantity,
-      this.totalWeight,
-      this.mDriverID,
-      this.supplierID,
-      this.ascentSupplierID,
-      this.ascentSupplierCode,
-        this.supplierName,
-      this.driverName,
-      this.platNumber,
-      this.cardNumber,
-      this.note,
-      this.image,
-      this.companyID,
-      this.createdBy,
-      this.harvestingTicket});
+  DeliveryOrder({
+    this.idDelivery,
+    this.dateDelivery,
+    this.gpsLong,
+    this.gpsLat,
+    this.transferred,
+    this.uploaded,
+    this.totalQuantity,
+    this.totalWeight,
+    this.mDriverID,
+    this.supplierID,
+    this.ascentSupplierID,
+    this.ascentSupplierCode,
+    this.supplierName,
+    this.driverName,
+    this.platNumber,
+    this.cardNumber,
+    this.note,
+    this.image,
+    this.companyID,
+    this.createdBy,
+    this.harvestingTicket,
+  });
 
   DeliveryOrder.fromJson(Map<String, dynamic> map) {
     this.idDelivery = map['mobile_tr_do_number'];
@@ -70,7 +71,7 @@ class DeliveryOrder {
     if (map['harvesting_ticket'] != null) {
       harvestingTicket = [];
       map['harvesting_ticket'].forEach((v) {
-        harvestingTicket.add(new HarvestingTicket.fromJson(v));
+        harvestingTicket!.add(new HarvestingTicket.fromJson(v));
       });
     }
   }
@@ -97,10 +98,8 @@ class DeliveryOrder {
     map["image"] = this.image;
     map["m_company_id"] = this.companyID;
     map['created_by'] = this.createdBy;
-    if (this.harvestingTicket != null) {
-      map['harvesting_ticket'] =
-          this.harvestingTicket.map((v) => v.toJson()).toList();
-    }
+    map['harvesting_ticket'] =
+        this.harvestingTicket!.map((v) => v.toJson()).toList();
     return map;
   }
 }

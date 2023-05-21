@@ -1,7 +1,7 @@
 class UploadCollectionResponse {
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   UploadCollectionResponse({this.success, this.message, this.data});
 
@@ -15,15 +15,13 @@ class UploadCollectionResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }
 
 class Data {
-  List<String> collectionPoint;
+  List<String>? collectionPoint;
 
   Data({this.collectionPoint});
 

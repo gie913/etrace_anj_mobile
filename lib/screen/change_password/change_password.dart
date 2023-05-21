@@ -43,7 +43,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         child: TextFormField(
                           autofocus: false,
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return ALERT_SERVER;
                             }
                             return null;
@@ -64,7 +64,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         child: TextFormField(
                           autofocus: false,
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return ALERT_SERVER;
                             }
                             return null;
@@ -85,7 +85,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         child: TextFormField(
                           autofocus: false,
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return ALERT_SERVER;
                             }
                             return null;
@@ -114,7 +114,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.symmetric(vertical: 15),
                             alignment: Alignment.center,
-                            child: Text("Ganti Kata Sandi", style: buttonStyle16,),
+                            child: Text(
+                              "Ganti Kata Sandi",
+                              style: buttonStyle16,
+                            ),
                           ),
                         ),
                       )

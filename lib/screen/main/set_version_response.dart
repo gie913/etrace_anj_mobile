@@ -1,6 +1,6 @@
 class SetVersionResponse {
-  bool success;
-  String message;
+  bool? success;
+  String? message;
 
   SetVersionResponse({this.success, this.message});
 

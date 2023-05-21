@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class MainNotifier extends ChangeNotifier {
   int _selectedIndex = 0;
-  String _token;
+  String? _token;
   List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     PriceWebViewScreen(),
@@ -14,7 +14,7 @@ class MainNotifier extends ChangeNotifier {
 
   int get selectIndex => _selectedIndex;
 
-  String get token => _token;
+  String? get token => _token;
 
   List<Widget> get widgetOption => _widgetOptions;
 

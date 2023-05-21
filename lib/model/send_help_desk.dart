@@ -1,7 +1,7 @@
 class SendHelpDesk {
-  bool success;
-  String message;
-  List<Null> data;
+  bool? success;
+  String? message;
+  List<Null>? data;
 
   SendHelpDesk({this.success, this.message, this.data});
 
@@ -15,7 +15,6 @@ class SendHelpDesk {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {}
     return data;
   }
 }

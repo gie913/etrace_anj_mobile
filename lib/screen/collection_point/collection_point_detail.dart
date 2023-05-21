@@ -9,7 +9,7 @@ import 'package:e_trace_app/database_local/database_helper.dart';
 import 'package:e_trace_app/model/agents.dart';
 import 'package:e_trace_app/model/collection_point.dart';
 import 'package:e_trace_app/model/farmers.dart';
-import 'package:screen/screen.dart';
+// import 'package:screen/screen.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/model/transfer_response.dart';
 import 'package:e_trace_app/model/user.dart';
@@ -34,49 +34,47 @@ import 'package:sqflite/sqflite.dart';
 import 'package:toast/toast.dart';
 
 class CollectionPointDetail extends StatefulWidget {
-  final CollectionPoint collectionPoint;
+  final CollectionPoint? collectionPoint;
 
   CollectionPointDetail({this.collectionPoint});
 
   @override
-  CollectionPointDetailState createState() =>
-      CollectionPointDetailState(this.collectionPoint);
+  CollectionPointDetailState createState() => CollectionPointDetailState();
 }
 
 class CollectionPointDetailState extends State<CollectionPointDetail> {
-  CollectionPointDetailState(this.collectionPoint);
-
-  CollectionPoint collectionPoint;
+  CollectionPoint? collectionPoint;
   DatabaseCollectionPoint dbCollection = DatabaseCollectionPoint();
   TextEditingController userTargetController = TextEditingController();
   DatabaseHelper dbHelper = DatabaseHelper();
 
   // List<RecordEditor> _records = [];
   // bool _hasClosedWriteDialog = false;
-  User userTarget;
+  User? userTarget;
   Map<String, Farmers> mapFarmer = {};
   List<HarvestingTicket> listHarvestTicket = [];
-  Position position;
-  String compressed, agentName;
+  Position? position;
+  String? compressed, agentName;
   int totalQuantity = 0;
-  double totalWeight = 0.0, brightnessInit;
-  String userCompany = "";
-  Agents agentsObject;
+  double? totalWeight = 0.0, brightnessInit;
+  String? userCompany = "";
+  Agents? agentsObject;
   TextEditingController janjangSplitController = TextEditingController();
-  String menuTransfer;
+  String? menuTransfer;
   final controller = PageController();
 
   @override
   void initState() {
     getHarvestTicketCollectionList();
-    getAgentByID(widget.collectionPoint);
+    getAgentByID(widget.collectionPoint!);
+    collectionPoint = widget.collectionPoint;
     super.initState();
   }
 
-  Future<String> compress(String uncompressed) async {
+  Future<String?> compress(String uncompressed) async {
     final result = await LZString.compress(uncompressed);
     setState(() {
-      Screen.setBrightness(0.7);
+      // Screen.setBrightness(0.7);
       showQRCodeDialog(context, uncompressed);
     });
     return result;
@@ -204,16 +202,16 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
           appBar: AppBar(
             title: Text("Detail Titik Kumpul TBS"),
             actions: [
-              (collectionPoint.transferred == "true" ||
-                      collectionPoint.deliveryCollection != null)
+              (collectionPoint!.transferred == "true" ||
+                      collectionPoint!.deliveryCollection != null)
                   ? Container(width: 10)
                   : Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: InkWell(
                           onTap: () async {
                             var contact = await navigateToEntryForm(
-                                context, widget.collectionPoint);
-                            if (contact != null) editCollectionPoint(contact);
+                                context, widget.collectionPoint!);
+                            editCollectionPoint(contact);
                           },
                           child: Icon(Typicons.edit)),
                     ),
@@ -281,7 +279,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                   padding: const EdgeInsets.only(
                                       top: 6.0, bottom: 10.0),
                                   child: SelectableText(
-                                      "${widget.collectionPoint.idCollection}",
+                                      "${widget.collectionPoint!.idCollection}",
                                       style: text16Bold),
                                 )
                               ],
@@ -292,7 +290,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                               children: [
                                 Text(DATE_FORM, style: text14Bold),
                                 SelectableText(
-                                    "${widget.collectionPoint.dateCollection}")
+                                    "${widget.collectionPoint!.dateCollection}")
                               ],
                             ),
                             Divider(),
@@ -301,7 +299,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                               children: [
                                 Text(GPS_LOCATION_FORM, style: text14Bold),
                                 Text(
-                                    "${widget.collectionPoint.gpsLat ?? ""},${widget.collectionPoint.gpsLong ?? ""}",
+                                    "${widget.collectionPoint!.gpsLat ?? ""},${widget.collectionPoint!.gpsLong ?? ""}",
                                     overflow: TextOverflow.ellipsis)
                               ],
                             ),
@@ -325,7 +323,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                   style: text14Bold,
                                 ),
                                 SelectableText(
-                                    "${formatThousandSeparator(totalWeight.round())}")
+                                    "${formatThousandSeparator(totalWeight!.round())}")
                               ],
                             ),
                             Divider(),
@@ -334,7 +332,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                               children: [
                                 Text(AGENT_NAME, style: text14Bold),
                                 SelectableText(
-                                    "${collectionPoint.ascendAgentCode}")
+                                    "${collectionPoint!.ascendAgentCode}")
                               ],
                             ),
                             // Divider(),
@@ -357,7 +355,8 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                   "Catatan",
                                   style: text14Bold,
                                 ),
-                                SelectableText("${widget.collectionPoint.note}")
+                                SelectableText(
+                                    "${widget.collectionPoint!.note}")
                               ],
                             ),
                             Divider(),
@@ -382,9 +381,9 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                       padding: EdgeInsets.all(18),
                       child: Column(
                         children: [
-                          (collectionPoint.transferred == "true" ||
-                                  collectionPoint.deliveryCollection != null ||
-                                  collectionPoint.uploaded == "true")
+                          (collectionPoint!.transferred == "true" ||
+                                  collectionPoint!.deliveryCollection != null ||
+                                  collectionPoint!.uploaded == "true")
                               ? Container(width: 10)
                               : Container(
                                   width: 200,
@@ -436,7 +435,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                 style: text14Bold,
                               ),
                               Text(
-                                  "${formatThousandSeparator(totalWeight.round())}")
+                                  "${formatThousandSeparator(totalWeight!.round())}")
                             ],
                           ),
                           Row(
@@ -479,7 +478,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                       children: [
                                         Text("Tanggal: " +
                                             listHarvestTicket[index]
-                                                .dateTicket),
+                                                .dateTicket!),
                                         Text(
                                             "Kode Areal: ${listHarvestTicket[index].ascendFarmerCode}"),
                                         Column(
@@ -513,9 +512,9 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                   height: MediaQuery.of(context).size.height * 0.9,
                   margin: EdgeInsets.only(right: 4, top: 4),
                   padding: EdgeInsets.all(20),
-                  child: (collectionPoint.transferred == "true")
+                  child: (collectionPoint!.transferred == "true")
                       ? Center(child: Text("Titik Kumpul Sudah Ditransfer"))
-                      : (collectionPoint.deliveryCollection != null)
+                      : (collectionPoint!.deliveryCollection != null)
                           ? Center(
                               child: Text(
                                   "Titik Kumpul Sudah Masuk Surat Pengantar"))
@@ -698,14 +697,14 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                   if (janjangSplitController.text.isNotEmpty) {
                     if (int.parse(janjangSplitController.text) >
                         totalQuantity) {
-                      Toast.show("Melebihi Total Janjang", context,
-                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      Toast.show("Melebihi Total Janjang",
+                          duration: 3, gravity: 0);
                     } else {
                       doSplitTicketPanen();
                     }
                   } else {
-                    Toast.show("Belum Mengisi Jumlah Janjang", context,
-                        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                    Toast.show("Belum Mengisi Jumlah Janjang",
+                        duration: 3, gravity: 0);
                   }
                 },
               ),
@@ -721,15 +720,15 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
       Navigator.pop(context);
       List<String> dataCollection = [];
       for (int i = 0; i < listHarvestTicket.length; i++) {
-        String dataTicket = listHarvestTicket[i].idTicket +
+        String dataTicket = listHarvestTicket[i].idTicket! +
             "," +
-            listHarvestTicket[i].ascendFarmerCode +
+            listHarvestTicket[i].ascendFarmerCode! +
             "," +
             listHarvestTicket[i].quantity.toString() +
             "," +
             listHarvestTicket[i].weight.toString() +
             "," +
-            widget.collectionPoint.idCollection +
+            widget.collectionPoint!.idCollection! +
             "," +
             userTargetController.text;
         dataCollection.add(dataTicket);
@@ -737,8 +736,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
       String message = dataCollection.join("#");
       compress(message);
     } else {
-      Toast.show("Tujuan Belum Ada", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Toast.show("Tujuan Belum Ada", duration: 3, gravity: 0);
     }
   }
 
@@ -760,7 +758,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
               child: Column(
                 children: [
                   Text(
-                    "${collectionPoint.idCollection}",
+                    "${collectionPoint!.idCollection}",
                     style: TextStyle(color: Colors.black),
                   ),
                   SizedBox(
@@ -781,7 +779,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                 Navigator.pop(context);
                                 disableSecureScreen();
                                 setState(() {
-                                  Screen.setBrightness(brightnessInit);
+                                  // Screen.setBrightness(brightnessInit);
                                 });
                               },
                               child: Container(
@@ -805,7 +803,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                               onTap: () {
                                 doneQRDialog(context);
                                 setState(() {
-                                  Screen.setBrightness(brightnessInit);
+                                  // Screen.setBrightness(brightnessInit);
                                 });
                               },
                               child: Container(
@@ -861,12 +859,12 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
       this.totalQuantity = 0;
     });
     List<HarvestingTicket> list = await DatabaseHarvestTicket()
-        .getHarvestTicketListCollection(widget.collectionPoint);
+        .getHarvestTicketListCollection(widget.collectionPoint!);
     if (list.isNotEmpty) {
       for (int i = 0; i < list.length; i++) {
         setState(() {
-          this.totalWeight = this.totalWeight + list[i].weight;
-          this.totalQuantity = this.totalQuantity + list[i].quantity;
+          this.totalWeight = this.totalWeight! + list[i].weight;
+          this.totalQuantity = this.totalQuantity + list[i].quantity!;
         });
       }
       setState(() {
@@ -886,9 +884,9 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
 
   getAgentByID(CollectionPoint collectionPoint) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    double brightness = await Screen.brightness;
+    // double brightness = await Screen.brightness;
     setState(() {
-      this.brightnessInit = brightness;
+      // this.brightnessInit = brightness;
       agentName = prefs.getString('name');
       userCompany = prefs.getString('userPT');
     });
@@ -919,7 +917,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(userTarget == null
                                     ? "Tujuan Pengiriman"
-                                    : "${userTarget.name}"),
+                                    : "${userTarget!.name}"),
                               ),
                             ),
                           ),
@@ -936,9 +934,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                                   Navigator.pop(context);
                                   setState(() {
                                     userTarget = userTargetTemp;
-                                    if (userTargetTemp != null) {
-                                      transferDialog();
-                                    }
+                                    transferDialog();
                                   });
                                 },
                                 child: Container(
@@ -1016,7 +1012,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                     listHarvestTicket[i].transferred = "true";
                     updateHarvestTicket(listHarvestTicket[i]);
                   }
-                  this.collectionPoint.transferred = "true";
+                  this.collectionPoint!.transferred = "true";
                 });
                 Navigator.pop(context, collectionPoint);
                 Navigator.pop(context, collectionPoint);
@@ -1040,18 +1036,17 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
       for (int i = 0; i < listHarvestTicket.length; i++) {
         HarvestingTicket harvestingTicket = HarvestingTicket();
         harvestingTicket = listHarvestTicket[i];
-        harvestingTicket.userTargetId = userTarget.id;
+        harvestingTicket.userTargetId = userTarget!.id;
         listHarvest.add(harvestingTicket);
       }
       transferBody.harvestingTicket = listHarvest;
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String userToken = prefs.getString('token');
-      final String userBaseUrl = prefs.getString('baseUrl');
-      TransferRepository(userBaseUrl).doTransferTicket(transferBody, userToken,
-          onSuccessTransferCallback, onErrorTransferCallback);
+      final String? userToken = prefs.getString('token');
+      final String? userBaseUrl = prefs.getString('baseUrl');
+      TransferRepository(userBaseUrl!).doTransferTicket(transferBody,
+          userToken!, onSuccessTransferCallback, onErrorTransferCallback);
     } else {
-      Toast.show("Tujuan Belum Ada", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Toast.show("Tujuan Belum Ada", duration: 3, gravity: 0);
     }
   }
 
@@ -1061,26 +1056,24 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
         listHarvestTicket[i].transferred = "true";
         updateHarvestTicket(listHarvestTicket[i]);
       }
-      this.collectionPoint.transferred = "true";
+      this.collectionPoint!.transferred = "true";
     });
     Navigator.pop(context, collectionPoint);
     Navigator.pop(context, collectionPoint);
-    Toast.show("Berhasil terkirim", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Berhasil terkirim", duration: 3, gravity: 0);
   }
 
   void updateHarvestTicket(HarvestingTicket object) async {
     DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('username');
+    String? user = prefs.getString('username');
     object.createdBy = user;
     int result = await dbHarvest.updateHarvestTicket(object);
     print(result);
   }
 
   onErrorTransferCallback(response) {
-    Toast.show(response.toString(), context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show(response.toString(), duration: 3, gravity: 0);
   }
 
   doSplitTicketPanen() {
@@ -1093,16 +1086,16 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
       CollectionPoint collectionPoint = CollectionPoint();
       collectionPoint.idCollection = value;
       collectionPoint.dateCollection = generateDateTicket();
-      collectionPoint.ascendAgentCode = this.collectionPoint.ascendAgentCode;
-      collectionPoint.ascendAgentID = this.collectionPoint.ascendAgentID;
-      collectionPoint.agentID = this.collectionPoint.agentID;
-      collectionPoint.gpsLong = this.collectionPoint.gpsLong;
-      collectionPoint.gpsLat = this.collectionPoint.gpsLat;
-      collectionPoint.createdBy = this.collectionPoint.createdBy;
+      collectionPoint.ascendAgentCode = this.collectionPoint!.ascendAgentCode;
+      collectionPoint.ascendAgentID = this.collectionPoint!.ascendAgentID;
+      collectionPoint.agentID = this.collectionPoint!.agentID;
+      collectionPoint.gpsLong = this.collectionPoint!.gpsLong;
+      collectionPoint.gpsLat = this.collectionPoint!.gpsLat;
+      collectionPoint.createdBy = this.collectionPoint!.createdBy;
       collectionPoint.transferred = "false";
       collectionPoint.uploaded = "false";
       collectionPoint.deliveryCollection = null;
-      collectionPoint.note = this.collectionPoint.note;
+      collectionPoint.note = this.collectionPoint!.note;
       for (int i = 0; i < listHarvestTicket.length; i++) {
         HarvestingTicket harvestingTicket = HarvestingTicket();
         Timer(Duration(seconds: 3 + i), () {
@@ -1120,8 +1113,8 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
             harvestingTicket.transferred = "false";
             harvestingTicket.farmerName = listHarvestTicket[i].farmerName;
             harvestingTicket.mFarmerID = listHarvestTicket[i].mFarmerID;
-            harvestingTicket.quantity = (listHarvestTicket[i].quantity -
-                    (listHarvestTicket[i].quantity *
+            harvestingTicket.quantity = (listHarvestTicket[i].quantity! -
+                    (listHarvestTicket[i].quantity! *
                             (janjangSplit / totalQuantity))
                         .round())
                 .round();
@@ -1135,15 +1128,15 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
             harvestingTicket.nfcNumber = listHarvestTicket[i].nfcNumber;
             harvestingTicket.note = listHarvestTicket[i].note;
             harvestingTicket.idCollectionTicketOld =
-                this.collectionPoint.idCollection;
+                this.collectionPoint!.idCollection;
             addHarvestTicket(harvestingTicket);
             totalWeightTemp = totalWeightTemp + harvestingTicket.weight;
-            totalQuantityTemp = totalQuantityTemp + harvestingTicket.quantity;
+            totalQuantityTemp = totalQuantityTemp + harvestingTicket.quantity!;
             if (i == listHarvestTicket.length - 1) {
               collectionPoint.totalWeight = totalWeightTemp;
               collectionPoint.totalQuantity = totalQuantityTemp;
               collectionPoint.idCollectionOriginal =
-                  this.collectionPoint.idCollection;
+                  this.collectionPoint!.idCollection;
               addCollectionPoint(collectionPoint);
             }
           });
@@ -1157,16 +1150,16 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
           collectionPoint2.idCollection = value;
           collectionPoint2.dateCollection = generateDateTicket();
           collectionPoint2.ascendAgentCode =
-              this.collectionPoint.ascendAgentCode;
-          collectionPoint2.ascendAgentID = this.collectionPoint.ascendAgentID;
-          collectionPoint2.agentID = this.collectionPoint.agentID;
-          collectionPoint2.gpsLong = this.collectionPoint.gpsLong;
-          collectionPoint2.gpsLat = this.collectionPoint.gpsLat;
-          collectionPoint2.createdBy = this.collectionPoint.createdBy;
+              this.collectionPoint!.ascendAgentCode;
+          collectionPoint2.ascendAgentID = this.collectionPoint!.ascendAgentID;
+          collectionPoint2.agentID = this.collectionPoint!.agentID;
+          collectionPoint2.gpsLong = this.collectionPoint!.gpsLong;
+          collectionPoint2.gpsLat = this.collectionPoint!.gpsLat;
+          collectionPoint2.createdBy = this.collectionPoint!.createdBy;
           collectionPoint2.transferred = "false";
           collectionPoint2.uploaded = "false";
           collectionPoint2.deliveryCollection = null;
-          collectionPoint2.note = this.collectionPoint.note;
+          collectionPoint2.note = this.collectionPoint!.note;
           for (int i = 0; i < listHarvestTicket.length; i++) {
             HarvestingTicket harvestingTicket2 = HarvestingTicket();
             Timer(Duration(seconds: 5 + i), () {
@@ -1186,7 +1179,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                     listHarvestTicket[i].idTicket;
                 harvestingTicket2.farmerName = listHarvestTicket[i].farmerName;
                 harvestingTicket2.mFarmerID = listHarvestTicket[i].mFarmerID;
-                harvestingTicket2.quantity = (listHarvestTicket[i].quantity *
+                harvestingTicket2.quantity = (listHarvestTicket[i].quantity! *
                         (janjangSplit / totalQuantity))
                     .round();
                 harvestingTicket2.weight = (listHarvestTicket[i].weight -
@@ -1198,28 +1191,28 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                     collectionPoint2.idCollection;
                 harvestingTicket2.idDeliveryOrderTicket = null;
                 harvestingTicket2.idCollectionTicketOld =
-                    this.collectionPoint.idCollection;
+                    this.collectionPoint!.idCollection;
                 harvestingTicket2.nfcNumber = listHarvestTicket[i].nfcNumber;
                 harvestingTicket2.note = listHarvestTicket[i].note;
                 addHarvestTicket(harvestingTicket2);
                 totalWeightTemp2 = totalWeightTemp2 + harvestingTicket2.weight;
                 totalQuantityTemp2 =
-                    totalQuantityTemp2 + harvestingTicket2.quantity;
+                    totalQuantityTemp2 + harvestingTicket2.quantity!;
                 if (i == listHarvestTicket.length - 1) {
                   collectionPoint2.totalWeight = totalWeightTemp2;
                   collectionPoint2.totalQuantity = totalQuantityTemp2;
                   collectionPoint2.idCollectionOriginal =
-                      this.collectionPoint.idCollection;
+                      this.collectionPoint!.idCollection;
                   addCollectionPoint(collectionPoint2);
                   Navigator.pop(context);
                 }
               });
             });
           }
-          this.collectionPoint.transferred = "true";
+          this.collectionPoint!.transferred = "true";
           DatabaseHarvestTicket().updateHarvestTicketCollectionPointSplit(
-              this.collectionPoint.idCollection);
-          editCollectionPoint(this.collectionPoint);
+              this.collectionPoint!.idCollection!);
+          editCollectionPoint(this.collectionPoint!);
         });
       });
     });
@@ -1241,7 +1234,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
     NumberFormat formatter = new NumberFormat("0000");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String number =
-        formatter.format(int.parse(prefs.getString('userSequence')));
+        formatter.format(int.parse(prefs.getString('userSequence')!));
     idTicket = "T" + TimeUtils.getIDOnTime(DateTime.now()) + number;
     return idTicket;
   }
@@ -1252,7 +1245,7 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
     NumberFormat formatter = new NumberFormat("0000");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String number =
-        formatter.format(int.parse(prefs.getString('userSequence')));
+        formatter.format(int.parse(prefs.getString('userSequence')!));
     idCollection = "C" + TimeUtils.getIDOnTime(now) + number;
     return idCollection;
   }

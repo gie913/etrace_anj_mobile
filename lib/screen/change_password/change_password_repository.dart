@@ -9,7 +9,6 @@ import 'change_password_response.dart';
 class ChangePasswordRepository extends APIConfiguration {
   ChangePasswordRepository(String baseUrl) : super(baseUrl);
 
-
   void doChangePassword(String oldPassword, String newPassword,
       String confirmPassword, onSuccess, onLoading, onError) async {
     String token = await StorageManager.readData('token');
@@ -19,9 +18,9 @@ class ChangePasswordRepository extends APIConfiguration {
       map["old_password"] = oldPassword;
       map["new_password"] = newPassword;
       map["confirm_password"] = confirmPassword;
-      var url = baseUrl + APIEndpoint.CHANGE_PASSWORD_ENDPOINT;
+      var url = baseUrl! + APIEndpoint.CHANGE_PASSWORD_ENDPOINT;
       var uri = Uri.parse(url);
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: json.encode(map),
         headers: getDefaultHeaderWithToken(token),

@@ -1,7 +1,7 @@
 class UploadDeliveryResponse {
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   UploadDeliveryResponse({this.success, this.message, this.data});
 
@@ -15,15 +15,13 @@ class UploadDeliveryResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }
 
 class Data {
-  List<String> deliveryOrder;
+  List<String>? deliveryOrder;
 
   Data({this.deliveryOrder});
 

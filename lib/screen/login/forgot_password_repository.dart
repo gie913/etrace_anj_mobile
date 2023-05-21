@@ -8,31 +8,31 @@ import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
 
 class ForgotPasswordRepository {
-
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   ForgotPasswordRepository(String baseUrl) {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 
-  void doPostForgotPassword(BuildContext context, String username, onSuccess, onError) async {
+  void doPostForgotPassword(
+      BuildContext context, String username, onSuccess, onError) async {
     try {
-      var url = baseUrl + APIEndpoint.FORGOT_PASSWORD;
+      var url = baseUrl! + APIEndpoint.FORGOT_PASSWORD;
       var uri = Uri.parse(url);
       var map = new Map<String, dynamic>();
       map["username"] = username;
-      var response = await ioClient.post(
+      var response = await ioClient!.post(
         uri,
         body: json.encode(map),
-        headers: APIConfiguration(baseUrl).getDefaultHeader(),
+        headers: APIConfiguration(baseUrl!).getDefaultHeader(),
       );
       ForgotPasswordResponse apiResponse =
-      ForgotPasswordResponse.fromJson(json.decode(response.body));
+          ForgotPasswordResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         onSuccess(context, apiResponse);
       } else {

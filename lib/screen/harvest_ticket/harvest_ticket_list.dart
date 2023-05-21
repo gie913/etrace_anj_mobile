@@ -32,8 +32,8 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
   TextEditingController typeTicketController = TextEditingController();
   List<HarvestingTicket> harvestTicketList = [];
   List<HarvestingTicket> harvestTicketListSearch = [];
-  String farmerName, farmerAddress, farmerNumber;
-  bool isLoading;
+  String? farmerName, farmerAddress, farmerNumber;
+  bool? isLoading;
 
   @override
   void initState() {
@@ -50,8 +50,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
           InkWell(
             onTap: () async {
               if (harvestTicketList.isEmpty) {
-                Toast.show("Belum Ada Tiket Panen", context,
-                    duration: Toast.LENGTH_SHORT, gravity: Toast.TOP);
+                Toast.show("Belum Ada Tiket Panen", duration: 1, gravity: 2);
               } else {
                 bool result = await Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
@@ -68,8 +67,9 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
           ),
           InkWell(
             onTap: () async {
-              var contact = await navigateToEntryForm(context, null);
-              if (contact != null) addHarvestTicket(contact);
+              var contact =
+                  await navigateToEntryForm(context, HarvestingTicket());
+              addHarvestTicket(contact);
             },
             child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
@@ -104,7 +104,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
           ),
           Text("Jumlah Tiket Panen: ${harvestTicketList.length}"),
           Divider(),
-          isLoading
+          isLoading!
               ? loadingWidget()
               : harvestTicketList.length != 0
                   ? Flexible(
@@ -157,7 +157,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
       return;
     }
     harvestTicketList.forEach((collectionDetail) {
-      if (collectionDetail.dateTicket
+      if (collectionDetail.dateTicket!
               .toLowerCase()
               .contains(text.toLowerCase()) ||
           collectionDetail.ascendFarmerCode
@@ -214,7 +214,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
                             )
                     ],
                   ),
-                  title: Text(harvestTicketList[index].idTicket,
+                  title: Text(harvestTicketList[index].idTicket!,
                       style: text16Bold),
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 8),
@@ -223,7 +223,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(DATE_TICKET_TILE +
-                            harvestTicketList[index].dateTicket),
+                            harvestTicketList[index].dateTicket!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text("Kode Areal: " +
@@ -245,7 +245,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
                   onTap: () async {
                     var contact = await navigateToDetail(
                         context, harvestTicketList[index]);
-                    if (contact != null) editHarvestTicket(contact);
+                    editHarvestTicket(contact);
                   },
                 ),
               ],
@@ -259,12 +259,12 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
   Future<String> getFarmerByID(HarvestingTicket harvestTicket) async {
     String farmerName;
     Farmers farmers = await DatabaseFarmer().selectFarmerByID(harvestTicket);
-    farmerName = farmers.fullname;
+    farmerName = farmers.fullname!;
     return farmerName;
   }
 
-  String getFarmerName(HarvestingTicket harvestingTicket) {
-    String farmerName;
+  String? getFarmerName(HarvestingTicket harvestingTicket) {
+    String? farmerName;
     getFarmerByID(harvestingTicket).then((value) => {
           setState(() {
             farmerName = value;
@@ -317,7 +317,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
                     ],
                   ),
                   title: Text(
-                    harvestTicketListSearch[index].idTicket,
+                    harvestTicketListSearch[index].idTicket!,
                     style: text16Bold,
                   ),
                   subtitle: Padding(
@@ -327,7 +327,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(DATE_TICKET_TILE +
-                            harvestTicketListSearch[index].dateTicket),
+                            harvestTicketListSearch[index].dateTicket!),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text("Kode Areal: " +
@@ -349,7 +349,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
                   onTap: () async {
                     var contact = await navigateToDetail(
                         context, harvestTicketListSearch[index]);
-                    if (contact != null) editHarvestTicket(contact);
+                    editHarvestTicket(contact);
                   },
                 ),
               ],
@@ -360,7 +360,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
     );
   }
 
-  String splitFarmer(String farmer) {
+  String? splitFarmer(String farmer) {
     final split = farmer.split(',');
     final Map<int, String> values = {
       for (int i = 0; i < split.length; i++) i: split[i]
@@ -403,7 +403,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
 
   void addHarvestTicket(HarvestingTicket object) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('username');
+    String? user = prefs.getString('username');
     object.createdBy = user;
     int result = await dbHarvest.insertHarvestTicket(object);
     if (result > 0) {
@@ -413,7 +413,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
 
   void editHarvestTicket(HarvestingTicket object) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('username');
+    String? user = prefs.getString('username');
     object.createdBy = user;
     int result = await dbHarvest.updateHarvestTicket(object);
     if (result > 0) {

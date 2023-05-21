@@ -24,50 +24,47 @@ import 'package:geolocator/geolocator.dart';
 import 'package:lzstring/lzstring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:screen/screen.dart';
 import 'package:toast/toast.dart';
 
 class HarvestTicketDetail extends StatefulWidget {
-  final HarvestingTicket harvestTicket;
+  final HarvestingTicket? harvestTicket;
 
   HarvestTicketDetail({this.harvestTicket});
 
   @override
-  HarvestTicketDetailState createState() =>
-      HarvestTicketDetailState(this.harvestTicket);
+  HarvestTicketDetailState createState() => HarvestTicketDetailState();
 }
 
 class HarvestTicketDetailState extends State<HarvestTicketDetail> {
-  HarvestTicketDetailState(this.harvestTicket);
-
-  HarvestingTicket harvestTicket;
+  HarvestingTicket? harvestTicket;
 
   DatabaseHelper dbHelper = DatabaseHelper();
   DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
   final controller = PageController();
 
-  Position position;
-  String message, uncompressed;
-  Farmers farmerObject = Farmers();
-  double brightnessInit;
+  Position? position;
+  String? message, uncompressed;
+  Farmers? farmerObject;
+  double? brightnessInit;
   TextEditingController userTargetController = TextEditingController();
 
   // List<RecordEditor> _records = [];
   // bool _hasClosedWriteDialog = false;
-  User userTarget;
-  String menuTransfer;
+  User? userTarget;
+  String? menuTransfer;
 
   @override
   void initState() {
-    getFarmerByID(widget.harvestTicket);
+    harvestTicket = widget.harvestTicket;
+    getFarmerByID(widget.harvestTicket!);
     super.initState();
   }
 
   void getFarmerByID(HarvestingTicket harvestTicket) async {
     Farmers farmers = await DatabaseFarmer().selectFarmerByID(harvestTicket);
-    double brightness = await Screen.brightness;
+    // double brightness = await Screen.brightness;
     setState(() {
-      this.brightnessInit = brightness;
+      // this.brightnessInit = brightness;
       this.farmerObject = farmers;
     });
   }
@@ -151,9 +148,9 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
   //   }
   // }
 
-  Future<String> compress(String uncompressed) async {
+  Future<String?> compress(String uncompressed) async {
     final result = await LZString.compressToBase64(uncompressed);
-    Screen.setBrightness(0.7);
+    // Screen.setBrightness(0.7);
     showQRCodeDialog(context, uncompressed);
     return result;
   }
@@ -188,9 +185,9 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
             ),
             title: Text("Detail Tiket Panen"),
             actions: [
-              (harvestTicket.transferred == "true" ||
-                      harvestTicket.idCollectionTicket != null ||
-                      harvestTicket.idDeliveryOrderTicket != null)
+              (harvestTicket!.transferred == "true" ||
+                      harvestTicket!.idCollectionTicket != null ||
+                      harvestTicket!.idDeliveryOrderTicket != null)
                   ? Container()
                   : InkWell(
                       onTap: () {},
@@ -199,8 +196,8 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                         child: InkWell(
                             onTap: () async {
                               var contact = await navigateToEntryForm(
-                                  context, widget.harvestTicket);
-                              if (contact != null) editHarvestTicket(contact);
+                                  context, widget.harvestTicket!);
+                              editHarvestTicket(contact);
                             },
                             child: Icon(Typicons.edit)),
                       ),
@@ -231,7 +228,8 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                           margin: EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
                             color: Colors.orange,
-                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                         ),
                         Column(
@@ -260,7 +258,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       top: 6.0, bottom: 10.0),
-                                  child: Text(widget.harvestTicket.idTicket,
+                                  child: Text(widget.harvestTicket!.idTicket!,
                                       style: text16Bold),
                                 )
                               ],
@@ -270,7 +268,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(DATE_FORM, style: text14Bold),
-                                SelectableText(harvestTicket.dateTicket)
+                                SelectableText(harvestTicket!.dateTicket!)
                               ],
                             ),
                             Divider(),
@@ -278,7 +276,9 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(GPS_LOCATION_FORM, style: text14Bold),
-                                Text("${harvestTicket.gpsLat ?? ""},${harvestTicket.gpsLong ?? ""}", overflow: TextOverflow.ellipsis)
+                                Text(
+                                    "${harvestTicket!.gpsLat ?? ""},${harvestTicket!.gpsLong ?? ""}",
+                                    overflow: TextOverflow.ellipsis)
                               ],
                             ),
                             Divider(),
@@ -316,17 +316,17 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                        "${farmerObject.ascendFarmerCode}",
+                                        "${farmerObject!.ascendFarmerCode}",
                                         textAlign: TextAlign.center),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text("${farmerObject.fullname}",
+                                    child: Text("${farmerObject!.fullname}",
                                         textAlign: TextAlign.center),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text("${farmerObject.address}",
+                                    child: Text("${farmerObject!.address}",
                                         textAlign: TextAlign.center),
                                   )
                                 ]),
@@ -337,7 +337,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(QUANTITY, style: text14Bold),
-                                SelectableText("${harvestTicket.quantity}")
+                                SelectableText("${harvestTicket!.quantity}")
                               ],
                             ),
                             Divider(),
@@ -346,7 +346,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               children: [
                                 Text(WEIGHT_JANJANG, style: text14Bold),
                                 SelectableText(
-                                    "${formatThousandSeparator(harvestTicket.weight.round())}")
+                                    "${formatThousandSeparator(harvestTicket!.weight.round())}")
                               ],
                             ),
                             // Divider(),
@@ -362,7 +362,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text("Catatan", style: text14Bold),
-                                SelectableText("${harvestTicket.note}")
+                                SelectableText("${harvestTicket!.note}")
                               ],
                             ),
                             Divider(),
@@ -377,9 +377,9 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                 height: MediaQuery.of(context).size.height * 0.9,
                 margin: EdgeInsets.only(right: 4, top: 4),
                 padding: EdgeInsets.all(20),
-                child: harvestTicket.transferred != "true"
-                    ? (harvestTicket.idCollectionTicket != null ||
-                            harvestTicket.idDeliveryOrderTicket != null)
+                child: harvestTicket!.transferred != "true"
+                    ? (harvestTicket!.idCollectionTicket != null ||
+                            harvestTicket!.idDeliveryOrderTicket != null)
                         ? Center(child: Text("Tiket Sudah Masuk TK atau SP"))
                         : SingleChildScrollView(
                             child: Column(
@@ -492,8 +492,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               ],
                             ),
                           )
-                    : Center(
-                        child: Text("Tiket sudah ditransfer")),
+                    : Center(child: Text("Tiket sudah ditransfer")),
               )
             ],
           ),
@@ -519,7 +518,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
               child: Column(
                 children: [
                   Text(
-                    "${harvestTicket.idTicket}",
+                    "${harvestTicket!.idTicket}",
                     style: TextStyle(color: Colors.black),
                   ),
                   QRCodeDialog(message: message),
@@ -536,7 +535,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               onTap: () {
                                 Navigator.pop(context);
                                 setState(() {
-                                  Screen.setBrightness(brightnessInit);
+                                  // Screen.setBrightness(brightnessInit);
                                 });
                               },
                               child: Container(
@@ -563,7 +562,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               onTap: () {
                                 doneQRDialog(context);
                                 setState(() {
-                                  Screen.setBrightness(brightnessInit);
+                                  // Screen.setBrightness(brightnessInit);
                                 });
                               },
                               child: Container(
@@ -613,7 +612,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
             child: GestureDetector(
               onTap: () {
                 setState(() {
-                  this.harvestTicket.transferred = "true";
+                  this.harvestTicket!.transferred = "true";
                 });
                 Navigator.pop(context, harvestTicket);
                 Navigator.pop(context, harvestTicket);
@@ -673,7 +672,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(userTarget == null
                                     ? "Tujuan Pengiriman"
-                                    : "${userTarget.name}"),
+                                    : "${userTarget!.name}"),
                               ),
                             ),
                           ),
@@ -690,9 +689,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                                   Navigator.pop(context);
                                   setState(() {
                                     userTarget = userTargetTemp;
-                                    if (userTargetTemp != null) {
-                                      transferDialog();
-                                    }
+                                    transferDialog();
                                   });
                                 },
                                 child: Container(
@@ -764,20 +761,19 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
     if (userTargetController.text.isNotEmpty) {
       Navigator.pop(context);
       setState(() {
-        uncompressed = widget.harvestTicket.idTicket +
+        uncompressed = widget.harvestTicket!.idTicket! +
             "," +
-            widget.harvestTicket.ascendFarmerCode +
+            widget.harvestTicket!.ascendFarmerCode! +
             "," +
-            widget.harvestTicket.quantity.toString() +
+            widget.harvestTicket!.quantity.toString() +
             "," +
-            widget.harvestTicket.weight.toString() +
+            widget.harvestTicket!.weight.toString() +
             "," +
             userTargetController.text;
-        compress(uncompressed);
+        compress(uncompressed!);
       });
     } else {
-      Toast.show("Tujuan Belum Ada", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Toast.show("Tujuan Belum Ada", duration: 3, gravity: 0);
     }
   }
 
@@ -787,19 +783,18 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
       TransferHarvestingTicketBody transferBody =
           TransferHarvestingTicketBody();
       HarvestingTicket harvestingTicket = HarvestingTicket();
-      harvestingTicket = this.widget.harvestTicket;
-      harvestingTicket.userTargetId = userTarget.id;
+      harvestingTicket = this.widget.harvestTicket!;
+      harvestingTicket.userTargetId = userTarget!.id;
       List<HarvestingTicket> listHarvest = [];
       listHarvest.add(harvestingTicket);
       transferBody.harvestingTicket = listHarvest;
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String userToken = prefs.getString('token');
-      final String userBaseUrl = prefs.getString('baseUrl');
-      TransferRepository(userBaseUrl).doTransferTicket(transferBody, userToken,
-          onSuccessTransferCallback, onErrorTransferCallback);
+      final String? userToken = prefs.getString('token');
+      final String? userBaseUrl = prefs.getString('baseUrl');
+      TransferRepository(userBaseUrl!).doTransferTicket(transferBody,
+          userToken!, onSuccessTransferCallback, onErrorTransferCallback);
     } else {
-      Toast.show("Tujuan Belum Ada", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Toast.show("Tujuan Belum Ada", duration: 3, gravity: 0);
     }
   }
 
@@ -807,14 +802,12 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
     Navigator.pop(context);
     Navigator.pop(context);
     setState(() {
-      this.harvestTicket.transferred = "true";
+      this.harvestTicket!.transferred = "true";
     });
-    Toast.show("Berhasil terkirim", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show("Berhasil terkirim", duration: 3, gravity: 0);
   }
 
   onErrorTransferCallback(response) {
-    Toast.show(response.toString(), context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    Toast.show(response.toString(), duration: 3, gravity: 0);
   }
 }

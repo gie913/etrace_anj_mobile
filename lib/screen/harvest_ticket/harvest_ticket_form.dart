@@ -21,21 +21,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class HarvestTicketForm extends StatefulWidget {
-  final HarvestingTicket harvestTicket;
+  final HarvestingTicket? harvestTicket;
 
   HarvestTicketForm({this.harvestTicket});
 
   @override
-  HarvestTicketFormState createState() =>
-      HarvestTicketFormState(this.harvestTicket);
+  HarvestTicketFormState createState() => HarvestTicketFormState();
 }
 
 class HarvestTicketFormState extends State<HarvestTicketForm> {
-  HarvestTicketFormState(this.harvestTicket);
+  HarvestingTicket? harvestTicket;
 
-  HarvestingTicket harvestTicket;
-
-  Farmers farmerObject;
+  Farmers? farmerObject;
   bool _validate = false;
 
   var totalJanjangController = TextEditingController();
@@ -43,20 +40,19 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
   var cardNumberController = TextEditingController();
   var noteController = TextEditingController();
 
-  String idTicket, dateTicket, gpsLat, gpsLong, name;
+  String? idTicket, dateTicket, gpsLat, gpsLong, name;
   bool loading = false;
-  Position position;
+  Position? position;
 
   @override
   void initState() {
-    if (harvestTicket != null) {
-      totalJanjangController.text = harvestTicket.quantity.toString();
-      weightJanjangController.text = harvestTicket.weight.round().toString();
-      noteController.text = harvestTicket.note;
-      getFarmerByID(harvestTicket);
-      cardNumberController.text = harvestTicket.nfcNumber;
-    }
-    onInitialHarvestTicketForm(harvestTicket);
+    harvestTicket = widget.harvestTicket;
+    totalJanjangController.text = harvestTicket!.quantity.toString();
+    weightJanjangController.text = harvestTicket!.weight.round().toString();
+    noteController.text = harvestTicket!.note!;
+    getFarmerByID(harvestTicket!);
+    cardNumberController.text = harvestTicket!.nfcNumber!;
+    onInitialHarvestTicketForm(harvestTicket!);
     super.initState();
   }
 
@@ -68,13 +64,13 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
 
   generateIDTicket(HarvestingTicket harvestingTicket) async {
     DateTime now = DateTime.now();
-    if (harvestingTicket != null) {
+    if (harvestingTicket.idTicket!.isNotEmpty) {
       idTicket = harvestingTicket.idTicket;
     } else {
       NumberFormat formatter = new NumberFormat("0000");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String number =
-          formatter.format(int.parse(prefs.getString('userSequence')));
+          formatter.format(int.parse(prefs.getString('userSequence')!));
       setState(() {
         name = prefs.getString('username');
         idTicket = "T" + TimeUtils.getIDOnTime(now) + number;
@@ -85,7 +81,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
   generateDateTicket(HarvestingTicket harvestingTicket) {
     setState(() {
       DateTime now = DateTime.now();
-      harvestingTicket != null
+      harvestingTicket.dateTicket!.isNotEmpty
           ? dateTicket = harvestingTicket.dateTicket
           : dateTicket = TimeUtils.getTime(now).toString();
     });
@@ -93,7 +89,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
 
   getLocation(HarvestingTicket harvestingTicket) async {
     loading = true;
-    if (harvestingTicket != null) {
+    if (harvestingTicket.gpsLat!.isNotEmpty) {
       gpsLat = harvestingTicket.gpsLat;
       gpsLong = harvestingTicket.gpsLong;
       loading = false;
@@ -103,8 +99,8 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
                 desiredAccuracy: LocationAccuracy.high)
             .timeout(const Duration(seconds: 10));
         setState(() {
-          gpsLat = position.latitude.toString();
-          gpsLong = position.longitude.toString();
+          gpsLat = position!.latitude.toString();
+          gpsLong = position!.longitude.toString();
         });
       } on TimeoutException catch (_) {
         setState(() {
@@ -126,7 +122,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => onWillPopForm(context),
+      onWillPop: () async => await onWillPopForm(context),
       child: Scaffold(
         appBar: AppBar(title: Text(TITLE_HARVEST_TICKET_FORM)),
         body: SingleChildScrollView(
@@ -213,11 +209,12 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
                             Container(
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  Farmers farmerNameTemp = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SearchFarmerScreen()));
+                                  Farmers? farmerNameTemp =
+                                      await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SearchFarmerScreen()));
                                   setState(() {
                                     if (farmerNameTemp == null) {
                                       farmerObject = farmerObject;
@@ -260,17 +257,17 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                          "${farmerObject.ascendFarmerCode}",
+                                          "${farmerObject!.ascendFarmerCode}",
                                           textAlign: TextAlign.center),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text("${farmerObject.fullname}",
+                                      child: Text("${farmerObject!.fullname}",
                                           textAlign: TextAlign.center),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text("${farmerObject.address}",
+                                      child: Text("${farmerObject!.address}",
                                           textAlign: TextAlign.center),
                                     )
                                   ]),
@@ -291,7 +288,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
                                   child: TextField(
                                     maxLength: 6,
                                     onChanged: (value) {
-                                      value != null
+                                      value.isNotEmpty
                                           ? _validate = false
                                           : _validate = true;
                                     },
@@ -433,18 +430,18 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
     double abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
     var result =
-        await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
+        await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject!);
     if (result.isNotEmpty) {
       int month = DateTime.now().month;
       List<int> listIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
       var newMe = jsonEncode(result[0]);
       Farmer farmer = Farmer.fromJson(jsonDecode(newMe));
-      var list = jsonDecode(farmer.trMonth);
+      List list = jsonDecode(farmer.trMonth!);
 
-      var chunks = [];
-      var chunksIndex = [];
-      var chunkSize = farmer.groupingMonth.toInt();
+      List chunks = [];
+      List chunksIndex = [];
+      int chunkSize = farmer.groupingMonth.toInt();
 
       for (var i = 0; i < listIndex.length; i += chunkSize) {
         chunksIndex.add(listIndex.sublist(
@@ -471,7 +468,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
 
       if (useMaxTonnage == 1) {
         var totalTonnageSum =
-        (((totalTonnage + (abw * int.parse(janjang))) / 1000));
+            (((totalTonnage + (abw * int.parse(janjang))) / 1000));
         var maxYear = farmer.maxTonnageYear / chunkSize;
         if (totalTonnageSum > maxYear) {
           return true;
@@ -495,43 +492,45 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
         weightTemp = 0.0;
       }
       harvestTicket = HarvestingTicket(
-          idTicket: idTicket,
-          dateTicket: dateTicket,
-          gpsLong: gpsLong ?? null,
-          gpsLat: gpsLat ?? null,
-          mFarmerID: farmerObject.idFarmer,
-          ascendFarmerID: farmerObject.ascendFarmerId,
-          ascendFarmerCode: farmerObject.ascendFarmerCode,
-          weight: weightTemp,
-          idCollectionTicket: null,
-          idDeliveryOrderTicket: null,
-          uploaded: "false",
-          transferred: "false",
-          createdBy: name,
-          note: noteController.text,
-          quantity: int.parse(totalJanjangController.text),
-          nfcNumber: cardNumberController.text,
-          farmerName: farmerObject.fullname,
-          image: "");
+        idTicket: idTicket,
+        dateTicket: dateTicket,
+        gpsLong: gpsLong ?? null,
+        gpsLat: gpsLat ?? null,
+        mFarmerID: farmerObject!.idFarmer,
+        ascendFarmerID: farmerObject!.ascendFarmerId,
+        ascendFarmerCode: farmerObject!.ascendFarmerCode,
+        weight: weightTemp,
+        idCollectionTicket: null,
+        idDeliveryOrderTicket: null,
+        uploaded: "false",
+        transferred: "false",
+        createdBy: name,
+        note: noteController.text,
+        quantity: int.parse(totalJanjangController.text),
+        nfcNumber: cardNumberController.text,
+        farmerName: farmerObject!.fullname,
+        image: "",
+      );
     } else {
-      harvestTicket.idTicket = harvestTicket.idTicket;
-      harvestTicket.dateTicket = harvestTicket.dateTicket;
-      harvestTicket.gpsLat = harvestTicket.gpsLat;
-      harvestTicket.gpsLong = harvestTicket.gpsLong;
-      harvestTicket.mFarmerID = farmerObject.idFarmer;
-      harvestTicket.ascendFarmerID = farmerObject.ascendFarmerId;
-      harvestTicket.ascendFarmerCode = farmerObject.ascendFarmerCode;
-      harvestTicket.quantity = int.parse(totalJanjangController.text);
-      harvestTicket.weight = double.parse(weightJanjangController.text);
-      harvestTicket.image = "";
-      harvestTicket.farmerName = farmerObject.fullname;
-      harvestTicket.uploaded = "false";
-      harvestTicket.note = noteController.text;
-      harvestTicket.createdBy = harvestTicket.createdBy;
-      harvestTicket.idCollectionTicket = harvestTicket.idCollectionTicket;
-      harvestTicket.idCollectionTicketOld = harvestTicket.idCollectionTicketOld;
-      harvestTicket.idTicketOriginal = harvestTicket.idTicketOriginal;
-      harvestTicket.nfcNumber = cardNumberController.text;
+      harvestTicket!.idTicket = harvestTicket!.idTicket;
+      harvestTicket!.dateTicket = harvestTicket!.dateTicket;
+      harvestTicket!.gpsLat = harvestTicket!.gpsLat;
+      harvestTicket!.gpsLong = harvestTicket!.gpsLong;
+      harvestTicket!.mFarmerID = farmerObject!.idFarmer;
+      harvestTicket!.ascendFarmerID = farmerObject!.ascendFarmerId;
+      harvestTicket!.ascendFarmerCode = farmerObject!.ascendFarmerCode;
+      harvestTicket!.quantity = int.parse(totalJanjangController.text);
+      harvestTicket!.weight = double.parse(weightJanjangController.text);
+      harvestTicket!.image = "";
+      harvestTicket!.farmerName = farmerObject!.fullname;
+      harvestTicket!.uploaded = "false";
+      harvestTicket!.note = noteController.text;
+      harvestTicket!.createdBy = harvestTicket!.createdBy;
+      harvestTicket!.idCollectionTicket = harvestTicket!.idCollectionTicket;
+      harvestTicket!.idCollectionTicketOld =
+          harvestTicket!.idCollectionTicketOld;
+      harvestTicket!.idTicketOriginal = harvestTicket!.idTicketOriginal;
+      harvestTicket!.nfcNumber = cardNumberController.text;
     }
     Navigator.pop(context, harvestTicket);
   }
@@ -540,8 +539,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
     return OutlinedButton(
       onPressed: () {
         if (farmerObject == null) {
-          Toast.show("Areal Belum Terisi", context,
-              duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+          Toast.show("Areal Belum Terisi", duration: 3, gravity: 0);
         } else if (totalJanjangController.text.isEmpty) {
           setState(() {
             _validate = true;
@@ -552,7 +550,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
               addDataToDatabase(context);
             } else {
               openWarningDialog(context,
-                  "Petani ${farmerObject.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject.maxTonnageYear} ton");
+                  "Petani ${farmerObject!.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject!.maxTonnageYear} ton");
             }
           });
         }

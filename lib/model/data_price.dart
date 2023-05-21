@@ -1,44 +1,45 @@
 class DataPrice {
-  String id;
-  String date;
-  String dayIna;
-  String dayEng;
-  double priceMedium;
-  double priceSmall;
-  double priceLarge;
-  String mainCurrency;
-  String source;
-  int isActive;
-  String createdAt;
-  String mCompanyId;
-  String createdBy;
-  String updatedAt;
-  String updatedBy;
-  int priceAll;
-  String infoType;
-  String file;
-  String infoSource;
+  String? id;
+  String? date;
+  String? dayIna;
+  String? dayEng;
+  double? priceMedium;
+  double? priceSmall;
+  double? priceLarge;
+  String? mainCurrency;
+  String? source;
+  int? isActive;
+  String? createdAt;
+  String? mCompanyId;
+  String? createdBy;
+  String? updatedAt;
+  String? updatedBy;
+  int? priceAll;
+  String? infoType;
+  String? file;
+  String? infoSource;
 
-  DataPrice(
-      {this.id,
-        this.date,
-        this.dayIna,
-        this.dayEng,
-        this.priceMedium,
-        this.priceSmall,
-        this.priceLarge,
-        this.mainCurrency,
-        this.source,
-        this.isActive,
-        this.createdAt,
-        this.mCompanyId,
-        this.createdBy,
-        this.updatedAt,
-        this.updatedBy,
-        this.priceAll,
-        this.infoType,
-        this.file,
-        this.infoSource});
+  DataPrice({
+    this.id,
+    this.date,
+    this.dayIna,
+    this.dayEng,
+    this.priceMedium,
+    this.priceSmall,
+    this.priceLarge,
+    this.mainCurrency,
+    this.source,
+    this.isActive,
+    this.createdAt,
+    this.mCompanyId,
+    this.createdBy,
+    this.updatedAt,
+    this.updatedBy,
+    this.priceAll,
+    this.infoType,
+    this.file,
+    this.infoSource,
+  });
 
   DataPrice.fromJson(Map<String, dynamic> json) {
     id = json['id'];

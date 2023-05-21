@@ -26,7 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime now = DateTime.now();
-  String username = "", harvestTicket, collectionPoint, deliveryOrder, company;
+  String? username = "", harvestTicket, collectionPoint, deliveryOrder, company;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       username = pref.getString('username');
       company = pref.getString('userPT');
-      print("this is username : " + username);
+      print("this is username : " + username!);
       harvestTicket = pref.getString('harvesting_ticket');
       collectionPoint = pref.getString('collection_point');
       deliveryOrder = pref.getString('delivery_order');
@@ -130,7 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.only(left: 10, bottom: 4),
                         child: InkWell(
                           onTap: () {
-                            launchUrl("https://www.instagram.com/anjgroup.id/");
+                            _launchUrl(
+                                "https://www.instagram.com/anjgroup.id/");
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
@@ -154,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.only(left: 2, bottom: 4),
                         child: InkWell(
                           onTap: () {
-                            launchUrl(
+                            _launchUrl(
                                 "https://www.youtube.com/channel/UCFNiwUArXp8BzfCErO-3Eyg");
                           },
                           child: Card(
@@ -178,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.only(left: 2, bottom: 4),
                         child: InkWell(
                           onTap: () {
-                            launchUrl(
+                            _launchUrl(
                                 "https://www.linkedin.com/company/pt-austindo-nusantara-jaya-tbk/mycompany/");
                           },
                           child: Card(
@@ -203,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.only(left: 2, bottom: 4, right: 10),
                         child: InkWell(
                           onTap: () {
-                            launchUrl("https://m.facebook.com/anjgroup.id/");
+                            _launchUrl("https://m.facebook.com/anjgroup.id/");
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
@@ -466,7 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             : Container(),
                         ExpandablePanel(
                           // ignore: deprecated_member_use
-                          hasIcon: false,
+                          collapsed: const SizedBox(),
                           header: Padding(
                             padding: const EdgeInsets.only(left: 8, right: 8),
                             child: Container(
@@ -590,15 +591,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  launchUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        universalLinksOnly: true,
-      );
-    } else {
-      Toast.show("Gagal membuka url", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+  Future<void> _launchUrl(String url) async {
+    final Uri _url = Uri.parse(url);
+    if (!await launchUrl(_url)) {
+      Toast.show("Gagal membuka url", duration: 3, gravity: 0);
+      // throw Exception('Could not launch $_url');
     }
   }
+
+  // launchUrl(String url) async {
+  //   if (await canLaunch(url)) {
+  //     await launch(
+  //       url,
+  //       universalLinksOnly: true,
+  //     );
+  //   } else {
+  //     Toast.show("Gagal membuka url", duration: 3, gravity: 0);
+  //   }
+  // }
 }

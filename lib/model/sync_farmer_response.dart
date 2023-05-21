@@ -1,9 +1,9 @@
 import 'farmers.dart';
 
 class SyncFarmerResponse {
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   SyncFarmerResponse({this.success, this.message, this.data});
 
@@ -17,16 +17,14 @@ class SyncFarmerResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }
 
 class Data {
-  List<Farmers> farmers;
-  int totalRows;
+  List<Farmers>? farmers;
+  int? totalRows;
   dynamic abw;
 
   Data({this.farmers, this.totalRows, this.abw});
@@ -35,7 +33,7 @@ class Data {
     if (json['farmers'] != null) {
       farmers = [];
       json['farmers'].forEach((v) {
-        farmers.add(new Farmers.fromJson(v));
+        farmers!.add(new Farmers.fromJson(v));
       });
     }
     totalRows = json['total_rows'];
@@ -44,9 +42,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.farmers != null) {
-      data['farmers'] = this.farmers.map((v) => v.toJson()).toList();
-    }
+    data['farmers'] = this.farmers!.map((v) => v.toJson()).toList();
     data['total_rows'] = this.totalRows;
     data['abw'] = this.abw;
     return data;

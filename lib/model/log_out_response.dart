@@ -1,8 +1,8 @@
 class LogOutResponse {
-  bool success;
-  int code;
-  String message;
-  List<Null> data;
+  bool? success;
+  int? code;
+  String? message;
+  List<Null>? data;
 
   LogOutResponse({this.success, this.code, this.message, this.data});
 
@@ -23,4 +23,3 @@ class LogOutResponse {
     return data;
   }
 }
-

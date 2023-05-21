@@ -1,7 +1,7 @@
 class PointResponse {
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   PointResponse({this.success, this.message, this.data});
 
@@ -15,15 +15,13 @@ class PointResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }
 
 class Data {
-  int currentPoint;
+  int? currentPoint;
 
   Data({this.currentPoint});
 

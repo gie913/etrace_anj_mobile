@@ -20,57 +20,55 @@ import 'package:fluttericon/linecons_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lzstring/lzstring.dart';
-import 'package:screen/screen.dart';
+// import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'delivery_order_form.dart';
 
 class DeliveryOrderDetail extends StatefulWidget {
-  final DeliveryOrder deliveryOrder;
+  final DeliveryOrder? deliveryOrder;
 
   DeliveryOrderDetail({this.deliveryOrder});
 
   @override
-  DeliveryOrderDetailState createState() =>
-      DeliveryOrderDetailState(this.deliveryOrder);
+  DeliveryOrderDetailState createState() => DeliveryOrderDetailState();
 }
 
 class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
-  DeliveryOrderDetailState(this.deliveryOrder);
-
   DatabaseHelper dbHelper = DatabaseHelper();
   DatabaseDeliveryOrder dbDelivery = DatabaseDeliveryOrder();
 
   List<HarvestingTicket> listHarvestTicket = [];
   TextEditingController userTargetController = TextEditingController();
-  String menuTransfer;
+  String? menuTransfer;
 
   // List<RecordEditor> _records = [];
   // bool _hasClosedWriteDialog = false;
 
-  DeliveryOrder deliveryOrder;
-  Suppliers suppliersObject;
+  DeliveryOrder? deliveryOrder;
+  Suppliers? suppliersObject;
   int totalQuantity = 0;
-  double totalWeight = 0.0, brightnessInit;
+  double? totalWeight = 0.0, brightnessInit;
   List<Farmers> listFarmer = [];
-  Position position;
-  String message;
-  String compressed;
-  String company;
-  String username;
+  Position? position;
+  String? message;
+  String? compressed;
+  String? company;
+  String? username;
 
   final controller = PageController();
 
   @override
   void initState() {
+    deliveryOrder = widget.deliveryOrder;
     getCompany();
     getHarvestTicketDeliveryOrderList();
-    getSupplierByID(widget.deliveryOrder);
+    getSupplierByID(widget.deliveryOrder!);
     super.initState();
   }
 
-  Future<String> compress(String uncompressed) async {
+  Future<String?> compress(String uncompressed) async {
     final result = await LZString.compressToBase64(uncompressed);
     print(result);
     DeliveryOrder deliveryOrderTemp = await Navigator.push(
@@ -78,23 +76,21 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
         MaterialPageRoute(
             builder: (context) => QRScreenDelivery(
                 message: uncompressed,
-                deliveryOrder: this.deliveryOrder,
+                deliveryOrder: this.deliveryOrder!,
                 listHarvestingTicket: listHarvestTicket)));
-    if (deliveryOrderTemp != null) {
-      setState(() {
-        this.deliveryOrder = deliveryOrderTemp;
-      });
-    }
+    setState(() {
+      this.deliveryOrder = deliveryOrderTemp;
+    });
     return result;
   }
 
   getCompany() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('userPT');
-    String username = prefs.getString('username');
-    double brightness = await Screen.brightness;
+    String? user = prefs.getString('userPT');
+    String? username = prefs.getString('username');
+    // double? brightness = await Screen.brightness;
     setState(() {
-      this.brightnessInit = brightness;
+      // this.brightnessInit = brightness;
       this.company = user;
       this.username = username;
     });
@@ -106,12 +102,12 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
       this.totalQuantity = 0;
     });
     List<HarvestingTicket> list = await DatabaseHarvestTicket()
-        .getHarvestTicketListDelivery(widget.deliveryOrder);
+        .getHarvestTicketListDelivery(widget.deliveryOrder!);
     if (list.isNotEmpty) {
       for (int i = 0; i < list.length; i++) {
         setState(() {
-          this.totalWeight = (totalWeight + list[i].weight).roundToDouble();
-          this.totalQuantity = totalQuantity + list[i].quantity;
+          this.totalWeight = (totalWeight! + list[i].weight).roundToDouble();
+          this.totalQuantity = totalQuantity + list[i].quantity!;
         });
       }
       setState(() {
@@ -146,15 +142,15 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
             actions: [
               InkWell(
                 onTap: () {},
-                child: (deliveryOrder.transferred == "true")
+                child: (deliveryOrder!.transferred == "true")
                     ? Container(width: 10)
                     : Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: InkWell(
                             onTap: () async {
                               var contact = await navigateToEntryForm(
-                                  context, widget.deliveryOrder);
-                              if (contact != null) editDeliveryOrder(contact);
+                                  context, widget.deliveryOrder!);
+                              editDeliveryOrder(contact);
                             },
                             child: Icon(Typicons.edit)),
                       ),
@@ -233,7 +229,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 6.0),
                                   child: Text(
-                                      "${widget.deliveryOrder.idDelivery}",
+                                      "${widget.deliveryOrder!.idDelivery}",
                                       style: text16Bold),
                                 )
                               ],
@@ -246,7 +242,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(DATE_FORM, style: text14Bold),
-                              Text("${widget.deliveryOrder.dateDelivery}")
+                              Text("${widget.deliveryOrder!.dateDelivery}")
                             ],
                           ),
                         ),
@@ -266,7 +262,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             children: [
                               Text(GPS_LOCATION_FORM, style: text14Bold),
                               Text(
-                                  "${widget.deliveryOrder.gpsLat ?? ""}, ${widget.deliveryOrder.gpsLong ?? ""}",
+                                  "${widget.deliveryOrder!.gpsLat ?? ""}, ${widget.deliveryOrder!.gpsLong ?? ""}",
                                   overflow: TextOverflow.ellipsis)
                             ],
                           ),
@@ -279,7 +275,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             children: [
                               Text(SUPPLIER, style: text14Bold),
                               suppliersObject != null
-                                  ? Text("${suppliersObject.name}")
+                                  ? Text("${suppliersObject!.name}")
                                   : Container()
                             ],
                           ),
@@ -291,7 +287,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(DRIVER, style: text14Bold),
-                              Text("${widget.deliveryOrder.driverName}")
+                              Text("${widget.deliveryOrder!.driverName}")
                             ],
                           ),
                         ),
@@ -302,7 +298,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(PLAT_NUMBER, style: text14Bold),
-                              Text("${widget.deliveryOrder.platNumber}")
+                              Text("${widget.deliveryOrder!.platNumber}")
                             ],
                           ),
                         ),
@@ -336,7 +332,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             children: [
                               Text("Total Berat Janjang", style: text14Bold),
                               Text(
-                                  "${formatThousandSeparator(totalWeight.round())}")
+                                  "${formatThousandSeparator(totalWeight!.round())}")
                             ],
                           ),
                         ),
@@ -347,7 +343,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Catatan", style: text14Bold),
-                              Text("${widget.deliveryOrder.note}")
+                              Text("${widget.deliveryOrder!.note}")
                             ],
                           ),
                         ),
@@ -393,7 +389,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                                 style: text14Bold,
                               ),
                               Text(
-                                  "${formatThousandSeparator(totalWeight.round())}")
+                                  "${formatThousandSeparator(totalWeight!.round())}")
                             ],
                           ),
                           Row(
@@ -479,7 +475,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          deliveryOrder.transferred == "true"
+                          deliveryOrder!.transferred == "true"
                               ? Padding(
                                   padding: const EdgeInsets.all(20),
                                   child: Text(
@@ -599,16 +595,16 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
   _generateQRCode() {
     List<String> dataCollection = [];
     String dataDeliveryOrder;
-    dataDeliveryOrder = widget.deliveryOrder.idDelivery +
+    dataDeliveryOrder = widget.deliveryOrder!.idDelivery! +
         "," +
-        widget.deliveryOrder.ascentSupplierCode +
+        widget.deliveryOrder!.ascentSupplierCode! +
         "," +
-        widget.deliveryOrder.driverName +
+        widget.deliveryOrder!.driverName! +
         "," +
-        widget.deliveryOrder.platNumber;
+        widget.deliveryOrder!.platNumber!;
 
     for (int i = 0; i < listHarvestTicket.length; i++) {
-      String dataTicket = listHarvestTicket[i].ascendFarmerCode +
+      String dataTicket = listHarvestTicket[i].ascendFarmerCode! +
           "," +
           listHarvestTicket[i].quantity.toString() +
           "," +
@@ -742,7 +738,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
               child: Column(
                 children: [
                   Text(
-                    "${deliveryOrder.idDelivery}",
+                    "${deliveryOrder!.idDelivery}",
                     style: TextStyle(color: Colors.black),
                   ),
                   Text(
@@ -750,7 +746,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                     style: TextStyle(color: Colors.black),
                   ),
                   Text(
-                    "Supplier: ${suppliersObject.name}",
+                    "Supplier: ${suppliersObject!.name}",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: Colors.black),
                   ),
@@ -772,7 +768,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                               onTap: () {
                                 Navigator.pop(context);
                                 setState(() {
-                                  Screen.setBrightness(brightnessInit);
+                                  // Screen.setBrightness(brightnessInit);
                                 });
                               },
                               child: Container(
@@ -793,7 +789,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                               onTap: () {
                                 doneQRDialog(context);
                                 setState(() {
-                                  Screen.setBrightness(brightnessInit);
+                                  // Screen.setBrightness(brightnessInit);
                                 });
                               },
                               child: Container(
@@ -840,12 +836,12 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
             child: GestureDetector(
               onTap: () {
                 setState(() {
-                  this.deliveryOrder.transferred = "true";
+                  this.deliveryOrder!.transferred = "true";
                   DatabaseHarvestTicket().updateHarvestTicketDeliveryTransfer(
-                      this.deliveryOrder.idDelivery);
+                      this.deliveryOrder!.idDelivery!);
                   DatabaseCollectionPoint()
                       .updateCollectionPointDeliveryTransfer(
-                          this.deliveryOrder.idDelivery);
+                          this.deliveryOrder!.idDelivery!);
                 });
                 Navigator.pop(context, deliveryOrder);
               },
@@ -862,7 +858,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
   void updateHarvestTicket(HarvestingTicket object) async {
     DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('username');
+    String? user = prefs.getString('username');
     object.createdBy = user;
     int result = await dbHarvest.updateHarvestTicket(object);
     print(result);

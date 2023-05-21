@@ -7,32 +7,32 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QRCodeDialog extends StatelessWidget {
-  final String message;
+  final String? message;
 
-  QRCodeDialog({Key key, this.message}) : super(key: key);
+  QRCodeDialog({Key? key, this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 200,
-        height: 200,
-        alignment: Alignment.center,
-        child: FutureBuilder(
-          future: _loadOverlayImage(),
-          builder: (ctx, snapshot) {
-            return CustomPaint(
-              size: Size.square(200.0),
-              painter: QrPainter(
-                data: message,
-                version: QrVersions.auto,
-                embeddedImage: snapshot.data,
-                embeddedImageStyle: QrEmbeddedImageStyle(
-                  size: Size.square(40),
-                ),
+      width: 200,
+      height: 200,
+      alignment: Alignment.center,
+      child: FutureBuilder(
+        future: _loadOverlayImage(),
+        builder: (ctx, snapshot) {
+          return CustomPaint(
+            size: Size.square(200.0),
+            painter: QrPainter(
+              data: message!,
+              version: QrVersions.auto,
+              embeddedImage: snapshot.data,
+              embeddedImageStyle: QrEmbeddedImageStyle(
+                size: Size.square(40),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
+      ),
     );
   }
 

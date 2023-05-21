@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:http/io_client.dart';
 
 class APIConfiguration {
-  String baseUrl;
-  IOClient ioClient;
+  String? baseUrl;
+  IOClient? ioClient;
 
   APIConfiguration(String baseUrl) {
     this.baseUrl = baseUrl;

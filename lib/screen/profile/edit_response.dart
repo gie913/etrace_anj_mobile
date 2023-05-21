@@ -1,6 +1,6 @@
 class EditResponse {
-  bool success;
-  String message;
+  bool? success;
+  String? message;
 
   EditResponse({this.success, this.message});
 

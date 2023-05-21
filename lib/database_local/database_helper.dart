@@ -7,17 +7,14 @@ import 'package:sqflite/sqflite.dart';
 import 'database_entity.dart';
 
 class DatabaseHelper {
-  static DatabaseHelper _dbHelper;
-  static Database _database;
+  static DatabaseHelper? _dbHelper;
+  static Database? _database;
 
-  DatabaseHelper._createObject();
-
-  factory DatabaseHelper() {
-    if (_dbHelper == null) {
-      _dbHelper = DatabaseHelper._createObject();
-    }
-    return _dbHelper;
+  DatabaseHelper._createObject() {
+    _dbHelper = this;
   }
+
+  factory DatabaseHelper() => _dbHelper ?? DatabaseHelper._createObject();
 
   Future<Database> initDb() async {
     Directory directory = await getApplicationDocumentsDirectory();
@@ -186,7 +183,7 @@ class DatabaseHelper {
     ''');
   }
 
-  Future<Database> get database async {
+  Future<Database?> get database async {
     if (_database == null) {
       _database = await initDb();
     }

@@ -37,7 +37,6 @@ class ProfileSettingScreen extends StatefulWidget {
 }
 
 class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
-
   DatabaseHelper dbHelper = DatabaseHelper();
   DatabaseHarvestTicket dbHarvest = DatabaseHarvestTicket();
   DatabaseCollectionPoint dbCollection = DatabaseCollectionPoint();
@@ -79,9 +78,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                           activeColor: primaryColor,
                           value: theme.status ?? true,
                           onChanged: (value) {
-                            if (value != null) {
-                              value ? theme.setDarkMode() : theme.setLightMode();
-                            }
+                            value ? theme.setDarkMode() : theme.setLightMode();
                           },
                         ),
                       ),
@@ -139,10 +136,10 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
   void doLogoutUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    LogOutRepository(userBaseUrl)
-        .doGetLogOut(userToken, onSuccessLogOutCallback, onErrorLogOutCallback);
+    final String? userToken = prefs.getString('token');
+    final String? userBaseUrl = prefs.getString('baseUrl');
+    LogOutRepository(userBaseUrl!).doGetLogOut(
+        userToken!, onSuccessLogOutCallback, onErrorLogOutCallback);
   }
 
   onSuccessLogOutCallback(LogOutResponse logOutResponse) async {
@@ -154,18 +151,18 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     prefs.remove('harvesting_ticket');
     prefs.remove('collection_point');
     prefs.remove('delivery_order');
-    Database db = await DatabaseHelper().database;
-    await db.delete(TABLE_FARMER);
+    Database? db = await DatabaseHelper().database;
+    await db!.delete(TABLE_FARMER);
     await db.delete(TABLE_SUPPLIER);
     await db.delete(TABLE_AGENT);
     await db.delete(TABLE_PRICE);
     await db.delete(TABLE_FARMER_TRANSACTION);
-    String stringTopics = prefs.getString("topics");
-    String replacedString = stringTopics.replaceAll("[", "");
+    String? stringTopics = prefs.getString("topics");
+    String replacedString = stringTopics!.replaceAll("[", "");
     String replacedString2 = replacedString.replaceAll("]", "");
     List<String> listTopics = replacedString2.split(", ");
     print(listTopics);
-    for(int i = 0; i < listTopics.length; i++) {
+    for (int i = 0; i < listTopics.length; i++) {
       String topics = listTopics[i].replaceAll("/topics/", "");
       print(topics);
       FirebaseMessaging.instance.unsubscribeFromTopic(topics);
@@ -238,21 +235,27 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
   onInitialCheckTransaction() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String user = prefs.getString('username');
-    DatabaseHarvestTicket().checkHarvestTicketNoTransaction(user).then((value) {
-      if(value == true) {
-        Toast.show("Ada tiket panen belum selesai transaksi", context,
-            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    String? user = prefs.getString('username');
+    DatabaseHarvestTicket()
+        .checkHarvestTicketNoTransaction(user!)
+        .then((value) {
+      if (value == true) {
+        Toast.show("Ada tiket panen belum selesai transaksi",
+            duration: 3, gravity: 0);
       } else {
-        DatabaseCollectionPoint().checkCollectionPointNoTransaction(user).then((value) {
-          if(value == true) {
-            Toast.show("Ada titik kumpul belum selesai transaksi", context,
-                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        DatabaseCollectionPoint()
+            .checkCollectionPointNoTransaction(user)
+            .then((value) {
+          if (value == true) {
+            Toast.show("Ada titik kumpul belum selesai transaksi",
+                duration: 3, gravity: 0);
           } else {
-            DatabaseDeliveryOrder().checkCollectionPointNoTransaction(user).then((value) {
-              if(value == true) {
-                Toast.show("Ada surat pengantar belum selesai transaksi", context,
-                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+            DatabaseDeliveryOrder()
+                .checkCollectionPointNoTransaction(user)
+                .then((value) {
+              if (value == true) {
+                Toast.show("Ada surat pengantar belum selesai transaksi",
+                    duration: 3, gravity: 0);
               } else {
                 onInitialUpload();
               }
@@ -268,14 +271,14 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     final Future<Database> dbFutureHarvest = dbHelper.initDb();
     dbFutureHarvest.then((database) {
       Future<List<HarvestingTicket>> harvestTicketListFuture =
-      dbHarvest.getHarvestTicketListUnUploaded();
+          dbHarvest.getHarvestTicketListUnUploaded();
       harvestTicketListFuture.then((harvestTicketList) {
         if (harvestTicketList.isNotEmpty) {
           this.harvestTicketList = harvestTicketList;
           UploadHarvestTicket uploadHarvestTicket = UploadHarvestTicket();
           uploadHarvestTicket.harvestingTicket = harvestTicketList;
           doUploadHarvestTicketToServer(uploadHarvestTicket);
-        } else{
+        } else {
           uploadCollectionPoint();
         }
       });
@@ -284,10 +287,10 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
   doUploadHarvestTicketToServer(UploadHarvestTicket uploadHarvestTicket) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
-    final String userToken = prefs.getString('token');
-    UploadRepository(userBaseUrl).doUploadHarvestTicket(
-        userToken,
+    String? userBaseUrl = prefs.getString('baseUrl');
+    String? userToken = prefs.getString('token');
+    UploadRepository(userBaseUrl!).doUploadHarvestTicket(
+        userToken!,
         uploadHarvestTicket,
         onSuccessHarvestTicketUpload,
         onErrorHarvestTicketUpload);
@@ -296,14 +299,13 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
   onSuccessHarvestTicketUpload(UploadHarvestResponse uploadHarvestResponse) {
     context.read<CounterNotifier>().getCountUnUploadedHarvestTicket();
     for (int i = 0;
-    i < uploadHarvestResponse.data.harvestingTicket.length;
-    i++) {
+        i < uploadHarvestResponse.data!.harvestingTicket!.length;
+        i++) {
       dbHarvest.updateHarvestTicketUploaded(
-          uploadHarvestResponse.data.harvestingTicket[i]);
+          uploadHarvestResponse.data!.harvestingTicket![i]);
     }
     print("Upload Harvest Ticket Success");
-    Toast.show("Upload Tiket Panen Berhasil", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Upload Tiket Panen Berhasil", duration: 1, gravity: 0);
     uploadCollectionPoint();
   }
 
@@ -311,19 +313,19 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     final Future<Database> dbFutureCollection = dbHelper.initDb();
     dbFutureCollection.then((database) {
       Future<List<CollectionPoint>> collectionPointListFuture =
-      dbCollection.getCollectionPointListUnUploaded();
+          dbCollection.getCollectionPointListUnUploaded();
       collectionPointListFuture.then((collectionPointList) {
         if (collectionPointList.isNotEmpty) {
           this.collectionPointList = collectionPointList;
           UploadCollectionPoint uploadCollectionPoint = UploadCollectionPoint();
           for (int i = 0; i < collectionPointList.length; i++) {
             Future<List<HarvestingTicket>> harvestingTicketListFuture =
-            dbHarvest
-                .getHarvestTicketListCollection(collectionPointList[i]);
+                dbHarvest
+                    .getHarvestTicketListCollection(collectionPointList[i]);
             harvestingTicketListFuture.then((harvestingTicketList) {
               collectionPointList[i].harvestingTicket = harvestingTicketList;
               this.harvestTicketListCollection = harvestingTicketList;
-              if (i == collectionPointList.length-1) {
+              if (i == collectionPointList.length - 1) {
                 uploadCollectionPoint.collectionPoint = collectionPointList;
                 doUploadCollectionPointToServer(uploadCollectionPoint);
               }
@@ -338,18 +340,17 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
   onErrorHarvestTicketUpload(response) {
     Navigator.pop(context);
-    Toast.show("Upload Tiket Panen Gagal", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Upload Tiket Panen Gagal", duration: 1, gravity: 0);
     print(response);
   }
 
   doUploadCollectionPointToServer(
       UploadCollectionPoint uploadCollectionPoint) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
-    final String userToken = prefs.getString('token');
-    UploadRepository(userBaseUrl).doUploadCollectionPoint(
-        userToken,
+    String? userBaseUrl = prefs.getString('baseUrl');
+    String? userToken = prefs.getString('token');
+    UploadRepository(userBaseUrl!).doUploadCollectionPoint(
+        userToken!,
         uploadCollectionPoint,
         onSuccessCollectionPointUpload,
         onErrorCollectionPointUpload);
@@ -359,14 +360,13 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
       UploadCollectionResponse uploadCollectionResponse) {
     context.read<CounterNotifier>().getCountUnUploadedCollectionPoint();
     for (int i = 0;
-    i < uploadCollectionResponse.data.collectionPoint.length;
-    i++) {
+        i < uploadCollectionResponse.data!.collectionPoint!.length;
+        i++) {
       dbCollection.updateCollectionPointUploaded(
-          uploadCollectionResponse.data.collectionPoint[i]);
+          uploadCollectionResponse.data!.collectionPoint![i]);
     }
     print("Upload Collection Point Success");
-    Toast.show("Upload Titik Kumpul Berhasil", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Upload Titik Kumpul Berhasil", duration: 1, gravity: 0);
     uploadDeliveryOrder();
   }
 
@@ -374,26 +374,28 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     final Future<Database> dbFutureDelivery = dbHelper.initDb();
     dbFutureDelivery.then((database) {
       Future<List<DeliveryOrder>> deliveryOrderListFuture =
-      dbDelivery.getDeliveryOrderListUnUploaded();
+          dbDelivery.getDeliveryOrderListUnUploaded();
       deliveryOrderListFuture.then((deliveryOrderList) {
         if (deliveryOrderList.isNotEmpty) {
           this.deliveryOrderList = deliveryOrderList;
           UploadDeliveryOrder uploadDeliveryOrder = UploadDeliveryOrder();
           for (int i = 0; i < deliveryOrderList.length; i++) {
             Future<List<HarvestingTicket>> harvestingTicketListFuture =
-            dbHarvest.getHarvestTicketListDelivery(deliveryOrderList[i]);
+                dbHarvest.getHarvestTicketListDelivery(deliveryOrderList[i]);
             harvestingTicketListFuture.then((harvestingTicketList) {
               deliveryOrderList[i].harvestingTicket = harvestingTicketList;
               this.harvestTicketListDelivery = harvestingTicketList;
-              if (i == deliveryOrderList.length-1) {
+              if (i == deliveryOrderList.length - 1) {
                 uploadDeliveryOrder.deliveryOrder = deliveryOrderList;
                 doUploadDeliveryOrderToServer(uploadDeliveryOrder);
               }
             });
           }
-        } else if (harvestTicketList.isEmpty && collectionPointList.isEmpty && deliveryOrderList.isEmpty) {
-          Toast.show("Tidak ada data yang harus diupload", context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        } else if (harvestTicketList.isEmpty &&
+            collectionPointList.isEmpty &&
+            deliveryOrderList.isEmpty) {
+          Toast.show("Tidak ada data yang harus diupload",
+              duration: 1, gravity: 0);
           doLogoutUser();
         } else {
           doLogoutUser();
@@ -403,18 +405,17 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
   }
 
   onErrorCollectionPointUpload(response) {
-    Toast.show("Upload Titik Kumpul Gagal", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Upload Titik Kumpul Gagal", duration: 1, gravity: 0);
     Navigator.pop(context);
     print(response);
   }
 
   doUploadDeliveryOrderToServer(UploadDeliveryOrder uploadDeliveryOrder) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userBaseUrl = prefs.getString('baseUrl');
-    final String userToken = prefs.getString('token');
-    UploadRepository(userBaseUrl).doUploadDeliveryOrder(
-        userToken,
+    String? userBaseUrl = prefs.getString('baseUrl');
+    String? userToken = prefs.getString('token');
+    UploadRepository(userBaseUrl!).doUploadDeliveryOrder(
+        userToken!,
         uploadDeliveryOrder,
         onSuccessDeliveryOrderUpload,
         onErrorDeliveryOrderUpload);
@@ -423,18 +424,18 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
   onSuccessDeliveryOrderUpload(UploadDeliveryResponse uploadDeliveryResponse) {
     context.read<CounterNotifier>().getCountUnUploadedDeliveryOrder();
     print("Upload Delivery Success");
-    for (int i = 0; i < uploadDeliveryResponse.data.deliveryOrder.length; i++) {
+    for (int i = 0;
+        i < uploadDeliveryResponse.data!.deliveryOrder!.length;
+        i++) {
       dbDelivery.updateDeliveryOrderUploaded(
-          uploadDeliveryResponse.data.deliveryOrder[i]);
+          uploadDeliveryResponse.data!.deliveryOrder![i]);
     }
-    Toast.show("Upload Surat Pengantar Berhasil", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Upload Surat Pengantar Berhasil", duration: 1, gravity: 0);
     doLogoutUser();
   }
 
   onErrorDeliveryOrderUpload(response) {
-    Toast.show("Upload Delivery Gagal", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    Toast.show("Upload Delivery Gagal", duration: 1, gravity: 0);
     Navigator.pop(context);
     print(response);
   }

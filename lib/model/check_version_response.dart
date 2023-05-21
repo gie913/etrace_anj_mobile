@@ -1,7 +1,7 @@
 class CheckVersionResponse {
-  bool success;
-  String message;
-  DataTopics data;
+  bool? success;
+  String? message;
+  DataTopics? data;
 
   CheckVersionResponse({this.success, this.message, this.data});
 
@@ -15,15 +15,13 @@ class CheckVersionResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }
 
 class DataTopics {
-  List<String> topics;
+  List<String>? topics;
 
   DataTopics({this.topics});
 
@@ -39,16 +37,17 @@ class DataTopics {
 }
 
 class DataVersion {
-  String currentAppVersion;
-  String platform;
-  int isForceUpdate;
-  String redirectLink;
+  String? currentAppVersion;
+  String? platform;
+  int? isForceUpdate;
+  String? redirectLink;
 
-  DataVersion(
-      {this.currentAppVersion,
-        this.platform,
-        this.isForceUpdate,
-        this.redirectLink});
+  DataVersion({
+    this.currentAppVersion,
+    this.platform,
+    this.isForceUpdate,
+    this.redirectLink,
+  });
 
   DataVersion.fromJson(Map<String, dynamic> json) {
     currentAppVersion = json['current_app_version'];

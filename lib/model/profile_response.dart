@@ -1,9 +1,9 @@
 import 'package:e_trace_app/model/user.dart';
 
 class ProfileResponse {
-  bool success;
-  String message;
-  User data;
+  bool? success;
+  String? message;
+  User? data;
 
   ProfileResponse({this.success, this.message, this.data});
 
@@ -17,9 +17,7 @@ class ProfileResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
+    data['data'] = this.data!.toJson();
     return data;
   }
 }

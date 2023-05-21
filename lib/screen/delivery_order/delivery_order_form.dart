@@ -38,61 +38,58 @@ import 'package:toast/toast.dart';
 import 'search_harvest_ticket_delivery.dart';
 
 class DeliveryOrderForm extends StatefulWidget {
-  final DeliveryOrder deliveryOrder;
+  final DeliveryOrder? deliveryOrder;
 
   DeliveryOrderForm({this.deliveryOrder});
 
   @override
-  DeliveryOrderFormState createState() =>
-      DeliveryOrderFormState(this.deliveryOrder);
+  DeliveryOrderFormState createState() => DeliveryOrderFormState();
 }
 
-class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerProviderStateMixin{
-  String idDelivery, dateDelivery, gpsLocation;
-  String record = "", receivedVia;
-  bool loading, validatePlatNumber = false, validateDriver = false;
+class DeliveryOrderFormState extends State<DeliveryOrderForm>
+    with SingleTickerProviderStateMixin {
+  String? idDelivery, dateDelivery, gpsLocation;
+  String? record = "", receivedVia;
+  bool? loading, validatePlatNumber = false, validateDriver = false;
 
-  DeliveryOrderFormState(this.deliveryOrder);
-
-  Suppliers supplierObject;
-  DeliveryOrder deliveryOrder;
-  Position position;
-  String companyName, gpsLat, gpsLong, username;
+  Suppliers? supplierObject;
+  DeliveryOrder? deliveryOrder;
+  Position? position;
+  String? companyName, gpsLat, gpsLong, username;
   TextEditingController platNumberController = TextEditingController();
   TextEditingController cardNumberController = TextEditingController();
   TextEditingController driverController = TextEditingController();
   var noteController = TextEditingController();
-  TabController tabController;
+  TabController? tabController;
   List<HarvestingTicket> harvestTicketList = [];
-  HarvestingTicket harvestTicket;
+  HarvestingTicket? harvestTicket;
   int totalJanjang = 0;
   double totalWeight = 0;
   DateTime now = DateTime.now();
 
   @override
   void initState() {
+    deliveryOrder = widget.deliveryOrder;
     generateIDDelivery();
     generateDateDelivery();
     tabController = TabController(length: 2, vsync: this);
-    if (deliveryOrder != null) {
-      platNumberController.text = deliveryOrder.platNumber;
-      cardNumberController.text = deliveryOrder.cardNumber;
-      driverController.text = deliveryOrder.driverName;
-      noteController.text = deliveryOrder.note;
-      getHarvestTicketDeliveryOrderList();
-      getSupplierByID(deliveryOrder);
-    }
+    platNumberController.text = deliveryOrder!.platNumber!;
+    cardNumberController.text = deliveryOrder!.cardNumber!;
+    driverController.text = deliveryOrder!.driverName!;
+    noteController.text = deliveryOrder!.note!;
+    getHarvestTicketDeliveryOrderList();
+    getSupplierByID(deliveryOrder!);
     getLocation();
     super.initState();
   }
 
   getHarvestTicketDeliveryOrderList() async {
     List<HarvestingTicket> list = await DatabaseHarvestTicket()
-        .getHarvestTicketListDelivery(widget.deliveryOrder);
+        .getHarvestTicketListDelivery(widget.deliveryOrder!);
     if (list.isNotEmpty) {
       for (int i = 0; i < list.length; i++) {
         this.totalWeight = roundDouble(totalWeight + list[i].weight, 2);
-        this.totalJanjang = totalJanjang + list[i].quantity;
+        this.totalJanjang = totalJanjang + list[i].quantity!;
       }
     }
     setState(() {
@@ -105,12 +102,12 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
     companyName = prefs.getString("userPT");
     username = prefs.getString("username");
     if (deliveryOrder != null) {
-      idDelivery = deliveryOrder.idDelivery;
+      idDelivery = deliveryOrder!.idDelivery!;
     } else {
       NumberFormat formatter = new NumberFormat("0000");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String number =
-      formatter.format(int.parse(prefs.getString('userSequence')));
+          formatter.format(int.parse(prefs.getString('userSequence')!));
       setState(() {
         companyName = prefs.getString("userPT");
         idDelivery = "D" + TimeUtils.getIDOnTime(now) + number;
@@ -121,7 +118,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
   generateDateDelivery() {
     setState(() {
       if (deliveryOrder != null) {
-        dateDelivery = deliveryOrder.dateDelivery;
+        dateDelivery = deliveryOrder!.dateDelivery!;
       } else {
         dateDelivery = TimeUtils.getTime(now).toString();
       }
@@ -130,7 +127,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
 
   void getSupplierByID(DeliveryOrder deliveryOrder) async {
     Suppliers suppliers =
-    await DatabaseSupplier().selectSupplierByID(deliveryOrder);
+        await DatabaseSupplier().selectSupplierByID(deliveryOrder);
     setState(() {
       this.supplierObject = suppliers;
     });
@@ -139,7 +136,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => onWillPopForm(context),
+      onWillPop: () async => await onWillPopForm(context),
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -178,7 +175,8 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                             margin: EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
                               color: Colors.blue,
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                             ),
                           ),
                           Column(
@@ -190,7 +188,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                     children: [
                                       Padding(
                                         padding:
-                                        const EdgeInsets.only(right: 8.0),
+                                            const EdgeInsets.only(right: 8.0),
                                         child: Icon(
                                           Linecons.truck,
                                           size: 40,
@@ -199,9 +197,9 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                       ),
                                       Container(
                                           child: Text(
-                                            DELIVERY_ORDER,
-                                            style: text18Bold,
-                                          )),
+                                        DELIVERY_ORDER,
+                                        style: text18Bold,
+                                      )),
                                     ],
                                   )),
                               Column(
@@ -225,37 +223,38 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     DATE_FORM,
                                     style: text14Bold,
                                   ),
-                                  Text(dateDelivery)
+                                  Text(dateDelivery!)
                                 ],
                               ),
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(GPS_LOCATION_FORM, style: text14Bold),
-                                  loading
+                                  loading!
                                       ? SizedBox(
-                                    height: 10.0,
-                                    width: 10.0,
-                                    child: new CircularProgressIndicator(
-                                      value: null,
-                                      strokeWidth: 1.0,
-                                    ),
-                                  )
-                                      : Text("$gpsLat,$gpsLong", overflow: TextOverflow.ellipsis)
+                                          height: 10.0,
+                                          width: 10.0,
+                                          child: new CircularProgressIndicator(
+                                            value: null,
+                                            strokeWidth: 1.0,
+                                          ),
+                                        )
+                                      : Text("$gpsLat,$gpsLong",
+                                          overflow: TextOverflow.ellipsis)
                                 ],
                               ),
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text("Pabrik", style: text14Bold),
                                   Text(
@@ -267,7 +266,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Total Jumlah Janjang",
@@ -279,19 +278,20 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Total Berat Janjang",
                                     style: text14Bold,
                                   ),
-                                  Text("${formatThousandSeparator(totalWeight.round())}")
+                                  Text(
+                                      "${formatThousandSeparator(totalWeight.round())}")
                                 ],
                               ),
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     SUPPLIER,
@@ -301,12 +301,12 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                       child: ElevatedButton(
                                           style: ButtonStyle(),
                                           onPressed: () async {
-                                            Suppliers supplierNameTemp =
-                                            await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SearchSupplierScreen()));
+                                            Suppliers? supplierNameTemp =
+                                                await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SearchSupplierScreen()));
                                             setState(() {
                                               if (supplierNameTemp == null) {
                                                 supplierObject = supplierObject;
@@ -326,43 +326,43 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               ),
                               supplierObject != null
                                   ? Table(
-                                border: TableBorder.all(),
-                                children: [
-                                  TableRow(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("Kode Supplier",
-                                          textAlign: TextAlign.center),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text('Nama',
-                                          textAlign: TextAlign.center),
-                                    ),
-                                  ]),
-                                  TableRow(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          "${supplierObject.ascendSupplierCode}",
-                                          textAlign: TextAlign.center),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          "${supplierObject.name}",
-                                          textAlign: TextAlign.center),
-                                    ),
-                                  ]),
-                                ],
-                              )
+                                      border: TableBorder.all(),
+                                      children: [
+                                        TableRow(children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Kode Supplier",
+                                                textAlign: TextAlign.center),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text('Nama',
+                                                textAlign: TextAlign.center),
+                                          ),
+                                        ]),
+                                        TableRow(children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                                "${supplierObject!.ascendSupplierCode}",
+                                                textAlign: TextAlign.center),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                                "${supplierObject!.name}",
+                                                textAlign: TextAlign.center),
+                                          ),
+                                        ]),
+                                      ],
+                                    )
                                   : Container(),
                               Divider(),
                               Padding(
                                 padding: const EdgeInsets.only(top: 0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       DRIVER,
@@ -373,18 +373,18 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                         width: 160,
                                         child: TextField(
                                           textCapitalization:
-                                          TextCapitalization.words,
+                                              TextCapitalization.words,
                                           onChanged: (value) {
-                                            value != null
+                                            value.isNotEmpty
                                                 ? validateDriver = false
                                                 : validateDriver = true;
                                           },
                                           controller: driverController,
                                           textAlign: TextAlign.center,
                                           decoration: InputDecoration(
-                                            errorText: validateDriver
+                                            errorText: validateDriver!
                                                 ? 'Belum Terisi'
-                                                : null,
+                                                : '',
                                             border: OutlineInputBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10)),
@@ -402,7 +402,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                 padding: const EdgeInsets.only(top: 0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Plat Nomor (*Wajib diisi)",
                                         style: text14Bold),
@@ -411,9 +411,9 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                         width: 160,
                                         child: TextField(
                                           textCapitalization:
-                                          TextCapitalization.characters,
+                                              TextCapitalization.characters,
                                           onChanged: (value) {
-                                            value != null
+                                            value.isNotEmpty
                                                 ? validatePlatNumber = false
                                                 : validatePlatNumber = true;
                                           },
@@ -425,9 +425,9 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                           controller: platNumberController,
                                           textAlign: TextAlign.center,
                                           decoration: InputDecoration(
-                                            errorText: validatePlatNumber
+                                            errorText: validatePlatNumber!
                                                 ? 'Belum Terisi'
-                                                : null,
+                                                : '',
                                             border: OutlineInputBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10)),
@@ -477,7 +477,8 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Padding(
                                 padding: const EdgeInsets.only(),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Catatan", style: text14Bold),
                                     Flexible(
@@ -492,7 +493,8 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(10)),
-                                                borderSide: BorderSide(width: 1),
+                                                borderSide:
+                                                    BorderSide(width: 1),
                                               ),
                                             )),
                                       ),
@@ -504,7 +506,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               _inputHarvestTicketButton(),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(top: 10, bottom: 60),
+                                    const EdgeInsets.only(top: 10, bottom: 60),
                                 child: _saveButton(),
                               )
                             ],
@@ -570,17 +572,20 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                 padding: const EdgeInsets.only(),
                                 child: OutlinedButton(
                                   onPressed: () async {
-                                    HarvestingTicket harvestingTicket = await Navigator.push(context,
-                                        MaterialPageRoute(builder: (BuildContext context) {
-                                          return HarvestTicketFormNew();
-                                        }));
-                                    if(harvestingTicket != null) {
-                                      setState(() {
-                                        harvestTicketList.add(harvestingTicket);
-                                        this.totalJanjang = totalJanjang + harvestingTicket.quantity;
-                                        this.totalWeight = totalWeight + roundDouble(harvestingTicket.weight, 2);
-                                      });
-                                    }
+                                    HarvestingTicket harvestingTicket =
+                                        await Navigator.push(context,
+                                            MaterialPageRoute(builder:
+                                                (BuildContext context) {
+                                      return HarvestTicketFormNew();
+                                    }));
+                                    setState(() {
+                                      harvestTicketList.add(harvestingTicket);
+                                      this.totalJanjang = totalJanjang +
+                                          harvestingTicket.quantity!;
+                                      this.totalWeight = totalWeight +
+                                          roundDouble(
+                                              harvestingTicket.weight, 2);
+                                    });
                                   },
                                   child: Container(
                                     child: Text(
@@ -731,128 +736,128 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
       color: Colors.black12,
       child: harvestTicketList.length != 0
           ? ListView.builder(
-        itemCount: harvestTicketList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  ListTile(
-                    onTap: () async {
-                      HarvestingTicket result =
-                      await Navigator.push(context, MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return HarvestTicketForm(
-                                harvestTicket: harvestTicketList[index]);
-                          }));
-                      if (result != null) {
-                        if (deliveryOrder == null) {
-                          setState(() {
-                            harvestTicketList.removeAt(index);
-                            harvestTicketList.insert(index, result);
-                            totalJanjang = 0;
-                            totalWeight = 0;
-                            for (int i = 0;
-                            i < harvestTicketList.length;
-                            i++) {
-                              totalJanjang +=
-                                  harvestTicketList[i].quantity;
-                              totalWeight += harvestTicketList[i].weight;
-                            }
-                          });
-                        } else {
-                          if (harvestTicketList[index].idDeliveryOrderTicket == "null") {
-                            setState(() {
-                              harvestTicketList.removeAt(index);
-                              harvestTicketList.insert(index, result);
-                              totalJanjang = 0;
-                              totalWeight = 0;
-                              for (int i = 0;
-                              i < harvestTicketList.length;
-                              i++) {
-                                totalJanjang +=
-                                    harvestTicketList[i].quantity;
-                                totalWeight += harvestTicketList[i].weight;
-                              }
-                            });
-                          } else {
-                            setState(() {
-                              harvestTicketList.removeAt(index);
-                              harvestTicketList.insert(index, result);
-                              totalJanjang = 0;
-                              totalWeight = 0;
-                              for (int i = 0;
-                              i < harvestTicketList.length;
-                              i++) {
-                                totalJanjang +=
-                                    harvestTicketList[i].quantity;
-                                totalWeight += harvestTicketList[i].weight;
-                              }
-                            });
-                            DatabaseHarvestTicket()
-                                .updateHarvestTicket(result);
-                          }
-                        }
-                      }
-                    },
-                    leading: Icon(
-                      Linecons.note,
-                      size: 30,
-                      color: Colors.orange,
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        showDeleteDialog(context, index);
-                      },
-                      child: Icon(Linecons.trash),
-                    ),
-                    title: Text(harvestTicketList[index].idTicket),
-                    subtitle: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              itemCount: harvestTicketList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "Tanggal: ${harvestTicketList[index].dateTicket}"),
-                            Text(
-                                "Janjang/Berat(Kg): ${harvestTicketList[index].quantity}/${formatThousandSeparator(harvestTicketList[index].weight.round())}"),
-                            Text(
-                                "Kode Areal: ${harvestTicketList[index].ascendFarmerCode}"),
-                            Text(
-                                "TK: ${harvestTicketList[index].idCollectionTicket ?? "-"}"),
-                          ],
-                        )
+                        ListTile(
+                          onTap: () async {
+                            HarvestingTicket result =
+                                await Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                              return HarvestTicketForm(
+                                  harvestTicket: harvestTicketList[index]);
+                            }));
+                            if (deliveryOrder == null) {
+                              setState(() {
+                                harvestTicketList.removeAt(index);
+                                harvestTicketList.insert(index, result);
+                                totalJanjang = 0;
+                                totalWeight = 0;
+                                for (int i = 0;
+                                    i < harvestTicketList.length;
+                                    i++) {
+                                  totalJanjang +=
+                                      harvestTicketList[i].quantity!;
+                                  totalWeight += harvestTicketList[i].weight;
+                                }
+                              });
+                            } else {
+                              if (harvestTicketList[index]
+                                      .idDeliveryOrderTicket ==
+                                  "null") {
+                                setState(() {
+                                  harvestTicketList.removeAt(index);
+                                  harvestTicketList.insert(index, result);
+                                  totalJanjang = 0;
+                                  totalWeight = 0;
+                                  for (int i = 0;
+                                      i < harvestTicketList.length;
+                                      i++) {
+                                    totalJanjang +=
+                                        harvestTicketList[i].quantity!;
+                                    totalWeight += harvestTicketList[i].weight;
+                                  }
+                                });
+                              } else {
+                                setState(() {
+                                  harvestTicketList.removeAt(index);
+                                  harvestTicketList.insert(index, result);
+                                  totalJanjang = 0;
+                                  totalWeight = 0;
+                                  for (int i = 0;
+                                      i < harvestTicketList.length;
+                                      i++) {
+                                    totalJanjang +=
+                                        harvestTicketList[i].quantity!;
+                                    totalWeight += harvestTicketList[i].weight;
+                                  }
+                                });
+                                DatabaseHarvestTicket()
+                                    .updateHarvestTicket(result);
+                              }
+                            }
+                          },
+                          leading: Icon(
+                            Linecons.note,
+                            size: 30,
+                            color: Colors.orange,
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              showDeleteDialog(context, index);
+                            },
+                            child: Icon(Linecons.trash),
+                          ),
+                          title: Text(harvestTicketList[index].idTicket!),
+                          subtitle: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      "Tanggal: ${harvestTicketList[index].dateTicket}"),
+                                  Text(
+                                      "Janjang/Berat(Kg): ${harvestTicketList[index].quantity}/${formatThousandSeparator(harvestTicketList[index].weight.round())}"),
+                                  Text(
+                                      "Kode Areal: ${harvestTicketList[index].ascendFarmerCode}"),
+                                  Text(
+                                      "TK: ${harvestTicketList[index].idCollectionTicket ?? "-"}"),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
+                  ),
+                );
+              },
+            )
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Linecons.note, size: 40, color: Colors.orange),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Text("Belum ada tiket panen", style: text14),
                   ),
                 ],
               ),
             ),
-          );
-        },
-      )
-          : Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Linecons.note, size: 40, color: Colors.orange),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Text("Belum ada tiket panen", style: text14),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
   Future _scan() async {
     await Permission.camera.request();
-    String barcode = await scanner.scan();
+    String? barcode = await scanner.scan();
     if (barcode == null) {
       print('nothing return.');
     } else {
@@ -880,18 +885,17 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
           HarvestingTicket harvestTicket = HarvestingTicket();
           harvestTicket.idTicket = value1;
           harvestTicket.ascendFarmerCode = value2;
-          harvestTicket.quantity = int.parse(value3);
-          harvestTicket.weight = double.parse(value4);
+          harvestTicket.quantity = int.parse(value3!);
+          harvestTicket.weight = double.parse(value4!);
           if (value5 == username) {
             if (contains(harvestTicket) == true) {
-              Toast.show("Ticket Sudah Ada", context,
-                  duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+              Toast.show("Ticket Sudah Ada", duration: 1, gravity: 0);
             } else {
               checkExistTicket(harvestTicket);
             }
           } else {
-            Toast.show("Anda bukan tujuan kepemilikan data ini", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Anda bukan tujuan kepemilikan data ini",
+                duration: 1, gravity: 0);
           }
         });
       } else if (splitTicket.length == 4) {
@@ -906,11 +910,10 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
           HarvestingTicket harvestTicket = HarvestingTicket();
           harvestTicket.idTicket = value1;
           harvestTicket.ascendFarmerCode = value2;
-          harvestTicket.quantity = int.parse(value3);
-          harvestTicket.weight = double.parse(value4);
+          harvestTicket.quantity = int.parse(value3!);
+          harvestTicket.weight = double.parse(value4!);
           if (contains(harvestTicket) == true) {
-            Toast.show("Ticket Sudah Ada", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Ticket Sudah Ada", duration: 1, gravity: 0);
           } else {
             checkExistTicket(harvestTicket);
           }
@@ -929,31 +932,29 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
           HarvestingTicket harvestTicket = HarvestingTicket();
           harvestTicket.idTicket = value1;
           harvestTicket.ascendFarmerCode = value2;
-          harvestTicket.quantity = int.parse(value3);
-          harvestTicket.weight = double.parse(value4);
+          harvestTicket.quantity = int.parse(value3!);
+          harvestTicket.weight = double.parse(value4!);
           harvestTicket.idCollectionTicket = value5;
           if (value6 == username) {
             if (contains(harvestTicket) == true) {
-              Toast.show("Ticket Sudah Ada", context,
-                  duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+              Toast.show("Ticket Sudah Ada", duration: 1, gravity: 0);
             } else {
               checkExistTicket(harvestTicket);
             }
           } else {
-            Toast.show("Anda bukan tujuan kepemilikan data ini", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Anda bukan tujuan kepemilikan data ini",
+                duration: 1, gravity: 0);
           }
         });
       } else if (splitTicket.length == 8) {
-        Toast.show("Kartu Berisi Delivery Order", context,
-            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        Toast.show("Kartu Berisi Delivery Order", duration: 1, gravity: 0);
       }
     }
   }
 
   double roundDouble(double value, int places) {
-    double mod = pow(10.0, places);
-    return ((value * mod).round().toDouble() / mod);
+    double? mod = pow(10.0, places) as double?;
+    return ((value * mod!).round().toDouble() / mod);
   }
 
   bool contains(HarvestingTicket object) {
@@ -965,7 +966,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
 
   void removeList(int index) {
     if (deliveryOrder == null) {
-      int totalJanjangTemp = totalJanjang - harvestTicketList[index].quantity;
+      int totalJanjangTemp = totalJanjang - harvestTicketList[index].quantity!;
       double totalWeightTemp = totalWeight - harvestTicketList[index].weight;
       setState(() {
         this.totalJanjang = totalJanjangTemp;
@@ -974,7 +975,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
         this.harvestTicketList = harvestTicketList;
       });
     } else {
-      int totalJanjangTemp = totalJanjang - harvestTicketList[index].quantity;
+      int totalJanjangTemp = totalJanjang - harvestTicketList[index].quantity!;
       double totalWeightTemp = totalWeight - harvestTicketList[index].weight;
       setState(() {
         this.totalJanjang = totalJanjangTemp;
@@ -982,7 +983,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
         harvestTicketList.remove(harvestTicketList[index]);
         this.harvestTicketList = harvestTicketList;
         DatabaseHarvestTicket()
-            .updateHarvestTicketDeliveryDelete(deliveryOrder.idDelivery);
+            .updateHarvestTicketDeliveryDelete(deliveryOrder!.idDelivery!);
       });
     }
   }
@@ -990,17 +991,17 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
   getLocation() async {
     loading = true;
     if (deliveryOrder != null) {
-      gpsLat = deliveryOrder.gpsLat;
-      gpsLong = deliveryOrder.gpsLong;
+      gpsLat = deliveryOrder!.gpsLat;
+      gpsLong = deliveryOrder!.gpsLong;
       loading = false;
     } else {
       try {
         position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high)
+                desiredAccuracy: LocationAccuracy.high)
             .timeout(const Duration(seconds: 10));
         setState(() {
-          gpsLat = position.latitude.toString();
-          gpsLong = position.longitude.toString();
+          gpsLat = position!.latitude.toString();
+          gpsLong = position!.longitude.toString();
         });
       } on TimeoutException catch (_) {
         setState(() {
@@ -1042,11 +1043,11 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
     context.read<CounterNotifier>().getCountUnUploadedDeliveryOrder();
     for (int i = 0; i < harvestTicketList.length; i++) {
       String year =
-          "20" + harvestTicketList[i].idTicket.substring(1, 3).toString();
-      String month = harvestTicketList[i].idTicket.substring(3, 5);
-      String day = harvestTicketList[i].idTicket.substring(5, 7);
-      String hour = harvestTicketList[i].idTicket.substring(7, 9);
-      String minute = harvestTicketList[i].idTicket.substring(9, 11);
+          "20" + harvestTicketList[i].idTicket!.substring(1, 3).toString();
+      String month = harvestTicketList[i].idTicket!.substring(3, 5);
+      String day = harvestTicketList[i].idTicket!.substring(5, 7);
+      String hour = harvestTicketList[i].idTicket!.substring(7, 9);
+      String minute = harvestTicketList[i].idTicket!.substring(9, 11);
       harvestTicketList[i].dateTicket =
           year + "-" + month + "-" + day + " " + hour + ":" + minute;
       harvestTicketList[i].idDeliveryOrderTicket = this.idDelivery;
@@ -1056,32 +1057,28 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
       harvestTicketList[i].uploaded = "false";
       harvestTicketList[i].transferred = "false";
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String user = prefs.getString('username');
-      if(harvestTicketList[i].createdBy == "") {
+      String? user = prefs.getString('username');
+      if (harvestTicketList[i].createdBy == "") {
         harvestTicketList[i].createdBy = user;
         addHarvestTicketNew(harvestTicketList[i]);
       }
       if (harvestTicketList[i].createdBy == user) {
         updateHarvestTicket(harvestTicketList[i]);
-        if (harvestTicketList[i].idCollectionTicket != null) {
-          updateCollectionPoint(
-              harvestTicketList[i].idCollectionTicket, idDelivery);
-        }
+        updateCollectionPoint(
+            harvestTicketList[i].idCollectionTicket!, idDelivery!);
       } else if (harvestTicketList[i].mFarmerID == null &&
           harvestTicketList[i].createdBy == "other") {
         updateHarvestTicket(harvestTicketList[i]);
-        if (harvestTicketList[i].idCollectionTicket != null) {
-          updateCollectionPoint(
-              harvestTicketList[i].idCollectionTicket, idDelivery);
-        }
+        updateCollectionPoint(
+            harvestTicketList[i].idCollectionTicket!, idDelivery!);
       } else if (harvestTicketList[i].createdBy == null) {
         updateCollectionPoint(
-            harvestTicketList[i].idCollectionTicket, idDelivery);
+            harvestTicketList[i].idCollectionTicket!, idDelivery!);
         addHarvestTicket(harvestTicketList[i]);
       } else {
         updateHarvestTicket(harvestTicketList[i]);
         updateCollectionPoint(
-            harvestTicketList[i].idCollectionTicket, idDelivery);
+            harvestTicketList[i].idCollectionTicket!, idDelivery!);
       }
     }
     if (deliveryOrder == null) {
@@ -1090,9 +1087,9 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
           dateDelivery: dateDelivery,
           gpsLong: gpsLong ?? null,
           gpsLat: gpsLat ?? null,
-          supplierID: supplierObject.idSupplier.toString(),
-          ascentSupplierID: supplierObject.ascendSupplierId.toString(),
-          ascentSupplierCode: supplierObject.ascendSupplierCode.toString(),
+          supplierID: supplierObject!.idSupplier.toString(),
+          ascentSupplierID: supplierObject!.ascendSupplierId.toString(),
+          ascentSupplierCode: supplierObject!.ascendSupplierCode.toString(),
           driverName: driverController.text,
           uploaded: "false",
           totalQuantity: totalJanjang,
@@ -1102,26 +1099,26 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
           note: noteController.text,
           platNumber: platNumberController.text,
           cardNumber: cardNumberController.text,
-          supplierName: supplierObject.name,
+          supplierName: supplierObject!.name,
           image: "");
     } else {
-      deliveryOrder.idDelivery = idDelivery;
-      deliveryOrder.dateDelivery = dateDelivery;
-      deliveryOrder.gpsLong = gpsLong;
-      deliveryOrder.gpsLat = gpsLat;
-      deliveryOrder.createdBy = deliveryOrder.createdBy;
-      deliveryOrder.supplierID = supplierObject.idSupplier;
-      deliveryOrder.ascentSupplierCode = supplierObject.ascendSupplierCode;
-      deliveryOrder.ascentSupplierID = supplierObject.ascendSupplierId;
-      deliveryOrder.driverName = driverController.text;
-      deliveryOrder.totalQuantity = totalJanjang;
-      deliveryOrder.uploaded = "false";
-      deliveryOrder.totalWeight = totalWeight;
-      deliveryOrder.platNumber = platNumberController.text;
-      deliveryOrder.cardNumber = cardNumberController.text;
-      deliveryOrder.supplierName = supplierObject.name;
-      deliveryOrder.note = noteController.text;
-      deliveryOrder.image = "";
+      deliveryOrder!.idDelivery = idDelivery;
+      deliveryOrder!.dateDelivery = dateDelivery;
+      deliveryOrder!.gpsLong = gpsLong;
+      deliveryOrder!.gpsLat = gpsLat;
+      deliveryOrder!.createdBy = deliveryOrder!.createdBy;
+      deliveryOrder!.supplierID = supplierObject!.idSupplier;
+      deliveryOrder!.ascentSupplierCode = supplierObject!.ascendSupplierCode;
+      deliveryOrder!.ascentSupplierID = supplierObject!.ascendSupplierId;
+      deliveryOrder!.driverName = driverController.text;
+      deliveryOrder!.totalQuantity = totalJanjang;
+      deliveryOrder!.uploaded = "false";
+      deliveryOrder!.totalWeight = totalWeight;
+      deliveryOrder!.platNumber = platNumberController.text;
+      deliveryOrder!.cardNumber = cardNumberController.text;
+      deliveryOrder!.supplierName = supplierObject!.name;
+      deliveryOrder!.note = noteController.text;
+      deliveryOrder!.image = "";
     }
     doSaveTransferTicket();
     Navigator.pop(context, deliveryOrder);
@@ -1131,11 +1128,9 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
     return OutlinedButton(
       onPressed: () {
         if (harvestTicketList.isEmpty) {
-          Toast.show("Belum memasukkan tiket panen", context,
-              duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+          Toast.show("Belum memasukkan tiket panen", duration: 3, gravity: 1);
         } else if (supplierObject == null) {
-          Toast.show("Supplier Belum Terisi", context,
-              duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+          Toast.show("Supplier Belum Terisi", duration: 3, gravity: 0);
         } else if (driverController.text.isEmpty) {
           setState(() {
             validateDriver = true;
@@ -1161,7 +1156,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
     return OutlinedButton(
       onPressed: () {
         setState(() {
-          tabController.animateTo(1);
+          tabController!.animateTo(1);
         });
       },
       child: Container(
@@ -1176,42 +1171,39 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
   void navigateToSearchTicket() async {
     List<HarvestingTicket> harvestTicketTemp = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => SearchHarvestTicketDelivery()));
-    if (harvestTicketTemp != null) {
-      for (int i = 0; i < harvestTicketTemp.length; i++) {
-        if (contains(harvestTicketTemp[i]) == true) {
-          Toast.show("Ticket Sudah Ada", context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-          harvestTicketTemp.remove(harvestTicketTemp);
-        } else {
-          setState(() {
-            harvestTicketList.add(harvestTicketTemp[i]);
-            totalJanjang = totalJanjang + harvestTicketTemp[i].quantity;
-            totalWeight =
-                totalWeight + roundDouble(harvestTicketTemp[i].weight, 2);
-          });
-        }
+    for (int i = 0; i < harvestTicketTemp.length; i++) {
+      if (contains(harvestTicketTemp[i]) == true) {
+        Toast.show("Ticket Sudah Ada", duration: 1, gravity: 0);
+        harvestTicketTemp.remove(harvestTicketTemp);
+      } else {
+        setState(() {
+          harvestTicketList.add(harvestTicketTemp[i]);
+          totalJanjang = totalJanjang + harvestTicketTemp[i].quantity!;
+          totalWeight =
+              totalWeight + roundDouble(harvestTicketTemp[i].weight, 2);
+        });
       }
     }
   }
 
   void checkExistTicket(HarvestingTicket harvestingTicket) async {
     bool exist = await DatabaseHarvestTicket()
-        .checkHarvestTicketExist(harvestingTicket.idTicket);
+        .checkHarvestTicketExist(harvestingTicket.idTicket!);
     if (exist == true) {
-      Toast.show("Ticket Sudah Ada", context,
-          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      Toast.show("Ticket Sudah Ada", duration: 1, gravity: 0);
     } else {
       setState(() {
         String year =
-            "20" + harvestingTicket.idTicket.substring(1, 3).toString();
-        String month = harvestingTicket.idTicket.substring(3, 5);
-        String day = harvestingTicket.idTicket.substring(5, 7);
-        String hour = harvestingTicket.idTicket.substring(7, 9);
-        String minute = harvestingTicket.idTicket.substring(9, 11);
+            "20" + harvestingTicket.idTicket!.substring(1, 3).toString();
+        String month = harvestingTicket.idTicket!.substring(3, 5);
+        String day = harvestingTicket.idTicket!.substring(5, 7);
+        String hour = harvestingTicket.idTicket!.substring(7, 9);
+        String minute = harvestingTicket.idTicket!.substring(9, 11);
         harvestingTicket.dateTicket =
             year + "-" + month + "-" + day + " " + hour + ":" + minute;
-        this.totalJanjang = totalJanjang + harvestingTicket.quantity;
-        this.totalWeight = totalWeight + roundDouble(harvestingTicket.weight, 2);
+        this.totalJanjang = totalJanjang + harvestingTicket.quantity!;
+        this.totalWeight =
+            totalWeight + roundDouble(harvestingTicket.weight, 2);
         harvestTicketList.add(harvestingTicket);
       });
     }
@@ -1220,20 +1212,17 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
   void navigateToSearchCollectionPoint() async {
     List<HarvestingTicket> harvestTicketTemp = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => SearchCollectionDelivery()));
-    if (harvestTicketTemp != null) {
-      for (int i = 0; i < harvestTicketTemp.length; i++) {
-        if (contains(harvestTicketTemp[i]) == true) {
-          Toast.show("Ticket Sudah Ada", context,
-              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-          harvestTicketTemp.remove(harvestTicketTemp[i]);
-        } else {
-          setState(() {
-            harvestTicketList.add(harvestTicketTemp[i]);
-            totalJanjang = totalJanjang + harvestTicketTemp[i].quantity;
-            totalWeight =
-                totalWeight + roundDouble(harvestTicketTemp[i].weight, 2);
-          });
-        }
+    for (int i = 0; i < harvestTicketTemp.length; i++) {
+      if (contains(harvestTicketTemp[i]) == true) {
+        Toast.show("Ticket Sudah Ada", duration: 1, gravity: 0);
+        harvestTicketTemp.remove(harvestTicketTemp[i]);
+      } else {
+        setState(() {
+          harvestTicketList.add(harvestTicketTemp[i]);
+          totalJanjang = totalJanjang + harvestTicketTemp[i].quantity!;
+          totalWeight =
+              totalWeight + roundDouble(harvestTicketTemp[i].weight, 2);
+        });
       }
     }
   }
@@ -1375,16 +1364,14 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
   void navigateToReceivedTicket() async {
     List<HarvestingTicket> harvestTicketTemp = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => TicketReceivedScreen()));
-    if (harvestTicketTemp != null) {
-      setState(() {
-        print(harvestTicketTemp.length);
-        for (int i = 0; i < harvestTicketTemp.length; i++) {
-          harvestTicketList.add(harvestTicketTemp[i]);
-          totalJanjang = totalJanjang + harvestTicketTemp[i].quantity;
-          totalWeight = totalWeight + harvestTicketTemp[i].weight;
-        }
-      });
-    }
+    setState(() {
+      print(harvestTicketTemp.length);
+      for (int i = 0; i < harvestTicketTemp.length; i++) {
+        harvestTicketList.add(harvestTicketTemp[i]);
+        totalJanjang = totalJanjang + harvestTicketTemp[i].quantity!;
+        totalWeight = totalWeight + harvestTicketTemp[i].weight;
+      }
+    });
   }
 
   void doSaveTransferTicket() async {
@@ -1395,15 +1382,18 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
       harvestingTicket.idTicket = harvestTicketList[i].idTicket;
       harvestingTicket.ascendFarmerCode = harvestTicketList[i].ascendFarmerCode;
       harvestingTicket.weight = harvestTicketList[i].weight;
-      harvestingTicket.quantity = harvestTicketList[i].quantity.toInt();
+      harvestingTicket.quantity = harvestTicketList[i].quantity!.toInt();
       harvestingTicket.idCollectionTicket =
           harvestTicketList[i].idCollectionTicket;
       listHarvest.add(harvestingTicket);
     }
     transferBody.harvestingTicket = listHarvest;
     String userToken = await StorageManager.readData('token');
-    SaveTransferRepository(APIEndpoint.BASE_URL).doSaveTransferTicket(transferBody,
-        userToken, onSuccessTransferCallback, onErrorTransferCallback);
+    SaveTransferRepository(APIEndpoint.BASE_URL).doSaveTransferTicket(
+        transferBody,
+        userToken,
+        onSuccessTransferCallback,
+        onErrorTransferCallback);
   }
 
   onSuccessTransferCallback(TransferResponse transferResponse) {

@@ -1,45 +1,45 @@
-
 import 'harvesting_ticket.dart';
 
 class CollectionPoint {
-  String idCollection;
-  String dateCollection;
-  String deliveryCollection;
-  String idCollectionOriginal;
-  String gpsLong;
-  String gpsLat;
-  String agentID;
-  String transferred;
-  String uploaded;
-  int totalQuantity;
-  double totalWeight;
-  String ascendAgentID;
-  String ascendAgentCode;
-  String cardNumber;
-  String note;
-  String companyID;
-  String createdBy;
-  List<HarvestingTicket> harvestingTicket;
+  String? idCollection;
+  String? dateCollection;
+  String? deliveryCollection;
+  String? idCollectionOriginal;
+  String? gpsLong;
+  String? gpsLat;
+  String? agentID;
+  String? transferred;
+  String? uploaded;
+  int? totalQuantity;
+  double? totalWeight;
+  String? ascendAgentID;
+  String? ascendAgentCode;
+  String? cardNumber;
+  String? note;
+  String? companyID;
+  String? createdBy;
+  List<HarvestingTicket>? harvestingTicket;
 
-  CollectionPoint(
-      {this.idCollection,
-      this.dateCollection,
-        this.deliveryCollection,
-        this.idCollectionOriginal,
-      this.gpsLong,
-      this.gpsLat,
-      this.transferred,
-      this.uploaded,
-        this.totalQuantity,
-        this.totalWeight,
-        this.note,
-      this.agentID,
-      this.ascendAgentID,
-      this.ascendAgentCode,
-      this.cardNumber,
-      this.companyID,
-      this.createdBy,
-      this.harvestingTicket});
+  CollectionPoint({
+    this.idCollection,
+    this.dateCollection,
+    this.deliveryCollection,
+    this.idCollectionOriginal,
+    this.gpsLong,
+    this.gpsLat,
+    this.transferred,
+    this.uploaded,
+    this.totalQuantity,
+    this.totalWeight,
+    this.note,
+    this.agentID,
+    this.ascendAgentID,
+    this.ascendAgentCode,
+    this.cardNumber,
+    this.companyID,
+    this.createdBy,
+    this.harvestingTicket,
+  });
 
   CollectionPoint.fromJson(Map<String, dynamic> map) {
     this.idCollection = map['mobile_tr_cp_number'];
@@ -62,7 +62,7 @@ class CollectionPoint {
     if (map['harvesting_ticket'] != null) {
       harvestingTicket = [];
       map['harvesting_ticket'].forEach((v) {
-        harvestingTicket.add(new HarvestingTicket.fromJson(v));
+        harvestingTicket!.add(new HarvestingTicket.fromJson(v));
       });
     }
   }
@@ -86,10 +86,8 @@ class CollectionPoint {
     map['nfc_number'] = this.cardNumber;
     map['m_company_id'] = this.companyID;
     map['created_by'] = this.createdBy;
-    if (this.harvestingTicket != null) {
-      map['harvesting_ticket'] =
-          this.harvestingTicket.map((v) => v.toJson()).toList();
-    }
+    map['harvesting_ticket'] =
+        this.harvestingTicket!.map((v) => v.toJson()).toList();
     return map;
   }
 }
