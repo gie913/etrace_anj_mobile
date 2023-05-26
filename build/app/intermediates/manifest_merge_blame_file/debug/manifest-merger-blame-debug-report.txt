@@ -1,0 +1,575 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.anj.e_trace_app"
+4    android:versionCode="29"
+5    android:versionName="1.1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="30" />
+10    <!--
+11         Flutter needs it to communicate with the running application
+12         to allow setting breakpoints, to provide hot reload, etc.
+13    -->
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:9:5-67
+14-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:9:22-64
+15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+15-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:10:5-79
+15-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:10:22-76
+16    <uses-permission android:name="android.permission.CAMERA" />
+16-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:11:5-65
+16-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:11:22-62
+17    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+17-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:12:5-83
+17-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:12:22-80
+18    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+18-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:13:5-80
+18-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:13:22-77
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:14:5-81
+19-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:14:22-78
+20    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+20-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:15:5-77
+20-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:15:22-74
+21    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+21-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-79
+21-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-76
+22    <uses-permission android:name="android.permission.WAKE_LOCK" />
+22-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-68
+22-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-65
+23    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+23-->[:ota_update] C:\projects\etrace_anj_mobile\build\ota_update\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-76
+23-->[:ota_update] C:\projects\etrace_anj_mobile\build\ota_update\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-73
+24    <uses-permission android:name="android.permission.VIBRATE" />
+24-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-66
+24-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-63
+25    <uses-permission android:name="android.permission.FLASHLIGHT" />
+25-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-69
+25-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-66
+26
+27    <uses-feature android:name="android.hardware.camera" />
+27-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-60
+27-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:11:19-57
+28    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- Permission will be merged into the manifest of the hosting app. -->
+28-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-70
+28-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:12:19-67
+29    <!-- Is required to launch foreground extraction service for targetSdkVersion 28+. -->
+30    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+30-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:8:3-74
+30-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:8:20-72
+31    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+31-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:25:5-82
+31-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:25:22-79
+32    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" /> <!-- <uses-feature -->
+32-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:26:5-110
+32-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:26:22-107
+33    <!-- android:name="android.hardware.nfc" -->
+34    <!-- android:required="false" -->
+35    <!-- tools:targetApi="eclair" /> -->
+36    <!-- <uses-permission -->
+37    <!-- android:name="android.permission.NFC" -->
+38    <!-- tools:targetApi="o" /> -->
+39    <application
+39-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:25:5-105:19
+40        android:name="io.flutter.app.FlutterApplication"
+40-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:26:9-57
+41        android:allowBackup="true"
+41-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:20:9-35
+42        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+42-->[androidx.core:core:1.6.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\8f868ac448fd4fca6f2b9a606058f75e\core-1.6.0\AndroidManifest.xml:24:18-86
+43        android:configChanges="orientation|keyboardHidden"
+43-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:21:9-59
+44        android:debuggable="true"
+45        android:icon="@mipmap/ic_launcher"
+45-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:27:9-43
+46        android:label="eTIS"
+46-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:28:9-29
+47        android:requestLegacyExternalStorage="true"
+47-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:29:9-52
+48        android:screenOrientation="portrait"
+48-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:23:9-45
+49        android:supportsRtl="true"
+49-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:24:9-35
+50        android:theme="@style/Theme.AppCompat.NoActionBar"
+50-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:25:9-59
+51        android:usesCleartextTraffic="true"
+51-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:30:9-44
+52        android:windowSoftInputMode="stateAlwaysHidden" >
+52-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:26:9-56
+53        <activity
+53-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:32:9-74:20
+54            android:name="com.anj.e_trace_app.MainActivity"
+54-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:33:13-41
+55            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+55-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:34:13-163
+56            android:hardwareAccelerated="true"
+56-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:35:13-47
+57            android:launchMode="singleTop"
+57-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:36:13-43
+58            android:screenOrientation="portrait"
+58-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:37:13-49
+59            android:theme="@style/LaunchTheme"
+59-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:38:13-47
+60            android:windowSoftInputMode="adjustResize" >
+60-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:39:13-55
+61
+62            <!--
+63                 Specifies an Android theme to apply to this Activity as soon as
+64                 the Android process has started. This theme is visible to the user
+65                 while the Flutter UI initializes. After that, this theme continues
+66                 to determine the Window background behind the Flutter UI.
+67            -->
+68            <meta-data
+68-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:44:13-46:57
+69                android:name="io.flutter.embedding.android.NormalTheme"
+69-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:45:17-72
+70                android:resource="@style/NormalTheme" />
+70-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:46:17-54
+71            <meta-data
+71-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:47:13-49:75
+72                android:name="com.google.firebase.messaging.default_notification_channel_id"
+72-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:48:17-93
+73                android:value="@string/default_notification_channel_id" />
+73-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:49:17-72
+74            <meta-data
+74-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:50:13-52:66
+75                android:name="com.google.firebase.messaging.default_notification_icon"
+75-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:51:17-87
+76                android:resource="@drawable/notification_icon" />
+76-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:52:17-63
+77            <!--
+78                 Displays an Android View that continues showing the launch screen
+79                 Drawable until Flutter paints its first frame, then this splash
+80                 screen fades out. A splash screen is useful to avoid any visual
+81                 gap between the end of Android's launch screen and the painting of
+82                 Flutter's first frame.
+83            -->
+84            <meta-data
+84-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:58:13-60:66
+85                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+85-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:59:17-81
+86                android:resource="@drawable/launch_background" />
+86-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:60:17-63
+87
+88            <intent-filter>
+88-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:62:13-65:29
+89                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+89-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:63:17-69
+89-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:63:25-66
+90
+91                <category android:name="android.intent.category.DEFAULT" />
+91-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:64:17-76
+91-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:64:27-73
+92            </intent-filter>
+93            <intent-filter>
+93-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:66:13-69:29
+94                <action android:name="android.intent.action.MAIN" />
+94-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:67:17-69
+94-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:67:25-66
+95
+96                <category android:name="android.intent.category.LAUNCHER" />
+96-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:68:17-77
+96-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:68:27-74
+97            </intent-filter>
+98            <!-- <intent-filter> -->
+99            <!-- <action android:name="android.nfc.action.NDEF_DISCOVERED" /> -->
+100            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+101            <!-- </intent-filter> -->
+102        </activity>
+103        <activity
+103-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:75:9-77:39
+104            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+104-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:75:19-80
+105            android:exported="false"
+105-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:77:13-37
+106            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+106-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:76:13-71
+107        <!--
+108             Don't delete the meta-data below.
+109             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+110        -->
+111        <meta-data
+111-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:80:9-82:33
+112            android:name="flutterEmbedding"
+112-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:81:13-44
+113            android:value="2" />
+113-->C:\projects\etrace_anj_mobile\android\app\src\main\AndroidManifest.xml:82:13-30
+114
+115        <provider
+116            android:name="sk.fourq.otaupdate.OtaUpdateFileProvider"
+117            android:authorities="com.anj.e_trace_app.ota_update_provider"
+118            android:exported="false"
+119            android:grantUriPermissions="true" >
+120            <meta-data
+120-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
+121                android:name="android.support.FILE_PROVIDER_PATHS"
+121-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+122                android:resource="@xml/filepaths" />
+122-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
+123        </provider>
+124        <provider
+125            android:name="androidx.core.content.FileProvider"
+126            android:authorities="com.anj.e_trace_app.fileProvider"
+127            android:exported="false"
+128            android:grantUriPermissions="true" >
+129            <meta-data
+129-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
+130                android:name="android.support.FILE_PROVIDER_PATHS"
+130-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+131                android:resource="@xml/filepaths" />
+131-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
+132        </provider>
+133
+134        <service
+134-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-16:19
+135            android:name="com.google.firebase.components.ComponentDiscoveryService"
+135-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:12:18-89
+136            android:directBootAware="true"
+136-->[com.google.firebase:firebase-common:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\7f47b7a2154ccc5ac3d72930cecf8ded\jetified-firebase-common-20.0.0\AndroidManifest.xml:35:13-43
+137            android:exported="false" >
+137-->[com.google.firebase:firebase-analytics-ktx:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\2542982aa74e0a5f04b2084dfa379771\jetified-firebase-analytics-ktx-19.0.0\AndroidManifest.xml:10:13-37
+138            <meta-data
+138-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:85
+139                android:name="com.google.firebase.components:io.flutter.plugins.firebaseanalytics.FlutterFirebaseAppRegistrar"
+139-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-127
+140                android:value="com.google.firebase.components.ComponentRegistrar" />
+140-->[:firebase_analytics] C:\projects\etrace_anj_mobile\build\firebase_analytics\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-82
+141            <meta-data
+141-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:34:13-36:85
+142                android:name="com.google.firebase.components:io.flutter.plugins.firebase.messaging.FlutterFirebaseAppRegistrar"
+142-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:35:17-128
+143                android:value="com.google.firebase.components.ComponentRegistrar" />
+143-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:36:17-82
+144            <meta-data
+144-->[:firebase_core] C:\projects\etrace_anj_mobile\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+145                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+145-->[:firebase_core] C:\projects\etrace_anj_mobile\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
+146                android:value="com.google.firebase.components.ComponentRegistrar" />
+146-->[:firebase_core] C:\projects\etrace_anj_mobile\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+147            <meta-data
+147-->[com.google.firebase:firebase-analytics-ktx:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\2542982aa74e0a5f04b2084dfa379771\jetified-firebase-analytics-ktx-19.0.0\AndroidManifest.xml:11:13-13:85
+148                android:name="com.google.firebase.components:com.google.firebase.analytics.ktx.FirebaseAnalyticsKtxRegistrar"
+148-->[com.google.firebase:firebase-analytics-ktx:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\2542982aa74e0a5f04b2084dfa379771\jetified-firebase-analytics-ktx-19.0.0\AndroidManifest.xml:12:17-126
+149                android:value="com.google.firebase.components.ComponentRegistrar" />
+149-->[com.google.firebase:firebase-analytics-ktx:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\2542982aa74e0a5f04b2084dfa379771\jetified-firebase-analytics-ktx-19.0.0\AndroidManifest.xml:13:17-82
+150            <meta-data
+150-->[com.google.firebase:firebase-messaging-ktx:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\16c247dca01d36fbbde0936af98c6cbf\jetified-firebase-messaging-ktx-22.0.0\AndroidManifest.xml:29:13-31:85
+151                android:name="com.google.firebase.components:com.google.firebase.messaging.ktx.FirebaseMessagingKtxRegistrar"
+151-->[com.google.firebase:firebase-messaging-ktx:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\16c247dca01d36fbbde0936af98c6cbf\jetified-firebase-messaging-ktx-22.0.0\AndroidManifest.xml:30:17-126
+152                android:value="com.google.firebase.components.ComponentRegistrar" />
+152-->[com.google.firebase:firebase-messaging-ktx:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\16c247dca01d36fbbde0936af98c6cbf\jetified-firebase-messaging-ktx-22.0.0\AndroidManifest.xml:31:17-82
+153            <meta-data
+153-->[com.google.firebase:firebase-common-ktx:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\8c48bacd3f3a406ac461d5f330552d36\jetified-firebase-common-ktx-20.0.0\AndroidManifest.xml:15:13-17:85
+154                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonKtxRegistrar"
+154-->[com.google.firebase:firebase-common-ktx:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\8c48bacd3f3a406ac461d5f330552d36\jetified-firebase-common-ktx-20.0.0\AndroidManifest.xml:16:17-113
+155                android:value="com.google.firebase.components.ComponentRegistrar" />
+155-->[com.google.firebase:firebase-common-ktx:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\8c48bacd3f3a406ac461d5f330552d36\jetified-firebase-common-ktx-20.0.0\AndroidManifest.xml:17:17-82
+156            <meta-data
+156-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:52:13-54:85
+157                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+157-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:53:17-119
+158                android:value="com.google.firebase.components.ComponentRegistrar" />
+158-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:54:17-82
+159            <meta-data
+159-->[com.google.firebase:firebase-datatransport:18.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\15aae294cf88eabd110aaa92636be687\jetified-firebase-datatransport-18.0.0\AndroidManifest.xml:28:13-30:85
+160                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+160-->[com.google.firebase:firebase-datatransport:18.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\15aae294cf88eabd110aaa92636be687\jetified-firebase-datatransport-18.0.0\AndroidManifest.xml:29:17-115
+161                android:value="com.google.firebase.components.ComponentRegistrar" />
+161-->[com.google.firebase:firebase-datatransport:18.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\15aae294cf88eabd110aaa92636be687\jetified-firebase-datatransport-18.0.0\AndroidManifest.xml:30:17-82
+162            <meta-data
+162-->[com.google.android.gms:play-services-measurement-api:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\e776a8c010f4ee50e8be6d235ec94de9\jetified-play-services-measurement-api-19.0.0\AndroidManifest.xml:30:13-32:85
+163                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+163-->[com.google.android.gms:play-services-measurement-api:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\e776a8c010f4ee50e8be6d235ec94de9\jetified-play-services-measurement-api-19.0.0\AndroidManifest.xml:31:17-139
+164                android:value="com.google.firebase.components.ComponentRegistrar" />
+164-->[com.google.android.gms:play-services-measurement-api:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\e776a8c010f4ee50e8be6d235ec94de9\jetified-play-services-measurement-api-19.0.0\AndroidManifest.xml:32:17-82
+165            <meta-data
+165-->[com.google.firebase:firebase-installations:17.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\23b66d81282efe9ccc77b166e0c3883f\jetified-firebase-installations-17.0.0\AndroidManifest.xml:18:13-20:85
+166                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+166-->[com.google.firebase:firebase-installations:17.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\23b66d81282efe9ccc77b166e0c3883f\jetified-firebase-installations-17.0.0\AndroidManifest.xml:19:17-127
+167                android:value="com.google.firebase.components.ComponentRegistrar" />
+167-->[com.google.firebase:firebase-installations:17.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\23b66d81282efe9ccc77b166e0c3883f\jetified-firebase-installations-17.0.0\AndroidManifest.xml:20:17-82
+168        </service>
+169        <service
+169-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-15:72
+170            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingBackgroundService"
+170-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-107
+171            android:exported="false"
+171-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+172            android:permission="android.permission.BIND_JOB_SERVICE" />
+172-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-69
+173        <service
+173-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-22:19
+174            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService"
+174-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-97
+175            android:exported="false" >
+175-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-37
+176            <intent-filter>
+176-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-21:29
+177                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+177-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:20:17-78
+177-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:20:25-75
+178            </intent-filter>
+179        </service>
+180
+181        <receiver
+181-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:24:9-31:20
+182            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingReceiver"
+182-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:25:13-98
+183            android:exported="true"
+183-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:26:13-36
+184            android:permission="com.google.android.c2dm.permission.SEND" >
+184-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:27:13-73
+185            <intent-filter>
+185-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:28:13-30:29
+186                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+186-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:29:17-81
+186-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:29:25-78
+187            </intent-filter>
+188        </receiver>
+189
+190        <provider
+190-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:39:9-43:38
+191            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingInitProvider"
+191-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:40:13-102
+192            android:authorities="com.anj.e_trace_app.flutterfirebasemessaginginitprovider"
+192-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:41:13-88
+193            android:exported="false"
+193-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:42:13-37
+194            android:initOrder="99" />
+194-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:43:13-35
+195        <provider
+195-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+196            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+196-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-82
+197            android:authorities="com.anj.e_trace_app.flutter.image_provider"
+197-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
+198            android:exported="false"
+198-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+199            android:grantUriPermissions="true" >
+199-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+200            <meta-data
+200-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
+201                android:name="android.support.FILE_PROVIDER_PATHS"
+201-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+202                android:resource="@xml/flutter_image_picker_file_paths" />
+202-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
+203        </provider>
+204
+205        <activity android:name="com.shinow.qrscan.SecondActivity" />
+205-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:27:9-69
+205-->[:qrscan] C:\projects\etrace_anj_mobile\build\qrscan\intermediates\library_manifest\debug\AndroidManifest.xml:27:19-66
+206
+207        <provider
+207-->[:share] C:\projects\etrace_anj_mobile\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+208            android:name="io.flutter.plugins.share.ShareFileProvider"
+208-->[:share] C:\projects\etrace_anj_mobile\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-70
+209            android:authorities="com.anj.e_trace_app.flutter.share_provider"
+209-->[:share] C:\projects\etrace_anj_mobile\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
+210            android:exported="false"
+210-->[:share] C:\projects\etrace_anj_mobile\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+211            android:grantUriPermissions="true" >
+211-->[:share] C:\projects\etrace_anj_mobile\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+212            <meta-data
+212-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
+213                android:name="android.support.FILE_PROVIDER_PATHS"
+213-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+214                android:resource="@xml/flutter_share_file_paths" />
+214-->[:image_picker] C:\projects\etrace_anj_mobile\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
+215        </provider> <!-- The activities will be merged into the manifest of the hosting app. -->
+216        <activity
+216-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:12:5-271
+217            android:name="com.google.android.play.core.missingsplits.PlayCoreMissingSplitsActivity"
+217-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:12:15-102
+218            android:enabled="false"
+218-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:12:103-126
+219            android:exported="false"
+219-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:12:127-151
+220            android:launchMode="singleInstance"
+220-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:12:204-239
+221            android:process=":playcore_missing_splits_activity"
+221-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:12:152-203
+222            android:stateNotNeeded="true" />
+222-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:12:240-269
+223        <activity
+223-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:13:5-226
+224            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+224-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:13:15-95
+225            android:enabled="false"
+225-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:13:96-119
+226            android:exported="false"
+226-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:13:120-144
+227            android:stateNotNeeded="true"
+227-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:13:145-174
+228            android:theme="@style/Theme.PlayCore.Transparent" /> <!-- The services will be merged into the manifest of the hosting app. -->
+228-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:13:175-224
+229        <service
+229-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:16:5-18:15
+230            android:name="com.google.android.play.core.assetpacks.AssetPackExtractionService"
+230-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:16:14-95
+231            android:enabled="false"
+231-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:16:96-119
+232            android:exported="true" >
+232-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:16:120-143
+233            <meta-data
+233-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:17:7-108
+234                android:name="com.google.android.play.core.assetpacks.versionCode"
+234-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:17:18-84
+235                android:value="11000" />
+235-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:17:85-106
+236        </service>
+237        <service
+237-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:19:5-147
+238            android:name="com.google.android.play.core.assetpacks.ExtractionForegroundService"
+238-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:19:14-96
+239            android:enabled="false"
+239-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:19:97-120
+240            android:exported="false" />
+240-->[com.google.android.play:core:1.10.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\f924ad397c38e63b4e20638228077020\jetified-core-1.10.0\AndroidManifest.xml:19:121-145
+241
+242        <receiver
+242-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:28:9-35:20
+243            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+243-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:29:13-78
+244            android:exported="true"
+244-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:30:13-36
+245            android:permission="com.google.android.c2dm.permission.SEND" >
+245-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:31:13-73
+246            <intent-filter>
+246-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:28:13-30:29
+247                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+247-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:29:17-81
+247-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:29:25-78
+248            </intent-filter>
+249        </receiver>
+250        <!--
+251             FirebaseMessagingService performs security checks at runtime,
+252             but set to not exported to explicitly avoid allowing another app to call it.
+253        -->
+254        <service
+254-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:41:9-48:19
+255            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+255-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:42:13-82
+256            android:directBootAware="true"
+256-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:43:13-43
+257            android:exported="false" >
+257-->[com.google.firebase:firebase-messaging:22.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\baf84eda6f7c8ddb19a5879e05548ec1\jetified-firebase-messaging-22.0.0\AndroidManifest.xml:44:13-37
+258            <intent-filter android:priority="-500" >
+258-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-21:29
+259                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+259-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:20:17-78
+259-->[:firebase_messaging] C:\projects\etrace_anj_mobile\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:20:25-75
+260            </intent-filter>
+261        </service>
+262        <service
+262-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\9f3fd26b090364415f823c415ae0bb7e\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:29:9-35:19
+263            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+263-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\9f3fd26b090364415f823c415ae0bb7e\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:30:13-103
+264            android:exported="false" >
+264-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\9f3fd26b090364415f823c415ae0bb7e\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:31:13-37
+265            <meta-data
+265-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\9f3fd26b090364415f823c415ae0bb7e\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:32:13-34:39
+266                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+266-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\9f3fd26b090364415f823c415ae0bb7e\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:33:17-94
+267                android:value="cct" />
+267-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\9f3fd26b090364415f823c415ae0bb7e\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:34:17-36
+268        </service>
+269
+270        <provider
+270-->[com.google.firebase:firebase-common:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\7f47b7a2154ccc5ac3d72930cecf8ded\jetified-firebase-common-20.0.0\AndroidManifest.xml:26:9-31:39
+271            android:name="com.google.firebase.provider.FirebaseInitProvider"
+271-->[com.google.firebase:firebase-common:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\7f47b7a2154ccc5ac3d72930cecf8ded\jetified-firebase-common-20.0.0\AndroidManifest.xml:27:13-77
+272            android:authorities="com.anj.e_trace_app.firebaseinitprovider"
+272-->[com.google.firebase:firebase-common:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\7f47b7a2154ccc5ac3d72930cecf8ded\jetified-firebase-common-20.0.0\AndroidManifest.xml:28:13-72
+273            android:directBootAware="true"
+273-->[com.google.firebase:firebase-common:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\7f47b7a2154ccc5ac3d72930cecf8ded\jetified-firebase-common-20.0.0\AndroidManifest.xml:29:13-43
+274            android:exported="false"
+274-->[com.google.firebase:firebase-common:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\7f47b7a2154ccc5ac3d72930cecf8ded\jetified-firebase-common-20.0.0\AndroidManifest.xml:30:13-37
+275            android:initOrder="100" />
+275-->[com.google.firebase:firebase-common:20.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\7f47b7a2154ccc5ac3d72930cecf8ded\jetified-firebase-common-20.0.0\AndroidManifest.xml:31:13-36
+276        <provider
+276-->[com.squareup.picasso:picasso:2.71828] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\6179d5a7cc565a3da145a232a77ea248\jetified-picasso-2.71828\AndroidManifest.xml:8:9-11:40
+277            android:name="com.squareup.picasso.PicassoProvider"
+277-->[com.squareup.picasso:picasso:2.71828] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\6179d5a7cc565a3da145a232a77ea248\jetified-picasso-2.71828\AndroidManifest.xml:9:13-64
+278            android:authorities="com.anj.e_trace_app.com.squareup.picasso"
+278-->[com.squareup.picasso:picasso:2.71828] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\6179d5a7cc565a3da145a232a77ea248\jetified-picasso-2.71828\AndroidManifest.xml:10:13-72
+279            android:exported="false" />
+279-->[com.squareup.picasso:picasso:2.71828] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\6179d5a7cc565a3da145a232a77ea248\jetified-picasso-2.71828\AndroidManifest.xml:11:13-37
+280
+281        <activity
+281-->[com.github.leyan95:android-zxingLibrary:0.1.2-PRE] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\29cb291e9eb8477ca55e472b7c2906df\jetified-android-zxingLibrary-0.1.2-PRE\AndroidManifest.xml:14:9-19:63
+282            android:name="com.uuzuche.lib_zxing.activity.CaptureActivity"
+282-->[com.github.leyan95:android-zxingLibrary:0.1.2-PRE] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\29cb291e9eb8477ca55e472b7c2906df\jetified-android-zxingLibrary-0.1.2-PRE\AndroidManifest.xml:15:13-74
+283            android:configChanges="orientation|keyboardHidden"
+283-->[com.github.leyan95:android-zxingLibrary:0.1.2-PRE] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\29cb291e9eb8477ca55e472b7c2906df\jetified-android-zxingLibrary-0.1.2-PRE\AndroidManifest.xml:16:13-63
+284            android:screenOrientation="portrait"
+284-->[com.github.leyan95:android-zxingLibrary:0.1.2-PRE] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\29cb291e9eb8477ca55e472b7c2906df\jetified-android-zxingLibrary-0.1.2-PRE\AndroidManifest.xml:17:13-49
+285            android:theme="@style/Theme.AppCompat.NoActionBar"
+285-->[com.github.leyan95:android-zxingLibrary:0.1.2-PRE] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\29cb291e9eb8477ca55e472b7c2906df\jetified-android-zxingLibrary-0.1.2-PRE\AndroidManifest.xml:18:13-63
+286            android:windowSoftInputMode="stateAlwaysHidden" />
+286-->[com.github.leyan95:android-zxingLibrary:0.1.2-PRE] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\29cb291e9eb8477ca55e472b7c2906df\jetified-android-zxingLibrary-0.1.2-PRE\AndroidManifest.xml:19:13-60
+287
+288        <receiver
+288-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:29:9-33:20
+289            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+289-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:30:13-85
+290            android:enabled="true"
+290-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:31:13-35
+291            android:exported="false" >
+291-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:32:13-37
+292        </receiver>
+293
+294        <service
+294-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:35:9-38:40
+295            android:name="com.google.android.gms.measurement.AppMeasurementService"
+295-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:36:13-84
+296            android:enabled="true"
+296-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:37:13-35
+297            android:exported="false" />
+297-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:38:13-37
+298        <service
+298-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:39:9-43:72
+299            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+299-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:40:13-87
+300            android:enabled="true"
+300-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:41:13-35
+301            android:exported="false"
+301-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:42:13-37
+302            android:permission="android.permission.BIND_JOB_SERVICE" />
+302-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\a5ac8fa1c1186258d215a9d777a354fd\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:43:13-69
+303
+304        <activity
+304-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\0e834e654b88efd5dda7faf3772221de\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+305            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+305-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\0e834e654b88efd5dda7faf3772221de\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
+306            android:exported="false"
+306-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\0e834e654b88efd5dda7faf3772221de\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+307            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+307-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\0e834e654b88efd5dda7faf3772221de\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+308
+309        <meta-data
+309-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\d9a652100bcd0bbf9711be5eef2d1803\jetified-play-services-basement-17.2.1\AndroidManifest.xml:23:9-25:69
+310            android:name="com.google.android.gms.version"
+310-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\d9a652100bcd0bbf9711be5eef2d1803\jetified-play-services-basement-17.2.1\AndroidManifest.xml:24:13-58
+311            android:value="@integer/google_play_services_version" />
+311-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\d9a652100bcd0bbf9711be5eef2d1803\jetified-play-services-basement-17.2.1\AndroidManifest.xml:25:13-66
+312
+313        <service
+313-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\5c84ccac252da5af2bc31f12089d109b\jetified-transport-runtime-3.0.0\AndroidManifest.xml:26:9-30:19
+314            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+314-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\5c84ccac252da5af2bc31f12089d109b\jetified-transport-runtime-3.0.0\AndroidManifest.xml:27:13-117
+315            android:exported="false"
+315-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\5c84ccac252da5af2bc31f12089d109b\jetified-transport-runtime-3.0.0\AndroidManifest.xml:28:13-37
+316            android:permission="android.permission.BIND_JOB_SERVICE" >
+316-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\5c84ccac252da5af2bc31f12089d109b\jetified-transport-runtime-3.0.0\AndroidManifest.xml:29:13-69
+317        </service>
+318
+319        <receiver
+319-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\5c84ccac252da5af2bc31f12089d109b\jetified-transport-runtime-3.0.0\AndroidManifest.xml:32:9-34:40
+320            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+320-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\5c84ccac252da5af2bc31f12089d109b\jetified-transport-runtime-3.0.0\AndroidManifest.xml:33:13-132
+321            android:exported="false" />
+321-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\mazis\.gradle\caches\transforms-2\files-2.1\5c84ccac252da5af2bc31f12089d109b\jetified-transport-runtime-3.0.0\AndroidManifest.xml:34:13-37
+322    </application>
+323
+324</manifest>

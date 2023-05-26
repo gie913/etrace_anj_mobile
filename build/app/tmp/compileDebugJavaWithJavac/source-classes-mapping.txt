@@ -1,0 +1,4 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+com/anj/e_trace_app/BuildConfig.java
+ com.anj.e_trace_app.BuildConfig

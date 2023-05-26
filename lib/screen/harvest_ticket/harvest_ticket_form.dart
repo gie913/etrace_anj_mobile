@@ -428,10 +428,11 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
   Future<bool> checkMaxTonnage(String janjang) async {
     double maxTonnageYear = farmerObject.maxTonnageYear ?? 0;
     double sumKgYear = farmerObject.sumKgYear ?? 0;
-    double abw = await StorageManager.readData("abw");
+    // azis
+    num abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
     int totalJanjang = int.parse(janjang);
-    if(useMaxTonnage == 1) {
+    if (useMaxTonnage == 1) {
       if (abw != null) {
         double estimationTonnage = (abw * totalJanjang) / 1000;
         if (estimationTonnage + (sumKgYear / 1000) > maxTonnageYear) {
@@ -538,7 +539,11 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
             content: Text(message),
             actions: <Widget>[
               new TextButton(
-                  child: new Text(OK, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
+                  child: new Text(
+                    OK,
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   })
