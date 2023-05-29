@@ -13,9 +13,9 @@ class CompanyViewModel extends ChangeNotifier {
 
   List<DataCompanies> _myCompanies = [];
 
-  String? _myCompany;
+  String _myCompany = '';
 
-  String? get myCompany => _myCompany;
+  String get myCompany => _myCompany;
 
   List<DataCompanies> get myCompanies => _myCompanies;
 

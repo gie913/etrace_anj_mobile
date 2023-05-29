@@ -1,3 +1,4 @@
+import 'package:e_trace_app/firebase_options.dart';
 import 'package:e_trace_app/screen/home/counter_notifier.dart';
 import 'package:e_trace_app/screen/login/companies_notifier.dart';
 import 'package:e_trace_app/screen/main/main_notifier.dart';
@@ -11,7 +12,8 @@ import 'package:e_trace_app/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await initFirebase();
+
   runApp(
     MultiProvider(
       providers: [
@@ -25,4 +27,10 @@ void main() async {
       child: App(),
     ),
   );
+}
+
+Future<void> initFirebase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // await FirebaseService().initializeFirebaseMessaging();
+  // await FirebaseService().initializeFirebaseMessagingHandler();
 }

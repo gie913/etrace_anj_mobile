@@ -48,7 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
       preferences.setString('baseUrl', APIEndpoint.BASE_URL);
     }
     String? username = preferences.getString('username');
-    emailController.text = username!;
+    if (username != null) {
+      emailController.text = username;
+    }
   }
 
   @override
@@ -143,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 textInputAction: TextInputAction.done,
                                 onEditingComplete: () {
                                   _passwordFocus.unfocus();
-                                  _uiInputValidation(company.myCompany!);
+                                  _uiInputValidation(company.myCompany);
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -172,9 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 20),
                         OutlinedButton(
                           onPressed: () {
-                            setState(() {
-                              _uiInputValidation(company.myCompany!);
-                            });
+                            _uiInputValidation(company.myCompany);
+                            setState(() {});
                           },
                           child: Container(
                             padding: EdgeInsets.all(14),
