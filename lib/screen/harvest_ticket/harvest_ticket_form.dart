@@ -47,12 +47,26 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
   @override
   void initState() {
     harvestTicket = widget.harvestTicket;
-    totalJanjangController.text = harvestTicket!.quantity.toString();
-    weightJanjangController.text = harvestTicket!.weight.round().toString();
-    noteController.text = harvestTicket!.note!;
+
+    totalJanjangController.text = harvestTicket!.quantity != null
+        ? harvestTicket!.quantity.toString()
+        : '';
+    weightJanjangController.text = harvestTicket!.weight != null
+        ? harvestTicket!.weight.round().toString()
+        : '';
+    noteController.text =
+        harvestTicket!.note != null ? harvestTicket!.note! : '';
     getFarmerByID(harvestTicket!);
-    cardNumberController.text = harvestTicket!.nfcNumber!;
+    cardNumberController.text =
+        harvestTicket!.nfcNumber != null ? harvestTicket!.nfcNumber! : '';
     onInitialHarvestTicketForm(harvestTicket!);
+
+    // totalJanjangController.text = harvestTicket!.quantity.toString();
+    // weightJanjangController.text = harvestTicket!.weight.round().toString();
+    // noteController.text = harvestTicket!.note!;
+    // getFarmerByID(harvestTicket!);
+    // cardNumberController.text = harvestTicket!.nfcNumber!;
+    // onInitialHarvestTicketForm(harvestTicket!);
     super.initState();
   }
 
@@ -64,7 +78,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
 
   generateIDTicket(HarvestingTicket harvestingTicket) async {
     DateTime now = DateTime.now();
-    if (harvestingTicket.idTicket!.isNotEmpty) {
+    if (harvestingTicket.idTicket != null) {
       idTicket = harvestingTicket.idTicket;
     } else {
       NumberFormat formatter = new NumberFormat("0000");
@@ -81,7 +95,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
   generateDateTicket(HarvestingTicket harvestingTicket) {
     setState(() {
       DateTime now = DateTime.now();
-      harvestingTicket.dateTicket!.isNotEmpty
+      harvestingTicket.dateTicket != null
           ? dateTicket = harvestingTicket.dateTicket
           : dateTicket = TimeUtils.getTime(now).toString();
     });
@@ -89,7 +103,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
 
   getLocation(HarvestingTicket harvestingTicket) async {
     loading = true;
-    if (harvestingTicket.gpsLat!.isNotEmpty) {
+    if (harvestingTicket.gpsLat != null) {
       gpsLat = harvestingTicket.gpsLat;
       gpsLong = harvestingTicket.gpsLong;
       loading = false;
@@ -257,17 +271,19 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                          "${farmerObject!.ascendFarmerCode}",
+                                          "${farmerObject!.ascendFarmerCode ?? ''}",
                                           textAlign: TextAlign.center),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text("${farmerObject!.fullname}",
+                                      child: Text(
+                                          "${farmerObject!.fullname ?? ''}",
                                           textAlign: TextAlign.center),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text("${farmerObject!.address}",
+                                      child: Text(
+                                          "${farmerObject!.address ?? ''}",
                                           textAlign: TextAlign.center),
                                     )
                                   ]),

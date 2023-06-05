@@ -30,6 +30,8 @@ class FarmerTransactionRepository {
           FarmerTransactions.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         onSuccess(apiResponse);
+        print(
+            'Cek Response Farmer Transaction : ${json.decode(response.body)}');
       } else {
         onError(apiResponse.message);
       }

@@ -38,6 +38,7 @@ class FarmerRepository {
       if (apiResponse.success == true) {
         StorageManager.saveData("abw", apiResponse.data!.abw);
         onSuccess(apiResponse.data!.farmers);
+        print('Cek Response Farmer : ${json.decode(response.body)}');
       } else {
         onError(apiResponse.message);
       }

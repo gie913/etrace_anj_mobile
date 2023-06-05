@@ -50,6 +50,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
           InkWell(
             onTap: () async {
               if (harvestTicketList.isEmpty) {
+                ToastContext().init(context);
                 Toast.show("Belum Ada Tiket Panen", duration: 1, gravity: 2);
               } else {
                 bool result = await Navigator.push(context,

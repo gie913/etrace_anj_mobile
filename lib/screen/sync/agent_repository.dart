@@ -36,6 +36,7 @@ class AgentRepository {
           SyncAgentResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         onSuccess(apiResponse.data!.agents);
+        print('Cek Response Agent : ${json.decode(response.body)}');
       } else {
         onError(apiResponse.message);
       }

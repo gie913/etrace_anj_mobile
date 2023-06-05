@@ -1,4 +1,3 @@
-
 import 'package:e_trace_app/screen/splash/splash_screen.dart';
 import 'package:e_trace_app/utils/theme_manager.dart';
 import 'package:flutter/material.dart';

@@ -35,6 +35,7 @@ class CheckVersionRepository extends APIConfiguration {
       print(response.body);
       if (apiResponse.success == true) {
         onSuccess(apiResponse);
+        print('Cek Response Check Version : ${json.decode(response.body)}');
       } else {
         onError(response);
       }

@@ -37,6 +37,7 @@ class SupplierRepository {
           SyncSupplierResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         onSuccess(apiResponse.data!.suppliers);
+        print('Cek Response Supplier : ${json.decode(response.body)}');
       } else {
         onError(apiResponse.message);
       }
