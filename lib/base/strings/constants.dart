@@ -1,5 +1,5 @@
 /* Base App */
-const String APP_VERSION = "v.1.1.0";
+const String APP_VERSION = "v.1.2.0";
 const String APP_BUILD = "Development";
 const String POWERED_BY = "Powered By ANJ";
 const String APP_NAME = "eTIS ANJ";
@@ -7,12 +7,13 @@ const String APP_NAME = "eTIS ANJ";
 /*Home Screen*/
 const String TITLE_READ_QRCODE = "Kode QR";
 const String TITLE_READ_NFC = "Kartu NFC";
-const String TITLE_HARVESTING_TICKET =  "Tiket Panen";
-const String TITLE_COLLECTION_POINT =  "Titik Kumpul TBS";
+const String TITLE_HARVESTING_TICKET = "Tiket Panen";
+const String TITLE_COLLECTION_POINT = "Titik Kumpul TBS";
 const String TITLE_DELIVERY_ORDER = "Surat Pengantar TBS";
 const String TITLE_POINT = "Poin Anda";
 const String INPUT_EMAIL_ADDRESS = "Masukkan Username";
-const String RESET_DATA_SUBTITLE_DIALOG = "Seluruh data aplikasi akan terhapus\nApakah anda yakin ingin menghapus data?";
+const String RESET_DATA_SUBTITLE_DIALOG =
+    "Seluruh data aplikasi akan terhapus\nApakah anda yakin ingin menghapus data?";
 const String RESET_DATA = "Reset Data";
 
 /*Search Text Field*/

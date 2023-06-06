@@ -432,15 +432,19 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
     double totalTonnage = 0;
     double abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
+    print('cek abw : $abw');
+    print('cek useMaxTonnage : $useMaxTonnage');
     var result =
         await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
     if (result.isNotEmpty) {
       int month = DateTime.now().month;
+      print('cek bulan ini bulan ke : $month');
       List<int> listIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
       var newMe = jsonEncode(result[0]);
       Farmer farmer = Farmer.fromJson(jsonDecode(newMe));
       var list = jsonDecode(farmer.trMonth);
+      print('cek tr_month :\n$list');
 
       var chunks = [];
       var chunksIndex = [];
@@ -453,29 +457,43 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
                 ? listIndex.length
                 : i + chunkSize));
       }
+      print('mapping quartal bulan dalam satu tahun :\n$chunksIndex');
 
-      print(chunksIndex);
       for (var i = 0; i < list.length; i += chunkSize) {
         chunks.add(list.sublist(
             i, i + chunkSize > list.length ? list.length : i + chunkSize));
       }
-      print(chunks);
+      print('mapping quartal tr_month :\n$chunks');
 
       for (int i = 0; i < chunksIndex.length; i++) {
         if (chunksIndex[i].contains(month)) {
           totalTonnage =
               double.parse(chunks[i].reduce((a, b) => a + b).toString());
-          print(totalTonnage);
+          print('total tonage per quartal ${i + 1} = $totalTonnage');
         }
       }
 
       if (useMaxTonnage == 1) {
         var totalTonnageSum =
-        (((totalTonnage + (abw * int.parse(janjang))) / 1000));
-        var maxYear = farmer.maxTonnageYear / chunkSize;
+            (((totalTonnage + (abw * int.parse(janjang))) / 1000));
+        // var maxYear = farmer.maxTonnageYear / chunkSize;
+        var maxYear = farmer.maxTonnageYear / chunks.length;
         if (totalTonnageSum > maxYear) {
           return true;
         } else {
+          // update database local farmer transaction
+          // double estimationKg = (abw * int.parse(janjang));
+          // list[month - 1] = list[month - 1] + estimationKg.toInt();
+          // farmer.trMonth = list.toString();
+          // DatabaseFarmerTransaction().updateFarmerTransaction(farmer);
+          // var resultUpdate = await DatabaseFarmerTransaction()
+          //     .selectTRMonthByFarmer(farmerObject);
+          // var newUpdate = jsonEncode(resultUpdate[0]);
+          // Farmer farmerUpdate = Farmer.fromJson(jsonDecode(newUpdate));
+          // var listUpdate = jsonDecode(farmerUpdate.trMonth);
+          // print('cek tr_month update :\n$listUpdate');
+          print('total tonage per quartal (Ton) $totalTonnageSum');
+          print('max tonage per quartal : $maxYear');
           return false;
         }
       } else {
