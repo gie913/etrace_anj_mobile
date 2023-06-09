@@ -7,7 +7,6 @@ import 'package:e_trace_app/model/log_out_response.dart';
 import 'package:http/io_client.dart';
 
 class LogOutRepository {
-
   String baseUrl;
   IOClient ioClient;
 
@@ -15,7 +14,7 @@ class LogOutRepository {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 

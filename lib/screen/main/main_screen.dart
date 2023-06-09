@@ -17,7 +17,6 @@ import 'package:e_trace_app/screen/home/check_version_repository.dart';
 import 'package:e_trace_app/screen/home/sync_data_background.dart';
 import 'package:e_trace_app/screen/login/login_screen.dart';
 import 'package:e_trace_app/screen/main/set_version_repository.dart';
-import 'package:e_trace_app/screen/profile/logout_repository.dart';
 import 'package:e_trace_app/screen/sync/tonnage_farmer_repository.dart';
 import 'package:e_trace_app/widget/dialog_exit.dart';
 import 'package:e_trace_app/widget/loading_dialog.dart';
@@ -283,6 +282,7 @@ class _MainScreenState extends State<MainScreen> {
         NotificationModel notif =
             NotificationModel.fromJson(json.decode(json.encode(event.data)));
         print(notif.action);
+        print(notif.toPage);
         showDialogNotification(event.notification.title,
             event.notification.body, notif.action, notif.toPage);
         setNotificationArrived(event.notification.title,
@@ -294,6 +294,7 @@ class _MainScreenState extends State<MainScreen> {
       NotificationModel notif =
           NotificationModel.fromJson(json.decode(json.encode(message.data)));
       print(notif.action);
+      print(notif.toPage);
       print('Message clicked!');
       showDialogNotification(message.notification.title,
           message.notification.title, notif.action, notif.toPage);
@@ -433,14 +434,48 @@ class _MainScreenState extends State<MainScreen> {
   onErrorProfileCallback(String response) {}
 
   void doLogoutUser() async {
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final String userToken = prefs.getString('token');
+    // final String userBaseUrl = prefs.getString('baseUrl');
+    // LogOutRepository(userBaseUrl)
+    //     .doGetLogOut(userToken, onSuccessLogOutCallback, onErrorLogOutCallback);
+    print('sukses logout');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userToken = prefs.getString('token');
-    final String userBaseUrl = prefs.getString('baseUrl');
-    LogOutRepository(userBaseUrl)
-        .doGetLogOut(userToken, onSuccessLogOutCallback, onErrorLogOutCallback);
+    prefs.remove('baseUrl');
+    prefs.remove('token');
+    prefs.remove('session');
+    prefs.remove('lastSync');
+    prefs.remove('harvesting_ticket');
+    prefs.remove('collection_point');
+    prefs.remove('delivery_order');
+    setNotificationClicked();
+    Database db = await DatabaseHelper().database;
+    await db.delete(TABLE_FARMER);
+    await db.delete(TABLE_SUPPLIER);
+    await db.delete(TABLE_AGENT);
+    await db.delete(TABLE_PRICE);
+    String stringTopics = prefs.getString("topics");
+    String replacedString = stringTopics.replaceAll("[", "");
+    String replacedString2 = replacedString.replaceAll("]", "");
+    print(replacedString);
+    print("replaced 2 " + replacedString2);
+    List<String> listTopics = replacedString2.split(", ");
+    print(listTopics);
+    for (int i = 0; i < listTopics.length; i++) {
+      String topics = listTopics[i].replaceAll("/topics/", "");
+      print(topics);
+      FirebaseMessaging.instance.unsubscribeFromTopic(topics);
+      print("unsubscribed: ${listTopics[i]}");
+    }
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   onSuccessLogOutCallback(LogOutResponse logOutResponse) async {
+    print('sukses logout');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('baseUrl');
     prefs.remove('token');

@@ -10,7 +10,7 @@ import 'package:e_trace_app/model/upload_delivery_response.dart';
 import 'package:e_trace_app/model/upload_harvest_response.dart';
 import 'package:e_trace_app/model/upload_harvest_ticket.dart';
 
-class UploadRepository extends APIConfiguration{
+class UploadRepository extends APIConfiguration {
   UploadRepository(String baseUrl) : super(baseUrl);
 
   void doUploadHarvestTicket(String token,
@@ -26,6 +26,8 @@ class UploadRepository extends APIConfiguration{
         body: map,
         headers: getDefaultHeaderWithToken(token),
       );
+
+      print('cek headers upload : ${getDefaultHeaderWithToken(token)}');
 
       String responseBody = response.body;
       Map<String, dynamic> responseJson = json.decode(responseBody);
