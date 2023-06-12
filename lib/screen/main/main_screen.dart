@@ -454,6 +454,7 @@ class _MainScreenState extends State<MainScreen> {
     await db.delete(TABLE_SUPPLIER);
     await db.delete(TABLE_AGENT);
     await db.delete(TABLE_PRICE);
+    await db.delete(TABLE_FARMER_TRANSACTION);
     String stringTopics = prefs.getString("topics");
     String replacedString = stringTopics.replaceAll("[", "");
     String replacedString2 = replacedString.replaceAll("]", "");
@@ -467,7 +468,7 @@ class _MainScreenState extends State<MainScreen> {
       FirebaseMessaging.instance.unsubscribeFromTopic(topics);
       print("unsubscribed: ${listTopics[i]}");
     }
-    Navigator.pushAndRemoveUntil(
+    await Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
       (Route<dynamic> route) => false,

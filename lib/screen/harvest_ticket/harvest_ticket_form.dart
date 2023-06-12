@@ -429,7 +429,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
   }
 
   Future<bool> checkMaxTonnage(String janjang) async {
-    double totalTonnage = 0;
+    double totalTonnagePeriode = 0;
     double abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
     print('cek abw : $abw');
@@ -446,6 +446,9 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
       var list = jsonDecode(farmer.trMonth);
       print('cek tr_month :\n$list');
 
+      final totalTonnageYear = farmer.trYear.toDouble() / 1000;
+      print('cek transaksi tahun berjalan = $totalTonnageYear');
+
       var chunks = [];
       var chunksIndex = [];
       var chunkSize = farmer.groupingMonth.toInt();
@@ -457,29 +460,39 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
                 ? listIndex.length
                 : i + chunkSize));
       }
-      print('mapping quartal bulan dalam satu tahun :\n$chunksIndex');
+      print('mapping periode bulan dalam satu tahun :\n$chunksIndex');
 
       for (var i = 0; i < list.length; i += chunkSize) {
         chunks.add(list.sublist(
             i, i + chunkSize > list.length ? list.length : i + chunkSize));
       }
-      print('mapping quartal tr_month :\n$chunks');
+      print('mapping periode tr_month :\n$chunks');
 
       for (int i = 0; i < chunksIndex.length; i++) {
         if (chunksIndex[i].contains(month)) {
-          totalTonnage =
+          totalTonnagePeriode =
               double.parse(chunks[i].reduce((a, b) => a + b).toString());
-          print('total tonage per quartal ${i + 1} = $totalTonnage');
+          print('total tonage per periode ${i + 1} = $totalTonnagePeriode');
         }
       }
 
+      var totalTonnagePeriodeSum =
+          (((totalTonnagePeriode + (abw * int.parse(janjang))) / 1000));
+      // var maxYear = farmer.maxTonnageYear / chunkSize;
+      var maxTonnagePeriode = farmer.maxTonnageYear / chunks.length;
+      print('max tonage per periode : $maxTonnagePeriode');
+      print('total tonage per periode (Ton) $totalTonnagePeriodeSum');
+
       if (useMaxTonnage == 1) {
-        var totalTonnageSum =
-            (((totalTonnage + (abw * int.parse(janjang))) / 1000));
-        // var maxYear = farmer.maxTonnageYear / chunkSize;
-        var maxYear = farmer.maxTonnageYear / chunks.length;
-        if (totalTonnageSum > maxYear) {
-          return true;
+        if (totalTonnageYear < farmer.maxTonnageYear) {
+          print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
+          if (totalTonnagePeriodeSum < maxTonnagePeriode) {
+            print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
+            return true;
+          } else {
+            print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
+            return false;
+          }
         } else {
           // update database local farmer transaction
           // double estimationKg = (abw * int.parse(janjang));
@@ -492,8 +505,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
           // Farmer farmerUpdate = Farmer.fromJson(jsonDecode(newUpdate));
           // var listUpdate = jsonDecode(farmerUpdate.trMonth);
           // print('cek tr_month update :\n$listUpdate');
-          print('total tonage per quartal (Ton) $totalTonnageSum');
-          print('max tonage per quartal : $maxYear');
+          print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
           return false;
         }
       } else {
@@ -566,7 +578,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
           });
         } else {
           checkMaxTonnage(totalJanjangController.text).then((value) {
-            if (!value) {
+            if (value) {
               addDataToDatabase(context);
             } else {
               openWarningDialog(context,

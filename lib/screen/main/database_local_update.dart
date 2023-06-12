@@ -25,7 +25,7 @@ class DatabaseLocalUpdate {
       } catch (e) {
         print("Column supplier name exist");
       }
-    } else if (APP_VERSION == "v.1.2.0") {
+    } else if (APP_VERSION == "v.1.2.1") {
       Database db = await DatabaseHelper().database;
       try {
         await db.rawQuery(
