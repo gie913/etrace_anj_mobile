@@ -1,5 +1,5 @@
 /* Base App */
-const String APP_VERSION = "v.1.2.1";
+const String APP_VERSION = "v.1.1.0";
 const String APP_BUILD = "Development";
 const String POWERED_BY = "Powered By ANJ";
 const String APP_NAME = "eTIS ANJ";
