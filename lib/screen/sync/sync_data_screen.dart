@@ -16,6 +16,7 @@ import 'package:e_trace_app/screen/sync/supplier_repository.dart';
 import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/model/agents.dart';
 import 'package:e_trace_app/model/suppliers.dart';
+import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -111,16 +112,18 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
         userToken, onSuccessFarmerTransaction, onErrorFarmerTransaction);
   }
 
-  onSuccessFarmerTransaction(FarmerTransactions farmerTransactions) {
+  onSuccessFarmerTransaction(FarmerTransactions farmerTransactions) async {
     DatabaseFarmerTransaction().insertFarmerTransaction(farmerTransactions);
-    DatabaseFarmer().deleteFarmerBlacklist(farmerTransactions.data.blacklistedFarmer);
+    DatabaseFarmer()
+        .deleteFarmerBlacklist(farmerTransactions.data.blacklistedFarmer);
+    StorageManager.saveData('activeYear', farmerTransactions.data.activeYear);
     setSession();
     setLastSync();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => MainScreen()));
   }
 
-  onErrorFarmerTransaction(response){
+  onErrorFarmerTransaction(response) {
     _openWarningDialog(response.toString());
   }
 
@@ -131,7 +134,8 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
 
   setLastSync() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
+    String formattedDate =
+        DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now());
     prefs.setString('lastSync', formattedDate);
   }
 
@@ -157,7 +161,9 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  "Ok", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  "Ok",
+                  style:
+                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   doLogoutUser();
@@ -201,7 +207,6 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
       ),
     );
   }
-
 
   void doLogoutUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

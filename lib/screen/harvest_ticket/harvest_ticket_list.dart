@@ -143,6 +143,7 @@ class HarvestTicketScreenState extends State<HarvestTicketScreen> {
 
   Future<HarvestingTicket> navigateToEntryForm(
       BuildContext context, HarvestingTicket contact) async {
+    print('do navigasi');
     var result = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
       return HarvestTicketForm(harvestTicket: contact);

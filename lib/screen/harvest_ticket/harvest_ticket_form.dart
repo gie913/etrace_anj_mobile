@@ -428,7 +428,29 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
     );
   }
 
+  Future<void> resetDataFarmerTransaction() async {
+    int activeYear = await StorageManager.readData("activeYear");
+    int yearNow = DateTime.now().year;
+    var result =
+        await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
+    Farmer farmerData = Farmer.fromJson(result[0]);
+    Farmer farmerDataUpdate = Farmer();
+
+    if (activeYear != yearNow) {
+      farmerDataUpdate.ascendFarmerCode = farmerData.ascendFarmerCode;
+      farmerDataUpdate.ascendFarmerName = farmerData.ascendFarmerName;
+      farmerDataUpdate.groupingMonth = farmerData.groupingMonth;
+      farmerDataUpdate.maxTonnageYear = farmerData.maxTonnageYear;
+      farmerDataUpdate.trMonth = '[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]';
+      farmerDataUpdate.trYear = 0;
+      setState(() {});
+      await DatabaseFarmerTransaction()
+          .updateFarmerTransaction(farmerDataUpdate);
+    }
+  }
+
   Future<bool> checkMaxTonnage(String janjang) async {
+    await resetDataFarmerTransaction();
     double totalTonnagePeriode = 0;
     double abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
