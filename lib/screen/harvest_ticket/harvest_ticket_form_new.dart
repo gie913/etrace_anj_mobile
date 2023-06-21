@@ -67,7 +67,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
       NumberFormat formatter = new NumberFormat("0000");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String number =
-      formatter.format(int.parse(prefs.getString('userSequence')));
+          formatter.format(int.parse(prefs.getString('userSequence')));
       setState(() {
         name = prefs.getString('username');
         idTicket = "T" + TimeUtils.getIDOnTime(now) + number;
@@ -93,7 +93,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
     } else {
       try {
         position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high)
+                desiredAccuracy: LocationAccuracy.high)
             .timeout(const Duration(seconds: 10));
         setState(() {
           gpsLat = position.latitude.toString();
@@ -169,7 +169,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                             Text(ID_HARVEST_TICKET_FORM, style: text16Bold),
                             Padding(
                               padding:
-                              const EdgeInsets.only(top: 6.0, bottom: 10.0),
+                                  const EdgeInsets.only(top: 6.0, bottom: 10.0),
                               child: Text("$idTicket", style: text16Bold),
                             )
                           ],
@@ -189,12 +189,13 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                             Text(GPS_LOCATION_FORM, style: text14Bold),
                             loading
                                 ? SizedBox(
-                              height: 10.0,
-                              width: 10.0,
-                              child: CircularProgressIndicator(
-                                  strokeWidth: 1.0),
-                            )
-                                : Text("$gpsLat,$gpsLong", overflow: TextOverflow.ellipsis)
+                                    height: 10.0,
+                                    width: 10.0,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 1.0),
+                                  )
+                                : Text("$gpsLat,$gpsLong",
+                                    overflow: TextOverflow.ellipsis)
                           ],
                         ),
                         Divider(),
@@ -229,45 +230,45 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                         ),
                         farmerObject != null
                             ? Table(
-                          border: TableBorder.all(),
-                          children: [
-                            TableRow(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("Kode Areal",
-                                    textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('Petani',
-                                    textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('Desa',
-                                    textAlign: TextAlign.center),
-                              ),
-                            ]),
-                            TableRow(children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    "${farmerObject.ascendFarmerCode}",
-                                    textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("${farmerObject.fullname}",
-                                    textAlign: TextAlign.center),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("${farmerObject.address}",
-                                    textAlign: TextAlign.center),
+                                border: TableBorder.all(),
+                                children: [
+                                  TableRow(children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("Kode Areal",
+                                          textAlign: TextAlign.center),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('Petani',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('Desa',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  ]),
+                                  TableRow(children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                          "${farmerObject.ascendFarmerCode}",
+                                          textAlign: TextAlign.center),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("${farmerObject.fullname}",
+                                          textAlign: TextAlign.center),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("${farmerObject.address}",
+                                          textAlign: TextAlign.center),
+                                    )
+                                  ]),
+                                ],
                               )
-                            ]),
-                          ],
-                        )
                             : Container(),
                         Divider(),
                         Row(
@@ -298,7 +299,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       errorText:
-                                      _validate ? 'Belum Terisi' : null,
+                                          _validate ? 'Belum Terisi' : null,
                                       counterText: "",
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -441,7 +442,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
           idDeliveryOrderTicket: null,
           uploaded: "false",
           transferred: "false",
-          createdBy: "",
+          createdBy: name,
           note: noteController.text,
           quantity: int.parse(totalJanjangController.text),
           nfcNumber: cardNumberController.text,
@@ -459,6 +460,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
       harvestTicket.weight = double.parse(weightJanjangController.text);
       harvestTicket.image = "";
       harvestTicket.farmerName = farmerObject.fullname;
+      harvestTicket.uploaded = "false";
       harvestTicket.note = noteController.text;
       harvestTicket.createdBy = harvestTicket.createdBy;
       harvestTicket.idCollectionTicket = harvestTicket.idCollectionTicket;
@@ -469,19 +471,48 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
     Navigator.pop(context, harvestTicket);
   }
 
+  Future<void> resetDataFarmerTransaction() async {
+    int activeYear = await StorageManager.readData("activeYear");
+    int yearNow = DateTime.now().year;
+    var result =
+        await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
+    Farmer farmerData = Farmer.fromJson(result[0]);
+    Farmer farmerDataUpdate = Farmer();
+
+    if (activeYear != yearNow) {
+      farmerDataUpdate.ascendFarmerCode = farmerData.ascendFarmerCode;
+      farmerDataUpdate.ascendFarmerName = farmerData.ascendFarmerName;
+      farmerDataUpdate.groupingMonth = farmerData.groupingMonth;
+      farmerDataUpdate.maxTonnageYear = farmerData.maxTonnageYear;
+      farmerDataUpdate.trMonth = '[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]';
+      farmerDataUpdate.trYear = 0;
+      setState(() {});
+      await DatabaseFarmerTransaction()
+          .updateFarmerTransaction(farmerDataUpdate);
+    }
+  }
+
   Future<bool> checkMaxTonnage(String janjang) async {
-    double totalTonnage = 0;
+    await resetDataFarmerTransaction();
+    double totalTonnagePeriode = 0;
     double abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
+    print('cek abw : $abw');
+    print('cek useMaxTonnage : $useMaxTonnage');
     var result =
-    await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
+        await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
     if (result.isNotEmpty) {
       int month = DateTime.now().month;
+      print('cek bulan ini bulan ke : $month');
       List<int> listIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
       var newMe = jsonEncode(result[0]);
       Farmer farmer = Farmer.fromJson(jsonDecode(newMe));
       var list = jsonDecode(farmer.trMonth);
+      print('cek tr_month :\n$list');
+
+      final totalTonnageYear = farmer.trYear.toDouble() / 1000;
+      print('cek transaksi tahun berjalan = $totalTonnageYear');
 
       var chunks = [];
       var chunksIndex = [];
@@ -494,29 +525,52 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                 ? listIndex.length
                 : i + chunkSize));
       }
+      print('mapping periode bulan dalam satu tahun :\n$chunksIndex');
 
-      print(chunksIndex);
       for (var i = 0; i < list.length; i += chunkSize) {
         chunks.add(list.sublist(
             i, i + chunkSize > list.length ? list.length : i + chunkSize));
       }
-      print(chunks);
+      print('mapping periode tr_month :\n$chunks');
 
       for (int i = 0; i < chunksIndex.length; i++) {
         if (chunksIndex[i].contains(month)) {
-          totalTonnage =
+          totalTonnagePeriode =
               double.parse(chunks[i].reduce((a, b) => a + b).toString());
-          print(totalTonnage);
+          print('total tonage per periode ${i + 1} = $totalTonnagePeriode');
         }
       }
 
+      var totalTonnagePeriodeSum =
+          (((totalTonnagePeriode + (abw * int.parse(janjang))) / 1000));
+      // var maxYear = farmer.maxTonnageYear / chunkSize;
+      var maxTonnagePeriode = farmer.maxTonnageYear / chunks.length;
+      print('max tonage per periode : $maxTonnagePeriode');
+      print('total tonage per periode (Ton) $totalTonnagePeriodeSum');
+
       if (useMaxTonnage == 1) {
-        var totalTonnageSum =
-        ((totalTonnage + (abw * int.parse(janjang)) / 1000));
-        var maxYear = farmer.maxTonnageYear / chunkSize;
-        if (totalTonnageSum > maxYear) {
-          return true;
+        if (totalTonnageYear < farmer.maxTonnageYear) {
+          print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
+          if (totalTonnagePeriodeSum < maxTonnagePeriode) {
+            print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
+            return true;
+          } else {
+            print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
+            return false;
+          }
         } else {
+          // update database local farmer transaction
+          // double estimationKg = (abw * int.parse(janjang));
+          // list[month - 1] = list[month - 1] + estimationKg.toInt();
+          // farmer.trMonth = list.toString();
+          // DatabaseFarmerTransaction().updateFarmerTransaction(farmer);
+          // var resultUpdate = await DatabaseFarmerTransaction()
+          //     .selectTRMonthByFarmer(farmerObject);
+          // var newUpdate = jsonEncode(resultUpdate[0]);
+          // Farmer farmerUpdate = Farmer.fromJson(jsonDecode(newUpdate));
+          // var listUpdate = jsonDecode(farmerUpdate.trMonth);
+          // print('cek tr_month update :\n$listUpdate');
+          print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
           return false;
         }
       } else {
@@ -538,14 +592,14 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
             _validate = true;
           });
         } else {
-          // checkMaxTonnage(totalJanjangController.text).then((value) {
-          //   if (!value) {
+          checkMaxTonnage(totalJanjangController.text).then((value) {
+            if (value) {
               addDataToDatabase(context);
-          //   } else {
-          //     openWarningDialog(context,
-          //         "Tonase Petani melebihi batas kuota tahunan \n Total tonase petani ${farmerObject.maxTonnageYear}");
-          //   }
-          // });
+            } else {
+              openWarningDialog(context,
+                  "Petani ${farmerObject.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject.maxTonnageYear} ton");
+            }
+          });
         }
       },
       child: Container(
@@ -568,7 +622,11 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
             content: Text(message),
             actions: <Widget>[
               new TextButton(
-                  child: new Text(OK, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
+                  child: new Text(
+                    OK,
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   })
