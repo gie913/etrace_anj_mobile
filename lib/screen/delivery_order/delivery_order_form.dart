@@ -47,7 +47,8 @@ class DeliveryOrderForm extends StatefulWidget {
       DeliveryOrderFormState(this.deliveryOrder);
 }
 
-class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerProviderStateMixin{
+class DeliveryOrderFormState extends State<DeliveryOrderForm>
+    with SingleTickerProviderStateMixin {
   String idDelivery, dateDelivery, gpsLocation;
   String record = "", receivedVia;
   bool loading, validatePlatNumber = false, validateDriver = false;
@@ -110,7 +111,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
       NumberFormat formatter = new NumberFormat("0000");
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String number =
-      formatter.format(int.parse(prefs.getString('userSequence')));
+          formatter.format(int.parse(prefs.getString('userSequence')));
       setState(() {
         companyName = prefs.getString("userPT");
         idDelivery = "D" + TimeUtils.getIDOnTime(now) + number;
@@ -130,7 +131,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
 
   void getSupplierByID(DeliveryOrder deliveryOrder) async {
     Suppliers suppliers =
-    await DatabaseSupplier().selectSupplierByID(deliveryOrder);
+        await DatabaseSupplier().selectSupplierByID(deliveryOrder);
     setState(() {
       this.supplierObject = suppliers;
     });
@@ -178,7 +179,8 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                             margin: EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
                               color: Colors.blue,
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
                             ),
                           ),
                           Column(
@@ -190,7 +192,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                     children: [
                                       Padding(
                                         padding:
-                                        const EdgeInsets.only(right: 8.0),
+                                            const EdgeInsets.only(right: 8.0),
                                         child: Icon(
                                           Linecons.truck,
                                           size: 40,
@@ -199,9 +201,9 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                       ),
                                       Container(
                                           child: Text(
-                                            DELIVERY_ORDER,
-                                            style: text18Bold,
-                                          )),
+                                        DELIVERY_ORDER,
+                                        style: text18Bold,
+                                      )),
                                     ],
                                   )),
                               Column(
@@ -225,7 +227,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     DATE_FORM,
@@ -237,25 +239,26 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(GPS_LOCATION_FORM, style: text14Bold),
                                   loading
                                       ? SizedBox(
-                                    height: 10.0,
-                                    width: 10.0,
-                                    child: new CircularProgressIndicator(
-                                      value: null,
-                                      strokeWidth: 1.0,
-                                    ),
-                                  )
-                                      : Text("$gpsLat,$gpsLong", overflow: TextOverflow.ellipsis)
+                                          height: 10.0,
+                                          width: 10.0,
+                                          child: new CircularProgressIndicator(
+                                            value: null,
+                                            strokeWidth: 1.0,
+                                          ),
+                                        )
+                                      : Text("$gpsLat,$gpsLong",
+                                          overflow: TextOverflow.ellipsis)
                                 ],
                               ),
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text("Pabrik", style: text14Bold),
                                   Text(
@@ -267,7 +270,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Total Jumlah Janjang",
@@ -279,19 +282,20 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Total Berat Janjang",
                                     style: text14Bold,
                                   ),
-                                  Text("${formatThousandSeparator(totalWeight.round())}")
+                                  Text(
+                                      "${formatThousandSeparator(totalWeight.round())}")
                                 ],
                               ),
                               Divider(),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     SUPPLIER,
@@ -302,11 +306,11 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                           style: ButtonStyle(),
                                           onPressed: () async {
                                             Suppliers supplierNameTemp =
-                                            await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SearchSupplierScreen()));
+                                                await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SearchSupplierScreen()));
                                             setState(() {
                                               if (supplierNameTemp == null) {
                                                 supplierObject = supplierObject;
@@ -326,43 +330,43 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               ),
                               supplierObject != null
                                   ? Table(
-                                border: TableBorder.all(),
-                                children: [
-                                  TableRow(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("Kode Supplier",
-                                          textAlign: TextAlign.center),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text('Nama',
-                                          textAlign: TextAlign.center),
-                                    ),
-                                  ]),
-                                  TableRow(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          "${supplierObject.ascendSupplierCode}",
-                                          textAlign: TextAlign.center),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          "${supplierObject.name}",
-                                          textAlign: TextAlign.center),
-                                    ),
-                                  ]),
-                                ],
-                              )
+                                      border: TableBorder.all(),
+                                      children: [
+                                        TableRow(children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Kode Supplier",
+                                                textAlign: TextAlign.center),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text('Nama',
+                                                textAlign: TextAlign.center),
+                                          ),
+                                        ]),
+                                        TableRow(children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                                "${supplierObject.ascendSupplierCode}",
+                                                textAlign: TextAlign.center),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                                "${supplierObject.name}",
+                                                textAlign: TextAlign.center),
+                                          ),
+                                        ]),
+                                      ],
+                                    )
                                   : Container(),
                               Divider(),
                               Padding(
                                 padding: const EdgeInsets.only(top: 0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       DRIVER,
@@ -373,7 +377,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                         width: 160,
                                         child: TextField(
                                           textCapitalization:
-                                          TextCapitalization.words,
+                                              TextCapitalization.words,
                                           onChanged: (value) {
                                             value != null
                                                 ? validateDriver = false
@@ -402,7 +406,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                 padding: const EdgeInsets.only(top: 0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Plat Nomor (*Wajib diisi)",
                                         style: text14Bold),
@@ -411,7 +415,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                         width: 160,
                                         child: TextField(
                                           textCapitalization:
-                                          TextCapitalization.characters,
+                                              TextCapitalization.characters,
                                           onChanged: (value) {
                                             value != null
                                                 ? validatePlatNumber = false
@@ -477,7 +481,8 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               Padding(
                                 padding: const EdgeInsets.only(),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Catatan", style: text14Bold),
                                     Flexible(
@@ -492,7 +497,8 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(10)),
-                                                borderSide: BorderSide(width: 1),
+                                                borderSide:
+                                                    BorderSide(width: 1),
                                               ),
                                             )),
                                       ),
@@ -504,7 +510,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                               _inputHarvestTicketButton(),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(top: 10, bottom: 60),
+                                    const EdgeInsets.only(top: 10, bottom: 60),
                                 child: _saveButton(),
                               )
                             ],
@@ -570,15 +576,24 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
                                 padding: const EdgeInsets.only(),
                                 child: OutlinedButton(
                                   onPressed: () async {
-                                    HarvestingTicket harvestingTicket = await Navigator.push(context,
-                                        MaterialPageRoute(builder: (BuildContext context) {
-                                          return HarvestTicketFormNew();
-                                        }));
-                                    if(harvestingTicket != null) {
+                                    HarvestingTicket harvestingTicket =
+                                        await Navigator.push(context,
+                                            MaterialPageRoute(builder:
+                                                (BuildContext context) {
+                                      return HarvestTicketFormNew();
+                                    }));
+                                    if (harvestingTicket != null) {
+                                      print(
+                                          'cek sebelum : ${harvestTicketList.length}');
                                       setState(() {
                                         harvestTicketList.add(harvestingTicket);
-                                        this.totalJanjang = totalJanjang + harvestingTicket.quantity;
-                                        this.totalWeight = totalWeight + roundDouble(harvestingTicket.weight, 2);
+                                        this.totalJanjang = totalJanjang +
+                                            harvestingTicket.quantity;
+                                        this.totalWeight = totalWeight +
+                                            roundDouble(
+                                                harvestingTicket.weight, 2);
+                                        print(
+                                            'cek sesudah : ${harvestTicketList.length}');
                                       });
                                     }
                                   },
@@ -731,122 +746,126 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
       color: Colors.black12,
       child: harvestTicketList.length != 0
           ? ListView.builder(
-        itemCount: harvestTicketList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  ListTile(
-                    onTap: () async {
-                      HarvestingTicket result =
-                      await Navigator.push(context, MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return HarvestTicketForm(
-                                harvestTicket: harvestTicketList[index]);
-                          }));
-                      if (result != null) {
-                        if (deliveryOrder == null) {
-                          setState(() {
-                            harvestTicketList.removeAt(index);
-                            harvestTicketList.insert(index, result);
-                            totalJanjang = 0;
-                            totalWeight = 0;
-                            for (int i = 0;
-                            i < harvestTicketList.length;
-                            i++) {
-                              totalJanjang +=
-                                  harvestTicketList[i].quantity;
-                              totalWeight += harvestTicketList[i].weight;
-                            }
-                          });
-                        } else {
-                          if (harvestTicketList[index].idDeliveryOrderTicket == "null") {
-                            setState(() {
-                              harvestTicketList.removeAt(index);
-                              harvestTicketList.insert(index, result);
-                              totalJanjang = 0;
-                              totalWeight = 0;
-                              for (int i = 0;
-                              i < harvestTicketList.length;
-                              i++) {
-                                totalJanjang +=
-                                    harvestTicketList[i].quantity;
-                                totalWeight += harvestTicketList[i].weight;
-                              }
-                            });
-                          } else {
-                            setState(() {
-                              harvestTicketList.removeAt(index);
-                              harvestTicketList.insert(index, result);
-                              totalJanjang = 0;
-                              totalWeight = 0;
-                              for (int i = 0;
-                              i < harvestTicketList.length;
-                              i++) {
-                                totalJanjang +=
-                                    harvestTicketList[i].quantity;
-                                totalWeight += harvestTicketList[i].weight;
-                              }
-                            });
-                            DatabaseHarvestTicket()
-                                .updateHarvestTicket(result);
-                          }
-                        }
-                      }
-                    },
-                    leading: Icon(
-                      Linecons.note,
-                      size: 30,
-                      color: Colors.orange,
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        showDeleteDialog(context, index);
-                      },
-                      child: Icon(Linecons.trash),
-                    ),
-                    title: Text(harvestTicketList[index].idTicket),
-                    subtitle: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              itemCount: harvestTicketList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "Tanggal: ${harvestTicketList[index].dateTicket}"),
-                            Text(
-                                "Janjang/Berat(Kg): ${harvestTicketList[index].quantity}/${formatThousandSeparator(harvestTicketList[index].weight.round())}"),
-                            Text(
-                                "Kode Areal: ${harvestTicketList[index].ascendFarmerCode}"),
-                            Text(
-                                "TK: ${harvestTicketList[index].idCollectionTicket ?? "-"}"),
-                          ],
-                        )
+                        ListTile(
+                          onTap: () async {
+                            HarvestingTicket result =
+                                await Navigator.push(context, MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                              return HarvestTicketForm(
+                                  harvestTicket: harvestTicketList[index]);
+                            }));
+                            if (result != null) {
+                              if (deliveryOrder == null) {
+                                setState(() {
+                                  harvestTicketList.removeAt(index);
+                                  harvestTicketList.insert(index, result);
+                                  totalJanjang = 0;
+                                  totalWeight = 0;
+                                  for (int i = 0;
+                                      i < harvestTicketList.length;
+                                      i++) {
+                                    totalJanjang +=
+                                        harvestTicketList[i].quantity;
+                                    totalWeight += harvestTicketList[i].weight;
+                                  }
+                                });
+                              } else {
+                                if (harvestTicketList[index]
+                                        .idDeliveryOrderTicket ==
+                                    "null") {
+                                  setState(() {
+                                    harvestTicketList.removeAt(index);
+                                    harvestTicketList.insert(index, result);
+                                    totalJanjang = 0;
+                                    totalWeight = 0;
+                                    for (int i = 0;
+                                        i < harvestTicketList.length;
+                                        i++) {
+                                      totalJanjang +=
+                                          harvestTicketList[i].quantity;
+                                      totalWeight +=
+                                          harvestTicketList[i].weight;
+                                    }
+                                  });
+                                } else {
+                                  setState(() {
+                                    harvestTicketList.removeAt(index);
+                                    harvestTicketList.insert(index, result);
+                                    totalJanjang = 0;
+                                    totalWeight = 0;
+                                    for (int i = 0;
+                                        i < harvestTicketList.length;
+                                        i++) {
+                                      totalJanjang +=
+                                          harvestTicketList[i].quantity;
+                                      totalWeight +=
+                                          harvestTicketList[i].weight;
+                                    }
+                                  });
+                                  DatabaseHarvestTicket()
+                                      .updateHarvestTicket(result);
+                                }
+                              }
+                            }
+                          },
+                          leading: Icon(
+                            Linecons.note,
+                            size: 30,
+                            color: Colors.orange,
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              showDeleteDialog(context, index);
+                            },
+                            child: Icon(Linecons.trash),
+                          ),
+                          title: Text(harvestTicketList[index].idTicket),
+                          subtitle: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      "Tanggal: ${harvestTicketList[index].dateTicket}"),
+                                  Text(
+                                      "Janjang/Berat(Kg): ${harvestTicketList[index].quantity}/${formatThousandSeparator(harvestTicketList[index].weight.round())}"),
+                                  Text(
+                                      "Kode Areal: ${harvestTicketList[index].ascendFarmerCode}"),
+                                  Text(
+                                      "TK: ${harvestTicketList[index].idCollectionTicket ?? "-"}"),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
+                  ),
+                );
+              },
+            )
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Linecons.note, size: 40, color: Colors.orange),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Text("Belum ada tiket panen", style: text14),
                   ),
                 ],
               ),
             ),
-          );
-        },
-      )
-          : Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Linecons.note, size: 40, color: Colors.orange),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Text("Belum ada tiket panen", style: text14),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -996,7 +1015,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
     } else {
       try {
         position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high)
+                desiredAccuracy: LocationAccuracy.high)
             .timeout(const Duration(seconds: 10));
         setState(() {
           gpsLat = position.latitude.toString();
@@ -1057,7 +1076,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
       harvestTicketList[i].transferred = "false";
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String user = prefs.getString('username');
-      if(harvestTicketList[i].createdBy == "") {
+      if (harvestTicketList[i].createdBy == "") {
         harvestTicketList[i].createdBy = user;
         addHarvestTicketNew(harvestTicketList[i]);
       }
@@ -1130,6 +1149,7 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
   Widget _saveButton() {
     return OutlinedButton(
       onPressed: () {
+        print('cek isi harvestTicketList : ${harvestTicketList.length}');
         if (harvestTicketList.isEmpty) {
           Toast.show("Belum memasukkan tiket panen", context,
               duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
@@ -1211,7 +1231,8 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
         harvestingTicket.dateTicket =
             year + "-" + month + "-" + day + " " + hour + ":" + minute;
         this.totalJanjang = totalJanjang + harvestingTicket.quantity;
-        this.totalWeight = totalWeight + roundDouble(harvestingTicket.weight, 2);
+        this.totalWeight =
+            totalWeight + roundDouble(harvestingTicket.weight, 2);
         harvestTicketList.add(harvestingTicket);
       });
     }
@@ -1402,8 +1423,11 @@ class DeliveryOrderFormState extends State<DeliveryOrderForm> with SingleTickerP
     }
     transferBody.harvestingTicket = listHarvest;
     String userToken = await StorageManager.readData('token');
-    SaveTransferRepository(APIEndpoint.BASE_URL).doSaveTransferTicket(transferBody,
-        userToken, onSuccessTransferCallback, onErrorTransferCallback);
+    SaveTransferRepository(APIEndpoint.BASE_URL).doSaveTransferTicket(
+        transferBody,
+        userToken,
+        onSuccessTransferCallback,
+        onErrorTransferCallback);
   }
 
   onSuccessTransferCallback(TransferResponse transferResponse) {

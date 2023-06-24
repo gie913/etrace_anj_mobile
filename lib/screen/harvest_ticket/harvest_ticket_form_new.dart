@@ -442,7 +442,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
           idDeliveryOrderTicket: null,
           uploaded: "false",
           transferred: "false",
-          createdBy: name,
+          createdBy: "",
           note: noteController.text,
           quantity: int.parse(totalJanjangController.text),
           nfcNumber: cardNumberController.text,
@@ -460,7 +460,6 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
       harvestTicket.weight = double.parse(weightJanjangController.text);
       harvestTicket.image = "";
       harvestTicket.farmerName = farmerObject.fullname;
-      harvestTicket.uploaded = "false";
       harvestTicket.note = noteController.text;
       harvestTicket.createdBy = harvestTicket.createdBy;
       harvestTicket.idCollectionTicket = harvestTicket.idCollectionTicket;
