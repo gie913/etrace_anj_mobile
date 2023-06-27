@@ -392,12 +392,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "ota_update",
-      "rootUri": "file:///C:/sdk/flutter/flutter_2.8.1/.pub-cache/hosted/pub.dartlang.org/ota_update-2.4.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
       "name": "path",
       "rootUri": "file:///C:/sdk/flutter/flutter_2.8.1/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
       "packageUri": "lib/",
@@ -716,7 +710,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2023-06-21T06:54:22.942216Z",
+  "generated": "2023-06-27T01:36:43.576260Z",
   "generator": "pub",
   "generatorVersion": "2.15.1"
 }

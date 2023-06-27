@@ -494,7 +494,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
   Future<bool> checkMaxTonnage(String janjang) async {
     await resetDataFarmerTransaction();
     double totalTonnagePeriode = 0;
-    double abw = await StorageManager.readData("abw");
+    num abw = await StorageManager.readData("abw");
     int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
     print('cek abw : $abw');
     print('cek useMaxTonnage : $useMaxTonnage');

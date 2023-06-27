@@ -452,13 +452,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
-  ota_update:
-    dependency: "direct main"
-    description:
-      name: ota_update
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.4.1"
   path:
     dependency: "direct main"
     description:

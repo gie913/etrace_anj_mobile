@@ -31,7 +31,6 @@ dependencies:
 
   #state management
   provider: ^4.3.3
-  ota_update: ^2.4.1
   firebase_analytics: ^8.0.2
   firebase_core: ^1.1.0
   firebase_messaging: ^10.0.0
