@@ -17,6 +17,7 @@ import 'package:e_trace_app/model/upload_harvest_ticket.dart';
 import 'package:e_trace_app/screen/home/counter_notifier.dart';
 import 'package:e_trace_app/screen/home/sync_data_background.dart';
 import 'package:e_trace_app/screen/home/upload_repository.dart';
+import 'package:e_trace_app/screen/main/set_version_repository.dart';
 import 'package:e_trace_app/screen/sync/tonnage_farmer_repository.dart';
 import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -174,11 +175,13 @@ class UploadData {
           Navigator.pop(context);
           SyncDataBackground().getDataFarmer();
           getDataTonnageFarmer();
+          doSetVersion();
         } else {
           Navigator.pop(context);
           Navigator.pop(context);
           SyncDataBackground().getDataFarmer();
           getDataTonnageFarmer();
+          doSetVersion();
         }
       });
     });
@@ -238,6 +241,19 @@ class UploadData {
     Toast.show("Upload Surat Pengantar Berhasil", context,
         duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     SyncDataBackground().getDataFarmer();
+    getDataTonnageFarmer();
+    doSetVersion();
+  }
+
+  void doSetVersion() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userToken = prefs.getString('token');
+    final String userBaseUrl = prefs.getString('baseUrl');
+    SetVersionRepository(userBaseUrl).doSetVersion(
+      userToken,
+      (String response) {},
+      (String response) {},
+    );
   }
 
   onErrorDeliveryOrderUpload(response) {

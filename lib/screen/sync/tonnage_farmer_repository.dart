@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,7 +8,6 @@ import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:http/io_client.dart';
 
 class TonnageFarmerRepository {
-
   String baseUrl;
   IOClient ioClient;
 
@@ -17,11 +15,12 @@ class TonnageFarmerRepository {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 
-  void doSyncFarmerTonnage(String token, String lastSync, onSuccess, onError) async {
+  void doSyncFarmerTonnage(
+      String token, String lastSync, onSuccess, onError) async {
     try {
       var url = baseUrl + APIEndpoint.SYNC_DATA_TONNAGE_FARMER;
       var uri = Uri.parse(url);
@@ -30,9 +29,11 @@ class TonnageFarmerRepository {
         headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
       );
       SyncFarmerResponse apiResponse =
-      SyncFarmerResponse.fromJson(json.decode(response.body));
+          SyncFarmerResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         StorageManager.saveData("abw", apiResponse.data.abw);
+        StorageManager.saveData(
+            "useMaxTonnage", apiResponse.data.useMaxTonnage);
         onSuccess(apiResponse.data.farmers);
       } else {
         onError(apiResponse.message);

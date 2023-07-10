@@ -8,7 +8,6 @@ import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:http/io_client.dart';
 
 class FarmerRepository {
-
   String baseUrl;
   IOClient ioClient;
 
@@ -16,7 +15,7 @@ class FarmerRepository {
     this.baseUrl = baseUrl;
     HttpClient httpClient = new HttpClient()
       ..badCertificateCallback =
-      ((X509Certificate cert, String host, int port) => true);
+          ((X509Certificate cert, String host, int port) => true);
     this.ioClient = new IOClient(httpClient);
   }
 
@@ -35,9 +34,11 @@ class FarmerRepository {
         headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
       );
       SyncFarmerResponse apiResponse =
-      SyncFarmerResponse.fromJson(json.decode(response.body));
+          SyncFarmerResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {
         StorageManager.saveData("abw", apiResponse.data.abw);
+        StorageManager.saveData(
+            "useMaxTonnage", apiResponse.data.useMaxTonnage);
         onSuccess(apiResponse.data.farmers);
       } else {
         onError(apiResponse.message);

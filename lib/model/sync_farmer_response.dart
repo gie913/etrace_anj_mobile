@@ -28,8 +28,9 @@ class Data {
   List<Farmers> farmers;
   int totalRows;
   dynamic abw;
+  int useMaxTonnage;
 
-  Data({this.farmers, this.totalRows, this.abw});
+  Data({this.farmers, this.totalRows, this.abw, this.useMaxTonnage});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['farmers'] != null) {
@@ -40,6 +41,7 @@ class Data {
     }
     totalRows = json['total_rows'];
     abw = json['abw'];
+    useMaxTonnage = json['use_max_tonnage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +51,7 @@ class Data {
     }
     data['total_rows'] = this.totalRows;
     data['abw'] = this.abw;
+    data['use_max_tonnage'] = this.useMaxTonnage;
     return data;
   }
 }
