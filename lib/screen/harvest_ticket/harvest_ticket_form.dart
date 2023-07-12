@@ -453,9 +453,7 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
     await resetDataFarmerTransaction();
     double totalTonnagePeriode = 0;
     num abw = await StorageManager.readData("abw");
-    int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
     print('cek abw : $abw');
-    print('cek useMaxTonnage : $useMaxTonnage');
     var result =
         await DatabaseFarmerTransaction().selectTRMonthByFarmer(farmerObject);
     if (result.isNotEmpty) {
@@ -505,32 +503,28 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
       print('max tonage per periode : $maxTonnagePeriode');
       print('total tonage per periode (Ton) $totalTonnagePeriodeSum');
 
-      if (useMaxTonnage == 1) {
-        if (totalTonnageYear < farmer.maxTonnageYear) {
-          print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
-          if (totalTonnagePeriodeSum < maxTonnagePeriode) {
-            print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
-            return true;
-          } else {
-            print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
-            return false;
-          }
+      if (totalTonnageYear < farmer.maxTonnageYear) {
+        print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
+        if (totalTonnagePeriodeSum < maxTonnagePeriode) {
+          print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
+          return true;
         } else {
-          // update database local farmer transaction
-          // double estimationKg = (abw * int.parse(janjang));
-          // list[month - 1] = list[month - 1] + estimationKg.toInt();
-          // farmer.trMonth = list.toString();
-          // DatabaseFarmerTransaction().updateFarmerTransaction(farmer);
-          // var resultUpdate = await DatabaseFarmerTransaction()
-          //     .selectTRMonthByFarmer(farmerObject);
-          // var newUpdate = jsonEncode(resultUpdate[0]);
-          // Farmer farmerUpdate = Farmer.fromJson(jsonDecode(newUpdate));
-          // var listUpdate = jsonDecode(farmerUpdate.trMonth);
-          // print('cek tr_month update :\n$listUpdate');
-          print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
+          print('cek 2 : ${totalTonnagePeriodeSum < maxTonnagePeriode}');
           return false;
         }
       } else {
+        // update database local farmer transaction
+        // double estimationKg = (abw * int.parse(janjang));
+        // list[month - 1] = list[month - 1] + estimationKg.toInt();
+        // farmer.trMonth = list.toString();
+        // DatabaseFarmerTransaction().updateFarmerTransaction(farmer);
+        // var resultUpdate = await DatabaseFarmerTransaction()
+        //     .selectTRMonthByFarmer(farmerObject);
+        // var newUpdate = jsonEncode(resultUpdate[0]);
+        // Farmer farmerUpdate = Farmer.fromJson(jsonDecode(newUpdate));
+        // var listUpdate = jsonDecode(farmerUpdate.trMonth);
+        // print('cek tr_month update :\n$listUpdate');
+        print('cek 1 : ${totalTonnageYear < farmer.maxTonnageYear}');
         return false;
       }
     } else {
@@ -599,23 +593,43 @@ class HarvestTicketFormState extends State<HarvestTicketForm> {
             _validate = true;
           });
         } else {
-          final isLocationValid = await validationLocation();
-          if (isLocationValid) {
-            checkMaxTonnage(totalJanjangController.text).then((value) {
-              if (value) {
-                addDataToDatabase(context);
-              } else {
-                openWarningDialog(context,
-                    "Petani ${farmerObject.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject.maxTonnageYear} ton");
-              }
-            });
+          // final isLocationValid = await validationLocation();
+          int useMaxTonnage = await StorageManager.readData("useMaxTonnage");
+
+          if (useMaxTonnage == 0) {
+            addDataToDatabase(context);
           } else {
-            openWarningDialog(
-              context,
-              'Lokasi Anda terlalu jauh dari titik koordinat petani',
-              title: 'Lokasi Tidak Sesuai',
-            );
+            if (farmerObject.maxTonnageYear == null ||
+                farmerObject.maxTonnageYear == 0) {
+              addDataToDatabase(context);
+            } else {
+              checkMaxTonnage(totalJanjangController.text).then((value) {
+                if (value) {
+                  addDataToDatabase(context);
+                } else {
+                  openWarningDialog(context,
+                      "Petani ${farmerObject.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject.maxTonnageYear} ton");
+                }
+              });
+            }
           }
+
+          // if (isLocationValid) {
+          //   checkMaxTonnage(totalJanjangController.text).then((value) {
+          //     if (value) {
+          //       addDataToDatabase(context);
+          //     } else {
+          //       openWarningDialog(context,
+          //           "Petani ${farmerObject.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject.maxTonnageYear} ton");
+          //     }
+          //   });
+          // } else {
+          //   openWarningDialog(
+          //     context,
+          //     'Lokasi Anda terlalu jauh dari titik koordinat petani',
+          //     title: 'Lokasi Tidak Sesuai',
+          //   );
+          // }
         }
       },
       child: Container(
