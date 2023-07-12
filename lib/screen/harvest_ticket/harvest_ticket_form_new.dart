@@ -580,9 +580,47 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
     }
   }
 
+  Future<bool> validationLocation() async {
+    final farmer = farmerObject;
+
+    if (farmer.gpsLat.isNotEmpty && farmer.gpsLong.isNotEmpty) {
+      final maxDistanceCreateTicket = 5.0;
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      final farmerLat = jsonDecode(farmer.gpsLat);
+      final farmerLong = jsonDecode(farmer.gpsLong);
+
+      // final createTicketLat = -3.2159540359165635;
+      // final createTicketLong = 108.01493705785865;
+      final createTicketLat = position.latitude;
+      final createTicketLong = position.longitude;
+
+      print('cek location farmer');
+      print('latitude : $farmerLat | longitude : $farmerLong');
+      print('cek lokasi create ticket');
+      print('latitude : $createTicketLat | longitude : $createTicketLong');
+      final distanceCreateTicketInMeter = Geolocator.distanceBetween(
+          farmerLat, farmerLong, createTicketLat, createTicketLong);
+      final distanceCreateTicketInKm = distanceCreateTicketInMeter / 1000;
+      print('cek distance in meter : $distanceCreateTicketInMeter');
+      print('cek distance in km : $distanceCreateTicketInKm');
+
+      if (distanceCreateTicketInKm < maxDistanceCreateTicket) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   Widget _saveButton() {
     return OutlinedButton(
-      onPressed: () {
+      onPressed: () async {
         if (farmerObject == null) {
           Toast.show("Areal Belum Terisi", context,
               duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -591,14 +629,23 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
             _validate = true;
           });
         } else {
-          checkMaxTonnage(totalJanjangController.text).then((value) {
-            if (value) {
-              addDataToDatabase(context);
-            } else {
-              openWarningDialog(context,
-                  "Petani ${farmerObject.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject.maxTonnageYear} ton");
-            }
-          });
+          final isLocationValid = await validationLocation();
+          if (isLocationValid) {
+            checkMaxTonnage(totalJanjangController.text).then((value) {
+              if (value) {
+                addDataToDatabase(context);
+              } else {
+                openWarningDialog(context,
+                    "Petani ${farmerObject.fullname} \nMelebihi batas kuota tonase tahunan \nMaksimal tonase petani ${farmerObject.maxTonnageYear} ton");
+              }
+            });
+          } else {
+            openWarningDialog(
+              context,
+              'Lokasi Anda terlalu jauh dari titik koordinat petani',
+              title: 'Lokasi Tidak Sesuai',
+            );
+          }
         }
       },
       child: Container(
@@ -610,14 +657,15 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
     );
   }
 
-  openWarningDialog(BuildContext context, String message) {
+  openWarningDialog(BuildContext context, String message,
+      {String title = 'Batas Kuota Tonase Tahunan'}) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15))),
-            title: Text("Batas Kuota Tonase Tahunan"),
+            title: Text(title),
             content: Text(message),
             actions: <Widget>[
               new TextButton(

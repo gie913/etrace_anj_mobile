@@ -80,7 +80,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                                                 BorderRadius.circular(8.0),
                                             child: loadingPhoto
                                                 ? Container(
-                                                    height:80,
+                                                    height: 80,
                                                     width: 80,
                                                     child: Center(
                                                       child: SizedBox(
@@ -126,94 +126,108 @@ class ProfileScreenState extends State<ProfileScreen> {
                                       )),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${profile.name.toUpperCase()}",
-                                          style: text16Bold,
-                                        ),
-                                        Card(
-                                          child: InkWell(
-                                            child: Icon(Icons.edit),
-                                            onTap: () async {
-                                              bool changed =
-                                                  await Navigator.push(context,
-                                                      MaterialPageRoute(builder:
-                                                          (BuildContext
-                                                              context) {
-                                                return ProfileEditScreen(
-                                                    user: profile);
-                                              }));
-                                              if (changed == null) {
-                                                doGetUserProfile();
-                                              }
-                                            },
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "${profile.name.toUpperCase()}",
+                                            style: text16Bold,
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.email,
-                                              size: 20,
-                                              color: primaryColorLight),
-                                          SizedBox(width: 8),
-                                          Text("${profile.email ?? "-"}",
-                                              overflow: TextOverflow.ellipsis),
+                                          Card(
+                                            child: InkWell(
+                                              child: Icon(Icons.edit),
+                                              onTap: () async {
+                                                bool changed =
+                                                    await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                  return ProfileEditScreen(
+                                                      user: profile);
+                                                }));
+                                                if (changed == null) {
+                                                  doGetUserProfile();
+                                                }
+                                              },
+                                            ),
+                                          )
                                         ],
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.agriculture,
-                                              size: 20,
-                                              color: primaryColorLight),
-                                          SizedBox(width: 8),
-                                          Text("${profile.companyName}",
-                                              overflow: TextOverflow.ellipsis),
-                                        ],
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.email,
+                                                size: 20,
+                                                color: primaryColorLight),
+                                            SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                  "${profile.email ?? "-"}",
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.phone,
-                                              size: 20,
-                                              color: primaryColorLight),
-                                          SizedBox(width: 8),
-                                          Text("${profile.phoneNumber ?? "-"}"),
-                                        ],
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.agriculture,
+                                                size: 20,
+                                                color: primaryColorLight),
+                                            SizedBox(width: 8),
+                                            Text("${profile.companyName}",
+                                                overflow:
+                                                    TextOverflow.ellipsis),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.location_pin,
-                                              size: 20,
-                                              color: primaryColorLight),
-                                          SizedBox(width: 8),
-                                          Container(
-                                              width: 200,
-                                              child:
-                                                  Text("${profile.address}")),
-                                        ],
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.phone,
+                                                size: 20,
+                                                color: primaryColorLight),
+                                            SizedBox(width: 8),
+                                            Text(
+                                                "${profile.phoneNumber ?? "-"}"),
+                                          ],
+                                        ),
                                       ),
-                                    )
-                                  ],
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.location_pin,
+                                                size: 20,
+                                                color: primaryColorLight),
+                                            SizedBox(width: 8),
+                                            Expanded(
+                                                child: Text(
+                                                    "${profile.address}",
+                                                    overflow:
+                                                        TextOverflow.ellipsis)),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               )
                             ],
