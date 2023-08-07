@@ -8,6 +8,7 @@ import 'package:e_trace_app/database_local/database_farmer_transaction.dart';
 import 'package:e_trace_app/model/farmer_transaction.dart';
 import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
+import 'package:e_trace_app/screen/harvest_ticket/search_farmer_dusun_screen.dart';
 import 'package:e_trace_app/screen/harvest_ticket/search_farmer_screen.dart';
 import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:e_trace_app/utils/time_utils.dart';
@@ -46,6 +47,8 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
   String idTicket, dateTicket, gpsLat, gpsLong, name;
   bool loading = false;
   Position position;
+
+  String selectedDusun = '';
 
   @override
   void initState() {
@@ -113,6 +116,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
     Farmers farmers = await DatabaseFarmer().selectFarmerByID(harvestTicket);
     setState(() {
       this.farmerObject = farmers;
+      selectedDusun = farmers.address;
     });
   }
 
@@ -202,22 +206,66 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Text("Dusun (*Wajib diisi)", style: text14Bold),
+                            Container(
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  String dusunTemp = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SearchFarmerDusunScreen()));
+                                  setState(() {
+                                    if (dusunTemp != null) {
+                                      selectedDusun = dusunTemp;
+                                      farmerObject = null;
+                                    }
+                                  });
+                                },
+                                child: Icon(
+                                    selectedDusun.isEmpty
+                                        ? Icons.add
+                                        : Icons.edit,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (selectedDusun.isNotEmpty)
+                          SizedBox(
+                            width: double.infinity,
+                            child: Text(selectedDusun, style: text14Bold),
+                          ),
+                        Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Text("Areal (*Wajib diisi)", style: text14Bold),
                             Container(
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  Farmers farmerNameTemp = await Navigator.push(
+                                  if (selectedDusun.isNotEmpty) {
+                                    Farmers farmerNameTemp =
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SearchFarmerScreen()));
+                                    setState(() {
+                                      if (farmerNameTemp == null) {
+                                        farmerObject = farmerObject;
+                                      } else {
+                                        farmerObject = farmerNameTemp;
+                                      }
+                                    });
+                                  } else {
+                                    Toast.show(
+                                      "Dusun Belum Dipilih",
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SearchFarmerScreen()));
-                                  setState(() {
-                                    if (farmerNameTemp == null) {
-                                      farmerObject = farmerObject;
-                                    } else {
-                                      farmerObject = farmerNameTemp;
-                                    }
-                                  });
+                                      duration: Toast.LENGTH_LONG,
+                                      gravity: Toast.BOTTOM,
+                                    );
+                                  }
                                 },
                                 child: Icon(
                                     farmerObject == null

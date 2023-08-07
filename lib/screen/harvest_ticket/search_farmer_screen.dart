@@ -8,6 +8,10 @@ import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
 
 class SearchFarmerScreen extends StatefulWidget {
+  const SearchFarmerScreen({Key key, this.dusun}) : super(key: key);
+
+  final String dusun;
+
   @override
   _SearchFarmerScreenState createState() => _SearchFarmerScreenState();
 }
@@ -29,17 +33,32 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
   }
 
   getFarmerList() async {
-    isLoading = true;
-    DatabaseFarmer().getFarmerList(onSuccess, onError);
+    setState(() => isLoading = true);
+
+    final r = await DatabaseFarmer().selectFarmer();
+    final farmerTemp = <Farmers>[];
+
+    for (final item in r) {
+      if (item['address'] == widget.dusun) {
+        farmerTemp.add(Farmers.fromJson(item));
+      }
+    }
+
+    setState(() {
+      _farmersDetails = farmerTemp;
+      isLoading = false;
+    });
+
+    // DatabaseFarmer().getFarmerList(onSuccess, onError);
   }
 
   void onSuccess(Farmers farmer) {
     setState(() {
-      isLoading = false;
-      if(farmer.address == null) {
+      if (farmer.address == null) {
         farmer.address = "";
       }
       _farmersDetails.add(farmer);
+      isLoading = false;
     });
   }
 
@@ -125,30 +144,46 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(_searchFarmerResult[index]
-                                                      .address == null ? "" : _searchFarmerResult[index]
-                                                      .address),
-                                                  Text(_searchFarmerResult[index]
-                                                      .yop == null ? "" : _searchFarmerResult[index]
-                                                      .yop),
+                                                  Text(
+                                                      _searchFarmerResult[index]
+                                                                  .address ==
+                                                              null
+                                                          ? ""
+                                                          : _searchFarmerResult[
+                                                                  index]
+                                                              .address),
+                                                  Text(
+                                                      _searchFarmerResult[index]
+                                                                  .yop ==
+                                                              null
+                                                          ? ""
+                                                          : _searchFarmerResult[
+                                                                  index]
+                                                              .yop),
                                                   Row(
                                                     children: [
-                                                      Text(_searchFarmerResult[index]
-                                                          .largeAreaHa == null ? "" : _searchFarmerResult[index]
-                                                          .largeAreaHa),
+                                                      Text(_searchFarmerResult[
+                                                                      index]
+                                                                  .largeAreaHa ==
+                                                              null
+                                                          ? ""
+                                                          : _searchFarmerResult[
+                                                                  index]
+                                                              .largeAreaHa),
                                                       Text(" Ha")
                                                     ],
                                                   )
                                                 ],
                                               ),
                                               trailing: OutlinedButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(
-                                                        context,
-                                                        _searchFarmerResult[
-                                                            index]);
-                                                  },
-                                                  child: Icon(Icons.add, color:Colors.white),
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                      context,
+                                                      _searchFarmerResult[
+                                                          index]);
+                                                },
+                                                child: Icon(Icons.add,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ),
@@ -187,7 +222,8 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
                                                     style: text14Bold,
                                                   ),
                                                   Text(_farmersDetails[index]
-                                                      .fullname ?? ""),
+                                                          .fullname ??
+                                                      ""),
                                                 ],
                                               ),
                                               subtitle: Column(
@@ -197,35 +233,49 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(_farmersDetails[index]
-                                                      .address == null ? "" : _farmersDetails[index]
-                                                      .address),
+                                                              .address ==
+                                                          null
+                                                      ? ""
+                                                      : _farmersDetails[index]
+                                                          .address),
                                                   Text(_farmersDetails[index]
-                                                      .yop == null ? "" : _farmersDetails[index]
-                                                      .yop),
+                                                              .yop ==
+                                                          null
+                                                      ? ""
+                                                      : _farmersDetails[index]
+                                                          .yop),
                                                   Row(
                                                     children: [
-                                                      Text(_farmersDetails[index]
-                                                          .largeAreaHa == null ? "" : _farmersDetails[index]
-                                                          .largeAreaHa),
+                                                      Text(_farmersDetails[
+                                                                      index]
+                                                                  .largeAreaHa ==
+                                                              null
+                                                          ? ""
+                                                          : _farmersDetails[
+                                                                  index]
+                                                              .largeAreaHa),
                                                       Text(" Ha")
                                                     ],
                                                   )
                                                 ],
                                               ),
                                               trailing: OutlinedButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context,
-                                                        _farmersDetails[index]);
-                                                  },
-                                                  child: Icon(Icons.add, color: Colors.white,),
-                                                  ),
+                                                onPressed: () {
+                                                  Navigator.pop(context,
+                                                      _farmersDetails[index]);
+                                                },
+                                                child: Icon(
+                                                  Icons.add,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     )
                                   : Flexible(
-                                    child: Center( 
+                                      child: Center(
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -240,7 +290,7 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
                                           ],
                                         ),
                                       ),
-                                  ),
+                                    ),
                         ),
                       )
                     : Flexible(
@@ -271,12 +321,12 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
       return;
     }
     _farmersDetails.forEach((farmerDetail) {
-        if (farmerDetail.ascendFarmerCode
-            .toLowerCase()
-            .contains(text.toLowerCase()) ||
-            farmerDetail.fullname.toLowerCase().contains(text.toLowerCase()) ||
-            farmerDetail.address.toLowerCase().contains(text.toLowerCase()) )
-          _searchFarmerResult.add(farmerDetail);
+      if (farmerDetail.ascendFarmerCode
+              .toLowerCase()
+              .contains(text.toLowerCase()) ||
+          farmerDetail.fullname.toLowerCase().contains(text.toLowerCase()) ||
+          farmerDetail.address.toLowerCase().contains(text.toLowerCase()))
+        _searchFarmerResult.add(farmerDetail);
     });
     setState(() {});
   }
