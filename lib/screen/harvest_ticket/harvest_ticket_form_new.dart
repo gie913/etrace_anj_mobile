@@ -9,6 +9,7 @@ import 'package:e_trace_app/model/farmer_transaction.dart';
 import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/screen/harvest_ticket/search_farmer_dusun_screen.dart';
+import 'package:e_trace_app/screen/harvest_ticket/search_farmer_kecamatan_screen.dart';
 import 'package:e_trace_app/screen/harvest_ticket/search_farmer_screen.dart';
 import 'package:e_trace_app/utils/storage_manager.dart';
 import 'package:e_trace_app/utils/time_utils.dart';
@@ -48,6 +49,7 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
   bool loading = false;
   Position position;
 
+  String selectedKecamatan = '';
   String selectedDusun = '';
 
   @override
@@ -206,21 +208,66 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Text("Kecamatan (*Wajib diisi)", style: text14Bold),
+                            Container(
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  String kecamatanTemp = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SearchFarmerKecamatanScreen()));
+                                  setState(() {
+                                    if (kecamatanTemp != null) {
+                                      selectedKecamatan = kecamatanTemp;
+                                      farmerObject = null;
+                                    }
+                                  });
+                                },
+                                child: Icon(
+                                    selectedDusun.isEmpty
+                                        ? Icons.add
+                                        : Icons.edit,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (selectedKecamatan.isNotEmpty)
+                          SizedBox(
+                            width: double.infinity,
+                            child: Text(selectedKecamatan, style: text14Bold),
+                          ),
+                        Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Text("Dusun (*Wajib diisi)", style: text14Bold),
                             Container(
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  String dusunTemp = await Navigator.push(
+                                  if (selectedKecamatan.isNotEmpty) {
+                                    String dusunTemp = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SearchFarmerDusunScreen(
+                                                    kecamatan:
+                                                        selectedKecamatan)));
+                                    setState(() {
+                                      if (dusunTemp != null) {
+                                        selectedDusun = dusunTemp;
+                                        farmerObject = null;
+                                      }
+                                    });
+                                  } else {
+                                    Toast.show(
+                                      "Kecamatan Belum Dipilih",
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SearchFarmerDusunScreen()));
-                                  setState(() {
-                                    if (dusunTemp != null) {
-                                      selectedDusun = dusunTemp;
-                                      farmerObject = null;
-                                    }
-                                  });
+                                      duration: Toast.LENGTH_LONG,
+                                      gravity: Toast.BOTTOM,
+                                    );
+                                  }
                                 },
                                 child: Icon(
                                     selectedDusun.isEmpty
@@ -250,7 +297,11 @@ class HarvestTicketFormNewState extends State<HarvestTicketFormNew> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    SearchFarmerScreen()));
+                                                    SearchFarmerScreen(
+                                                      dusun: selectedDusun,
+                                                      kecamatan:
+                                                          selectedKecamatan,
+                                                    )));
                                     setState(() {
                                       if (farmerNameTemp == null) {
                                         farmerObject = farmerObject;

@@ -2,89 +2,79 @@ import 'dart:developer';
 
 import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:e_trace_app/database_local/database_farmer.dart';
-import 'package:e_trace_app/model/farmers.dart';
 import 'package:e_trace_app/widget/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
 
-class SearchFarmerDusunScreen extends StatefulWidget {
-  const SearchFarmerDusunScreen({Key key, this.kecamatan}) : super(key: key);
-
-  final String kecamatan;
+class SearchFarmerKecamatanScreen extends StatefulWidget {
+  const SearchFarmerKecamatanScreen({Key key}) : super(key: key);
 
   @override
-  State<SearchFarmerDusunScreen> createState() =>
-      _SearchFarmerDusunScreenState();
+  State<SearchFarmerKecamatanScreen> createState() =>
+      _SearchFarmerKecamatanScreenState();
 }
 
-class _SearchFarmerDusunScreenState extends State<SearchFarmerDusunScreen> {
+class _SearchFarmerKecamatanScreenState
+    extends State<SearchFarmerKecamatanScreen> {
   final controller = TextEditingController();
 
-  List<String> listDusun = [];
-  List<String> listDusunSearch = [];
+  List<String> listKecamatan = [];
+  List<String> listKecamatanSearch = [];
   String selectedDusun = '';
 
   bool isLoading = false;
 
   @override
   void initState() {
-    getDataDusunFarmer();
+    getDataKecamatan();
     super.initState();
   }
 
-  Future<void> getDataDusunFarmer() async {
+  Future<void> getDataKecamatan() async {
     setState(() => isLoading = true);
 
     final r = await DatabaseFarmer().selectFarmer();
-    var farmerByKecamatan = <Farmers>[];
 
-    if (widget.kecamatan == 'lainnya') {
-      farmerByKecamatan = List<Farmers>.from(r.map((e) => Farmers.fromJson(e)));
-    } else {
-      for (final item in r) {
-        if (item['subdistrict'] == widget.kecamatan) {
-          farmerByKecamatan.add(Farmers.fromJson(item));
-        }
+    for (final item in r) {
+      if (!listKecamatan.contains(item['subdistrict']) &&
+          item['subdistrict'] != null) {
+        listKecamatan.add(item['subdistrict']);
       }
     }
 
-    for (final item in farmerByKecamatan) {
-      if (!listDusun.contains(item.address)) {
-        listDusun.add(item.address);
-      }
-    }
+    listKecamatan.add('lainnya');
 
-    listDusunSearch = listDusun;
+    listKecamatanSearch = listKecamatan;
 
     await Future.delayed(const Duration(seconds: 1));
 
     setState(() => isLoading = false);
 
-    log('cek dusun : $listDusun');
+    log('cek kecamatan : $listKecamatan');
   }
 
   onSearchTextChanged(String text) async {
     setState(() {
-      final listDusunSearchTemp = <String>[];
+      final listKecamatanSearchTemp = <String>[];
 
       if (text.isEmpty) {
-        listDusunSearch = listDusun;
+        listKecamatanSearch = listKecamatan;
       }
 
-      for (var i = 0; i < listDusun.length; i++) {
-        if (listDusun[i].toLowerCase().contains(text.toLowerCase())) {
-          listDusunSearchTemp.add(listDusun[i]);
+      for (var i = 0; i < listKecamatan.length; i++) {
+        if (listKecamatan[i].toLowerCase().contains(text.toLowerCase())) {
+          listKecamatanSearchTemp.add(listKecamatan[i]);
         }
       }
 
-      listDusunSearch = listDusunSearchTemp;
+      listKecamatanSearch = listKecamatanSearchTemp;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text("Pencarian Dusun"))),
+      appBar: AppBar(title: Center(child: Text("Pencarian Kecamatan"))),
       body: Container(
         child: Column(
           children: [
@@ -113,19 +103,20 @@ class _SearchFarmerDusunScreenState extends State<SearchFarmerDusunScreen> {
             ),
             isLoading
                 ? loadingWidget()
-                : listDusunSearch.isNotEmpty
+                : listKecamatanSearch.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
-                          itemCount: listDusunSearch.length,
+                          itemCount: listKecamatanSearch.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                Navigator.pop(context, listDusunSearch[index]);
+                                Navigator.pop(
+                                    context, listKecamatanSearch[index]);
                               },
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(12),
-                                  child: Text(listDusunSearch[index]),
+                                  child: Text(listKecamatanSearch[index]),
                                 ),
                                 margin: EdgeInsets.fromLTRB(12, 0, 12, 12),
                               ),
@@ -142,7 +133,7 @@ class _SearchFarmerDusunScreenState extends State<SearchFarmerDusunScreen> {
                                   color: Colors.orange, size: 60),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20.0),
-                                child: Text("Tidak ada Data Dusun"),
+                                child: Text("Tidak ada Data Kecamatan"),
                               ),
                             ],
                           ),

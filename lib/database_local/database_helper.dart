@@ -105,6 +105,7 @@ class DatabaseHelper {
         $FARMER_ASCEND_ID TEXT,
         $FARMER_ASCEND_CODE TEXT,
         $FARMER_ADDRESS TEXT,
+        $FARMER_SUBDISTRICT TEXT,
         $FARMER_LAT TEXT,
         $FARMER_LONG TEXT,
         $FARMER_LARGE_AREA TEXT,

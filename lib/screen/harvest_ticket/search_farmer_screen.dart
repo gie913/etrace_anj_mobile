@@ -8,8 +8,10 @@ import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:fluttericon/rpg_awesome_icons.dart';
 
 class SearchFarmerScreen extends StatefulWidget {
-  const SearchFarmerScreen({Key key, this.dusun}) : super(key: key);
+  const SearchFarmerScreen({Key key, this.kecamatan, this.dusun})
+      : super(key: key);
 
+  final String kecamatan;
   final String dusun;
 
   @override
@@ -38,9 +40,18 @@ class _SearchFarmerScreenState extends State<SearchFarmerScreen> {
     final r = await DatabaseFarmer().selectFarmer();
     final farmerTemp = <Farmers>[];
 
-    for (final item in r) {
-      if (item['address'] == widget.dusun) {
-        farmerTemp.add(Farmers.fromJson(item));
+    if (widget.kecamatan == 'lainnya') {
+      for (final item in r) {
+        if (item['address'] == widget.dusun) {
+          farmerTemp.add(Farmers.fromJson(item));
+        }
+      }
+    } else {
+      for (final item in r) {
+        if (item['subdistrict'] == widget.kecamatan &&
+            item['address'] == widget.dusun) {
+          farmerTemp.add(Farmers.fromJson(item));
+        }
       }
     }
 

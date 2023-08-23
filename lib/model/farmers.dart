@@ -4,6 +4,7 @@ class Farmers {
   dynamic ascendFarmerId;
   String ascendFarmerCode;
   String address;
+  String subdistrict;
   String gpsLong;
   String gpsLat;
   dynamic largeAreaHa;
@@ -18,6 +19,7 @@ class Farmers {
       this.ascendFarmerId,
       this.ascendFarmerCode,
       this.address,
+      this.subdistrict,
       this.gpsLong,
       this.gpsLat,
       this.largeAreaHa,
@@ -32,6 +34,7 @@ class Farmers {
     ascendFarmerId = json['ascend_farmer_id'];
     ascendFarmerCode = json['ascend_farmer_code'];
     address = json['address'];
+    subdistrict = json['subdistrict'];
     gpsLong = json['gps_long'];
     gpsLat = json['gps_lat'];
     largeAreaHa = json['large_area_ha'];
@@ -48,6 +51,7 @@ class Farmers {
     data['ascend_farmer_id'] = this.ascendFarmerId;
     data['ascend_farmer_code'] = this.ascendFarmerCode;
     data['address'] = this.address;
+    data['subdistrict'] = this.subdistrict;
     data['gps_long'] = this.gpsLong;
     data['gps_lat'] = this.gpsLat;
     data['large_area_ha'] = this.largeAreaHa;

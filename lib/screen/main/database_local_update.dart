@@ -25,8 +25,14 @@ class DatabaseLocalUpdate {
       } catch (e) {
         print("Column supplier name exist");
       }
-    } else if (APP_VERSION == "v.1.2.3") {
+    } else if (APP_VERSION == "v.1.2.4") {
       Database db = await DatabaseHelper().database;
+      try {
+        await db.rawQuery(
+            "ALTER TABLE $TABLE_FARMER ADD COLUMN $FARMER_SUBDISTRICT TEXT;");
+      } catch (e) {
+        print("Column is exist");
+      }
       try {
         await db.rawQuery(
             "ALTER TABLE $TABLE_FARMER ADD COLUMN $FARMER_MAX_BUNCH_YEAR INT;");

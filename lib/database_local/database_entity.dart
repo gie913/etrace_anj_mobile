@@ -83,6 +83,7 @@ const String FARMER_ID_OBJECT = "id";
 const String FARMER_ASCEND_ID = "ascend_farmer_id";
 const String FARMER_ASCEND_CODE = "ascend_farmer_code";
 const String FARMER_ADDRESS = "address";
+const String FARMER_SUBDISTRICT = 'subdistrict';
 const String FARMER_LAT = "gps_lat";
 const String FARMER_LONG = "gps_long";
 const String FARMER_LARGE_AREA = "large_area_ha";
