@@ -38,13 +38,13 @@ class _SearchFarmerDusunScreenState extends State<SearchFarmerDusunScreen> {
     final r = await DatabaseFarmer().selectFarmer();
     var farmerByKecamatan = <Farmers>[];
 
-    if (widget.kecamatan == 'lainnya') {
-      farmerByKecamatan = List<Farmers>.from(r.map((e) => Farmers.fromJson(e)));
-    } else {
-      for (final item in r) {
-        if (item['subdistrict'] == widget.kecamatan) {
-          farmerByKecamatan.add(Farmers.fromJson(item));
-        }
+    for (final item in r) {
+      if (item['subdistrict']
+              .toString()
+              .trim()
+              .replaceAll(RegExp(r'\s+'), ' ') ==
+          widget.kecamatan) {
+        farmerByKecamatan.add(Farmers.fromJson(item));
       }
     }
 

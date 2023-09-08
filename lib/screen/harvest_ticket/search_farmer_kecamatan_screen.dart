@@ -36,13 +36,16 @@ class _SearchFarmerKecamatanScreenState
     final r = await DatabaseFarmer().selectFarmer();
 
     for (final item in r) {
-      if (!listKecamatan.contains(item['subdistrict']) &&
-          item['subdistrict'] != null) {
-        listKecamatan.add(item['subdistrict']);
+      if (!listKecamatan.contains(item['subdistrict']
+          .toString()
+          .trim()
+          .replaceAll(RegExp(r'\s+'), ' '))) {
+        listKecamatan.add(item['subdistrict']
+            .toString()
+            .trim()
+            .replaceAll(RegExp(r'\s+'), ' '));
       }
     }
-
-    listKecamatan.add('lainnya');
 
     listKecamatanSearch = listKecamatan;
 
