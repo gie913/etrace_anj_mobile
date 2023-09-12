@@ -30,20 +30,35 @@ class _SearchFarmerKecamatanScreenState
     super.initState();
   }
 
+  String convertCapitalCase(String text) {
+    final newText =
+        text.isNotEmpty ? '${text[0].toUpperCase()}${text.substring(1)}' : '';
+    return newText;
+  }
+
+  String convertTitleCase(String text) {
+    final newText = text
+        .replaceAll(RegExp(' +'), ' ')
+        .split(' ')
+        .map(convertCapitalCase)
+        .join(' ');
+    return newText;
+  }
+
   Future<void> getDataKecamatan() async {
     setState(() => isLoading = true);
 
     final r = await DatabaseFarmer().selectFarmer();
 
     for (final item in r) {
-      if (!listKecamatan.contains(item['subdistrict']
+      if (!listKecamatan.contains(convertTitleCase(item['subdistrict']
           .toString()
           .trim()
-          .replaceAll(RegExp(r'\s+'), ' '))) {
-        listKecamatan.add(item['subdistrict']
+          .replaceAll(RegExp(r'\s+'), ' ')))) {
+        listKecamatan.add(convertTitleCase(item['subdistrict']
             .toString()
             .trim()
-            .replaceAll(RegExp(r'\s+'), ' '));
+            .replaceAll(RegExp(r'\s+'), ' ')));
       }
     }
 
