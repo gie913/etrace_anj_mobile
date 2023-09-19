@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:e_trace_app/base/api/api_configuration.dart';
@@ -33,6 +34,8 @@ class FarmerRepository {
         uri,
         headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
       );
+      log('url : $url');
+      log('response : ${json.decode(response.body)}');
       SyncFarmerResponse apiResponse =
           SyncFarmerResponse.fromJson(json.decode(response.body));
       if (apiResponse.success == true) {

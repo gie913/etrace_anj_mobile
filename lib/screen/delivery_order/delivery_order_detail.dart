@@ -20,7 +20,6 @@ import 'package:fluttericon/linecons_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lzstring/lzstring.dart';
-import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -92,9 +91,7 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String user = prefs.getString('userPT');
     String username = prefs.getString('username');
-    double brightness = await Screen.brightness;
     setState(() {
-      this.brightnessInit = brightness;
       this.company = user;
       this.username = username;
     });
@@ -771,9 +768,6 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.pop(context);
-                                setState(() {
-                                  Screen.setBrightness(brightnessInit);
-                                });
                               },
                               child: Container(
                                 child: Padding(
@@ -792,9 +786,6 @@ class DeliveryOrderDetailState extends State<DeliveryOrderDetail> {
                             child: InkWell(
                               onTap: () {
                                 doneQRDialog(context);
-                                setState(() {
-                                  Screen.setBrightness(brightnessInit);
-                                });
                               },
                               child: Container(
                                 child: Padding(

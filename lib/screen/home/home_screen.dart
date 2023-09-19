@@ -1,12 +1,14 @@
 import 'package:e_trace_app/base/path/image_path.dart';
 import 'package:e_trace_app/base/strings/constants.dart';
 import 'package:e_trace_app/base/ui/style.dart';
+import 'package:e_trace_app/database_local/database_farmer.dart';
 import 'package:e_trace_app/database_local/database_supplier.dart';
 import 'package:e_trace_app/screen/collection_point/collection_point_list.dart';
 import 'package:e_trace_app/screen/data_screen/qr_code_screen.dart';
 import 'package:e_trace_app/screen/delivery_order/delivery_order_list.dart';
 import 'package:e_trace_app/screen/harvest_ticket/harvest_ticket_list.dart';
 import 'package:e_trace_app/screen/home/counter_notifier.dart';
+import 'package:e_trace_app/screen/home/sync_data_background.dart';
 import 'package:e_trace_app/utils/time_utils.dart';
 import 'package:e_trace_app/widget/upload_dialog.dart';
 import 'package:expandable/expandable.dart';
@@ -40,6 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<CounterNotifier>().getCountUnUploadedHarvestTicket();
     context.read<CounterNotifier>().getCountUnUploadedCollectionPoint();
     context.read<CounterNotifier>().getCountUnUploadedDeliveryOrder();
+    final r = await DatabaseFarmer().selectFarmer();
+    final data = r.first;
+    if (data['subdistrict'] == null) {
+      SyncDataBackground().getDataFarmer();
+    }
     setState(() {
       username = pref.getString('username');
       company = pref.getString('userPT');

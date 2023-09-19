@@ -1,9 +1,9 @@
 class APIEndpoint {
-  static const BASE_URL =
-      "https://etrace-dev.anj-group.co.id/backend/public/index.php/";
-
   // static const BASE_URL =
-  //     "https://etrace.anj-group.co.id/backend/public/index.php/";
+  //     "https://etrace-dev.anj-group.co.id/backend/public/index.php/";
+
+  static const BASE_URL =
+      "https://etrace.anj-group.co.id/backend/public/index.php/";
 
   static const LOGIN_ENDPOINT = "api/v1/signin";
   static const LOGOUT_ENDPOINT = "api/v1/signout";

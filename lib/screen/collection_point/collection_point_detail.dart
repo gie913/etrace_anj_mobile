@@ -9,7 +9,6 @@ import 'package:e_trace_app/database_local/database_helper.dart';
 import 'package:e_trace_app/model/agents.dart';
 import 'package:e_trace_app/model/collection_point.dart';
 import 'package:e_trace_app/model/farmers.dart';
-import 'package:screen/screen.dart';
 import 'package:e_trace_app/model/harvesting_ticket.dart';
 import 'package:e_trace_app/model/transfer_response.dart';
 import 'package:e_trace_app/model/user.dart';
@@ -76,7 +75,6 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
   Future<String> compress(String uncompressed) async {
     final result = await LZString.compress(uncompressed);
     setState(() {
-      Screen.setBrightness(0.7);
       showQRCodeDialog(context, uncompressed);
     });
     return result;
@@ -780,9 +778,6 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                               onTap: () {
                                 Navigator.pop(context);
                                 disableSecureScreen();
-                                setState(() {
-                                  Screen.setBrightness(brightnessInit);
-                                });
                               },
                               child: Container(
                                 child: Padding(
@@ -804,9 +799,6 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
                             child: InkWell(
                               onTap: () {
                                 doneQRDialog(context);
-                                setState(() {
-                                  Screen.setBrightness(brightnessInit);
-                                });
                               },
                               child: Container(
                                 child: Padding(
@@ -886,9 +878,8 @@ class CollectionPointDetailState extends State<CollectionPointDetail> {
 
   getAgentByID(CollectionPoint collectionPoint) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    double brightness = await Screen.brightness;
+
     setState(() {
-      this.brightnessInit = brightness;
       agentName = prefs.getString('name');
       userCompany = prefs.getString('userPT');
     });

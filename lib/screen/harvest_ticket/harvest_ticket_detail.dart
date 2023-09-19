@@ -24,7 +24,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:lzstring/lzstring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:screen/screen.dart';
 import 'package:toast/toast.dart';
 
 class HarvestTicketDetail extends StatefulWidget {
@@ -65,9 +64,8 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
 
   void getFarmerByID(HarvestingTicket harvestTicket) async {
     Farmers farmers = await DatabaseFarmer().selectFarmerByID(harvestTicket);
-    double brightness = await Screen.brightness;
+
     setState(() {
-      this.brightnessInit = brightness;
       this.farmerObject = farmers;
     });
   }
@@ -153,7 +151,6 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
 
   Future<String> compress(String uncompressed) async {
     final result = await LZString.compressToBase64(uncompressed);
-    Screen.setBrightness(0.7);
     showQRCodeDialog(context, uncompressed);
     return result;
   }
@@ -231,7 +228,8 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                           margin: EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
                             color: Colors.orange,
-                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                         ),
                         Column(
@@ -278,7 +276,9 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(GPS_LOCATION_FORM, style: text14Bold),
-                                Text("${harvestTicket.gpsLat ?? ""},${harvestTicket.gpsLong ?? ""}", overflow: TextOverflow.ellipsis)
+                                Text(
+                                    "${harvestTicket.gpsLat ?? ""},${harvestTicket.gpsLong ?? ""}",
+                                    overflow: TextOverflow.ellipsis)
                               ],
                             ),
                             Divider(),
@@ -492,8 +492,7 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                               ],
                             ),
                           )
-                    : Center(
-                        child: Text("Tiket sudah ditransfer")),
+                    : Center(child: Text("Tiket sudah ditransfer")),
               )
             ],
           ),
@@ -535,9 +534,6 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                             child: InkWell(
                               onTap: () {
                                 Navigator.pop(context);
-                                setState(() {
-                                  Screen.setBrightness(brightnessInit);
-                                });
                               },
                               child: Container(
                                 child: Padding(
@@ -562,9 +558,6 @@ class HarvestTicketDetailState extends State<HarvestTicketDetail> {
                             child: InkWell(
                               onTap: () {
                                 doneQRDialog(context);
-                                setState(() {
-                                  Screen.setBrightness(brightnessInit);
-                                });
                               },
                               child: Container(
                                 child: Padding(
