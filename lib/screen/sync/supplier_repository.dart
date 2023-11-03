@@ -43,6 +43,7 @@ class SupplierRepository {
         onError(apiResponse.message);
       }
     } catch (exception) {
+      log('error exception at ${baseUrl + APIEndpoint.SYNC_DATA_SUPPLIER + timeLastSync} : $exception');
       onError(exception);
     }
   }

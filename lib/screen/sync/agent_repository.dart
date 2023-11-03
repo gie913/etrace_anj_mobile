@@ -43,6 +43,7 @@ class AgentRepository {
         onError(apiResponse.message);
       }
     } catch (exception) {
+      log('error exception at ${baseUrl + APIEndpoint.SYNC_DATA_AGENT + timeLastSync} : $exception');
       onError(exception);
     }
   }

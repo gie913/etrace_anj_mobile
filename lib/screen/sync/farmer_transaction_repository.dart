@@ -28,6 +28,7 @@ class FarmerTransactionRepository {
         headers: APIConfiguration(baseUrl).getDefaultHeaderWithToken(token),
       );
       log('url : $url');
+      log('token : $token');
       log('response : ${json.decode(response.body)}');
       FarmerTransactions apiResponse =
           FarmerTransactions.fromJson(json.decode(response.body));
@@ -37,6 +38,7 @@ class FarmerTransactionRepository {
         onError(apiResponse.message);
       }
     } catch (exception) {
+      log('error exception at ${baseUrl + APIEndpoint.FARMER_TRANSACTION} : $exception');
       onError(exception);
     }
   }

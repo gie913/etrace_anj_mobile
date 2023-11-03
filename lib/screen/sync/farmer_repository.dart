@@ -47,6 +47,7 @@ class FarmerRepository {
         onError(apiResponse.message);
       }
     } catch (exception) {
+      log('error exception at ${baseUrl + APIEndpoint.SYNC_DATA_FARMER + timeLastSync} : $exception');
       onError(exception);
     }
   }
